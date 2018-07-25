@@ -75,6 +75,7 @@ public class FastFourierTransformer {
       final double dM = (double)M;
       final double dN = (double)N;
 
+      //TODO A REVOIR CAR J JAMAIS REINITIALISE
       int i, j = (from / M);
       for (i = (from % M); i + j < to; i++) {
         for (; j < N && i + j < to; j++) {
