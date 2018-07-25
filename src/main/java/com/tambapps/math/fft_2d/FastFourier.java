@@ -2,6 +2,7 @@ package com.tambapps.math.fft_2d;
 
 import com.tambapps.math.complex.Complex;
 
+//TODO TO DELETE, USE FastFourierTransformer
 //TODO faire des fonctions qui aggrandissent l'image comme dans le TP (permet une plus grande precision)
 public class FastFourier {
 
