@@ -1,6 +1,6 @@
 package com.tambapps.math.complex;
 
-import static com.tambapps.math.util.DoubleComparator.equal;
+import static com.tambapps.math.fourier.util.DoubleComparator.equal;
 
 import java.util.Objects;
 

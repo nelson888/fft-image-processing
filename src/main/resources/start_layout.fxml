@@ -25,21 +25,28 @@
     </Label>
   </top>
   <center>
-    <Label maxWidth="Infinity" alignment="CENTER" style="-fx-wrap-text: true">
-      <text>
-        BorderPane allows you to place nodes at the top, left, bottom, right,
-        and center of the application window. The heading above is placed
-        in BorderPane's top position. This content is at center. We also
-        have a footer at the bottom.
-      </text>
-      <font>
-        <Font name="Arial" size="16">
-        </Font>
-      </font>
-      <padding>
-        <Insets top="20" left="80" bottom="20" right="80"/>
-      </padding>
-    </Label>
+    <GridPane>
+      <Label maxWidth="Infinity" alignment="CENTER" style="-fx-wrap-text: true" GridPane.rowIndex="0">
+        <text>
+          This is an application performing image processing with the Fast Fourrier Transform
+        </text>
+        <font>
+          <Font name="Arial" size="16">
+          </Font>
+        </font>
+        <padding>
+          <Insets top="20" left="80" bottom="20" right="80"/>
+        </padding>
+      </Label>
+
+      <Button GridPane.rowIndex="1" fx:id="start" GridPane.valignment="CENTER">
+        Start
+        <padding>
+          <Insets top="20" left="40" bottom="20" right="40"/>
+        </padding>
+      </Button>
+    </GridPane>
+
   </center>
   <bottom>
     <Label maxWidth="Infinity" alignment="BOTTOM_CENTER"

@@ -1,4 +1,4 @@
-package com.tambapps.math.util;
+package com.tambapps.math.fourier.util;
 
 import com.tambapps.math.complex.Complex;
 

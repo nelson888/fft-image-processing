@@ -1,10 +1,27 @@
-package com.tambapps.math.fft_2d;
+package com.tambapps.math.fourier.fft_2d;
 
 import com.tambapps.math.complex.Complex;
 
 //TODO TO DELETE, USE FastFourierTransformer
 //TODO faire des fonctions qui aggrandissent l'image comme dans le TP (permet une plus grande precision)
 public class FastFourier {
+
+  public static Complex[][] transform(int[][] f, int zeroPadding) {
+    throw new RuntimeException("TODO"); //TODO
+    /*
+    int[][] paddedF = new int[f.length][f[0].length + 2 * zeroPadding];
+
+    for (int i = 0; i < f.length; i++) {
+      int[] paddedFLine = paddedF[i];
+      int[] fLine = f[i];
+      System.arraycopy(fLine, 0,);
+    }
+    for (int[] lign : paddedF) {
+      System.arraycopy(f);
+      Arrays.c
+    }
+    */
+  }
 
   public static Complex[][] transform(int[][] f) {
     final double M = f.length;

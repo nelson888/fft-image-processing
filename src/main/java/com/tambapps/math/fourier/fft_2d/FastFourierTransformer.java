@@ -1,4 +1,4 @@
-package com.tambapps.math.fft_2d;
+package com.tambapps.math.fourier.fft_2d;
 
 import com.tambapps.math.complex.Complex;
 
