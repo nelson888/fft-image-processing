@@ -44,4 +44,45 @@ public abstract class Array2D<T> {
   public int getN() {
     return N;
   }
+
+  public Row getRow(int i) {
+    return new Row(i);
+  }
+
+  public Column getColumn(int i) {
+    return new Column(i);
+  }
+
+  private abstract class ArrayVector {
+    final int index;
+
+    ArrayVector(int index) {
+      this.index = index;
+    }
+    public abstract T getElement(int i);
+  }
+
+  public class Column extends ArrayVector {
+
+    Column(int c) {
+      super(c);
+    }
+
+    @Override
+    public T getElement(int i) {
+      return get(i, index);
+    }
+  }
+
+  public class Row extends ArrayVector {
+
+    Row(int c) {
+      super(c);
+    }
+
+    @Override
+    public T getElement(int i) {
+      return get(index, i);
+    }
+  }
 }
