@@ -20,7 +20,7 @@
         </Font>
       </font>
       <padding>
-        <Insets top="20" left="20" bottom="20" right="20"></Insets>
+        <Insets top="20" left="20" bottom="20" right="20"/>
       </padding>
     </Label>
   </top>
@@ -37,7 +37,7 @@
         </Font>
       </font>
       <padding>
-        <Insets top="20" left="80" bottom="20" right="80"></Insets>
+        <Insets top="20" left="80" bottom="20" right="80"/>
       </padding>
     </Label>
   </center>
@@ -48,7 +48,7 @@
                -fx-border-style: solid">
       <text>Copyright tambapps.com</text>
       <padding>
-        <Insets top="20" left="20" bottom="20" right="20"></Insets>
+        <Insets top="10" left="20" bottom="10" right="20"/>
       </padding>
     </Label>
   </bottom>
