@@ -5,7 +5,8 @@ import com.tambapps.math.complex.Complex;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-
+//TODO TO IMPLEMENT This shows that a 2D FFT can be broken down into a series of 1D Fourier transforms.
+// To compute a 2D FFT, 1D Fourier transform is applied to each individual row of the input matrix and then to each column.
 //TODO faire des fonctions qui aggrandissent l'image comme dans le TP (permet une plus grande precision)
 public class FastFourierTransformer {
   private final int maxThreads;
@@ -116,7 +117,7 @@ public class FastFourierTransformer {
       Complex result = Complex.ZERO;
       for (int i = 0; i < f.length; i++) {
         for (int j=0; j < f[i].length; j++) {
-          result = result.add(Complex.expI(-2 * Math.PI * (i*m/M + j*n/N)).scl(f[i][j]));
+          result = result.add(Complex.expI(-2 * Math.PI * (i*m/M + j*n/N)).scl(f[i][j])); //TODO to simply (to much complex creation)
         }
       }
 
