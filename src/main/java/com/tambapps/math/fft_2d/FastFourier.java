@@ -21,7 +21,6 @@ public class FastFourier {
     return fft;
   }
 
-  //TODO symetrie pour image reelle
   private static Complex transformPoint(double M, double N, int[][] f, int m, int n) {
     Complex result = Complex.ZERO;
     for (int i = 0; i < f.length; i++) {

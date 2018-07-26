@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 
+//TODO faire des fonctions qui aggrandissent l'image comme dans le TP (permet une plus grande precision)
 public class FastFourierTransformer {
   private final int maxThreads;
   private final ExecutorCompletionService<Void> executorService;
@@ -45,7 +46,8 @@ public class FastFourierTransformer {
 
 
   /**
-   * Task that will do some computation between 'from' and 'to' ('from' and 'to' represent the index in 1D)
+   * Task that will do some computation between 'from' and 'to'
+   * ('from' and 'to' represent the 2D array indexes in 1D)
    */
   private abstract class FourierTask<InputType> implements Callable<Void> {
     private final int M;
@@ -75,11 +77,17 @@ public class FastFourierTransformer {
       final double dM = (double)M;
       final double dN = (double)N;
 
-      //TODO A REVOIR CAR J JAMAIS REINITIALISE
-      int i, j = (from / M);
-      for (i = (from % M); i + j < to; i++) {
-        for (; j < N && i + j < to; j++) {
-          output[i][j] = computePoint(dM, dN, input, i, j);
+      //transforming the 1D in 2D
+      int i = from % M;
+      int j = from / M;
+
+      while (j * M + i < to) {
+        output[i][j] = computePoint(dM, dN, input, i, j);
+        if (i == M - 1) {
+          i = 0;
+          j++;
+        } else {
+          i++;
         }
       }
       return null;
@@ -89,7 +97,7 @@ public class FastFourierTransformer {
   }
 
   /**
-   * Task that will compute the FFT  between 'from' and 'to' ('from' and 'to' represent the index in 1D)
+   * Task that will compute the FFT  between 'from' and 'to'
    */
   private class TransformTask extends FourierTask<Integer> {
 
@@ -117,7 +125,7 @@ public class FastFourierTransformer {
   }
 
   /**
-   * Task that will compute the inverse of the given FFT  between 'from' and 'to' ('from' and 'to' represent the index in 1D)
+   * Task that will compute the inverse of the given FFT  between 'from' and 'to'
    */
   private class InverseTask extends FourierTask<Complex> {
 

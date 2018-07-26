@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 public class ImageConverter {
 
-  public static int[][] toArray(BufferedImage image) {
-    int tab[][] = new int[image.getHeight()][image.getWidth()];
+  public static Integer[][] toArray(BufferedImage image) {
+    Integer tab[][] = new Integer[image.getHeight()][image.getWidth()];
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
         tab[y][x] = image.getRGB(x, y);
