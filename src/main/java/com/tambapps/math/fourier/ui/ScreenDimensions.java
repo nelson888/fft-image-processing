@@ -1,4 +1,4 @@
-package com.tambapps.math.fourier.util;
+package com.tambapps.math.fourier.ui;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
