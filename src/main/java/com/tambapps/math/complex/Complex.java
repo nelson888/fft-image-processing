@@ -1,6 +1,6 @@
 package com.tambapps.math.complex;
 
-import static com.tambapps.math.fourier.util.DoubleComparator.equal;
+import static com.tambapps.math.util.DoubleComparator.equal;
 
 import java.util.Objects;
 
@@ -37,6 +37,18 @@ public class Complex {
     return new Complex(real + complex.real, imaginary + complex.imaginary);
   }
 
+  public Complex add(Double d) {
+    return new Complex(real + d, imaginary);
+  }
+
+  public Complex sub(Complex complex) {
+    return new Complex(real - complex.real, imaginary - complex.imaginary);
+  }
+
+  public Complex conj() {
+    return new Complex(real, -imaginary);
+  }
+
   public Complex mul(Complex complex) {
     double real = this.real * complex.real - this.imaginary * complex.imaginary;
     double imaginary = this.real * complex.imaginary + this.imaginary * complex.real;
@@ -45,7 +57,20 @@ public class Complex {
 
   @Override
   public String toString() {
-    return String.format("%s + i * %s", real, imaginary);
+    StringBuilder builder = new StringBuilder();
+    if (!equal(0d, real)) {
+      builder.append(real);
+      if (!equal(0d, imaginary)) {
+        builder.append(" + i * ").append(imaginary);
+      }
+    } else {
+      if (!equal(0d, imaginary)) {
+        builder.append("i * ").append(imaginary);
+      } else {
+        builder.append("0");
+      }
+    }
+    return builder.toString();
   }
 
   public static Complex of(double real, double imaginary) {
