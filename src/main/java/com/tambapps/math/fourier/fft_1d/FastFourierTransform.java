@@ -5,31 +5,41 @@ import com.tambapps.math.util.ArrayVector;
 import com.tambapps.math.util.PowerOfTwo;
 import com.tambapps.math.util.Vector;
 
-//from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
+/**
+ * Class that implements multiple 1D FFT algorithms
+ */
 public class FastFourierTransform {
 
-  public static void basicFFT(Vector<Complex> array, Vector<Complex> result) {
-    double N = array.getSize();
-    for (int k = 0; k < array.getSize(); k++) {
+  /**
+   * The basic algorithm for the FFT
+   *
+   * @param vector the vector to compute
+   * @param result the vector in which the computation will be made
+   */
+  public static void basicFFT(Vector<Complex> vector, Vector<Complex> result) {
+    double N = vector.getSize();
+    for (int k = 0; k < vector.getSize(); k++) {
       Complex sum = Complex.ZERO;
-      for (int n = 0; n < array.getSize(); n++) {
-        sum = sum.add(array.getElement(n).mul(Complex.expI(-2d * Math.PI * ((double) k) * ((double) n) / N)));
+      for (int n = 0; n < vector.getSize(); n++) {
+        sum = sum.add(vector.getElement(n).mul(Complex.expI(-2d * Math.PI * ((double) k) * ((double) n) / N)));
       }
       result.setElement(k, sum);
     }
   }
 
   /**
-   * Compute the 1D FFT in the given array
+   * Compute the 1D FFT in the given vector
+   * with the iterative Cooley-Tukey algorithm
+   * The computation is made in the given vector
    *
-   * @param array the discrete function to compute the DFT
+   * @param vector the discrete function to compute the DFT
+   * @link from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
    */
-  //FIXME WORK FOR 1D BUT NOT FOR 2D
-  public static void iterativeFFT(Vector<Complex> array) {
-    int n = array.getSize();
+  public static void iterativeFFT(Vector<Complex> vector) { //FIXME WORKS FOR 1D BUT NOT FOR 2D
+    int n = vector.getSize();
 
     int bits = PowerOfTwo.getExponent(n);
-    bitReverseArray(array, bits);
+    bitReverseVector(vector, bits);
 
     for (int m = 2; m <= n; m <<= 1) {
       double dM = (double) m;
@@ -37,18 +47,18 @@ public class FastFourierTransform {
         for (int k = 0; k < m / 2; k++) {
           int evenIndex = i + k;
           int oddIndex = i + k + (m / 2);
-          Complex even = array.getElement(evenIndex);
-          Complex odd = array.getElement(oddIndex);
+          Complex even = vector.getElement(evenIndex);
+          Complex odd = vector.getElement(oddIndex);
 
           Complex wm = Complex.expI(-2d * Math.PI * k / dM).mul(odd);
-          array.setElement(evenIndex, even.add(wm));
-          array.setElement(oddIndex, even.sub(wm));
+          vector.setElement(evenIndex, even.add(wm));
+          vector.setElement(oddIndex, even.sub(wm));
         }
       }
     }
   }
 
-  public static int bitReversedIndex(int n, int bits) {
+  private static int bitReversedIndex(int n, int bits) {
     int reversedN = n;
     int count = bits - 1;
 
@@ -62,7 +72,7 @@ public class FastFourierTransform {
     return ((reversedN << count) & ((1 << bits) - 1));
   }
 
-  private static void bitReverseArray(Vector<Complex> buffer, int bits) {
+  private static void bitReverseVector(Vector<Complex> buffer, int bits) {
     for (int j = 1; j < buffer.getSize() / 2; j++) {
       int swapPos = bitReversedIndex(j, bits);
       Complex temp = buffer.getElement(j);
@@ -71,30 +81,38 @@ public class FastFourierTransform {
     }
   }
 
-  public static void inverse(Vector<Complex> array) {
-    for (int i = 0; i < array.getSize(); i++) {
-      array.setElement(i, array.getElement(i).conj());
+  public static void inverse(Vector<Complex> vector) {
+    for (int i = 0; i < vector.getSize(); i++) {
+      vector.setElement(i, vector.getElement(i).conj());
     }
 
-    iterativeFFT(array);
+    iterativeFFT(vector);
 
-    double iN = 1d / ((double) array.getSize());
-    for (int i = 0; i < array.getSize(); i++) {
-      array.setElement(i, array.getElement(i).conj().scl(iN));
+    double iN = 1d / ((double) vector.getSize());
+    for (int i = 0; i < vector.getSize(); i++) {
+      vector.setElement(i, vector.getElement(i).conj().scl(iN));
     }
   }
 
-  public static void recursiveFFT(Vector<Complex> array) {
-    Vector.copy(recursiveCopyFFT(array), array);
+  public static void recursiveFFT(Vector<Complex> vector) {
+    Vector.copy(recursiveCopyFFT(vector), vector);
   }
 
-  public static Vector<Complex> recursiveCopyFFT(Vector<Complex> array) {
-    int N = array.getSize();
+  /**
+   * Compute the FFT in the given vector
+   * with the recursive Cooley-Tukey algorithm
+   *
+   * @param vector the discrete function to compute the DFT
+   * @return the result FFT of the given vector
+   * @link from https://rosettacode.org/wiki/Fast_Fourier_transform
+   */
+  public static Vector<Complex> recursiveCopyFFT(Vector<Complex> vector) {
+    int N = vector.getSize();
     if (N <= 1) {
-      return array;
+      return vector;
     }
-    Vector<Complex> evens = recursiveCopyFFT(evensCopy(array));
-    Vector<Complex> odds = recursiveCopyFFT(oddsCopy(array));
+    Vector<Complex> evens = recursiveCopyFFT(evensCopy(vector));
+    Vector<Complex> odds = recursiveCopyFFT(oddsCopy(vector));
 
     Complex[] T = new Complex[N / 2];
     for (int i = 0; i < N / 2; i++) {
@@ -124,9 +142,6 @@ public class FastFourierTransform {
       copy.setElement(count, vector.getElement(i));
       count++;
     }
-    if (count != copy.getSize()) {
-      System.err.println("ERRRORREVEN");
-    }
     return copy;
   }
 
@@ -140,9 +155,6 @@ public class FastFourierTransform {
     for (int i = 1; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
-    }
-    if (count != copy.getSize()) {
-      System.err.println("ERRRORROODDS");
     }
     return copy;
   }
