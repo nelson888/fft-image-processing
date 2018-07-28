@@ -15,18 +15,18 @@ public class Array2DTest {
   @Test
   public void complexRowColumnTest() {
     Initializer<Complex> complexInitializer = Complex::of;
-    genericTest(new Complex2DArray(3, 2), complexInitializer);
-    genericTest(new Complex2DArray(10, 10), complexInitializer);
+    genericRowColumnTest(new Complex2DArray(3, 2), complexInitializer);
+    genericRowColumnTest(new Complex2DArray(10, 10), complexInitializer);
   }
 
   @Test
   public void realRowColumnTest() {
     Initializer<Double> doubleInitializer = ((row, col) -> (double) (10 * row + col));
-    genericTest(new Double2DArray(3, 2), doubleInitializer);
-    genericTest(new Double2DArray(10, 10), doubleInitializer);
+    genericRowColumnTest(new Double2DArray(3, 2), doubleInitializer);
+    genericRowColumnTest(new Double2DArray(10, 10), doubleInitializer);
   }
 
-  private <T> void genericTest(Array2D<T> array, Initializer<T> initializer) {
+  private <T> void genericRowColumnTest(Array2D<T> array, Initializer<T> initializer) {
     int M = array.getM(), N = array.getN();
 
     for (int j = 0; j < N; j++) {
@@ -50,4 +50,33 @@ public class Array2DTest {
     }
   }
 
+  @Test
+  public void realRowColumnSetTest() {
+    genericRowColumnSetTest(new Double2DArray(4, 7), 2d, 3d);
+  }
+
+  @Test
+  public void complexRowColumnSetTest() {
+    genericRowColumnSetTest(new Complex2DArray(4, 7), Complex.of(2,4), Complex.of(34,10));
+  }
+
+  public <T> void genericRowColumnSetTest(Array2D<T> array, T valueCol, T valueRow) {
+    Vector<T> column = array.getColumn(array.getN()/2);
+    for (int i = 0; i < column.getSize(); i++) {
+      column.setElement(i, valueCol);
+    }
+
+    for (int j = 0; j < array.getM(); j++) {
+      assertEquals("Should be equal", valueCol, array.get(j, array.getN()/2));
+    }
+
+    Vector<T> row = array.getRow(array.getM()/2);
+    for (int i = 0; i < row.getSize(); i++) {
+      row.setElement(i, valueRow);
+    }
+
+    for (int j = 0; j < array.getN(); j++) {
+      assertEquals("Should be equal", valueRow, array.get(array.getM()/2, j));
+    }
+  }
 }

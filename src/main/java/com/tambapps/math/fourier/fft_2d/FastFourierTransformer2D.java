@@ -3,6 +3,7 @@ package com.tambapps.math.fourier.fft_2d;
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.fft_1d.FastFourierTransform;
+import com.tambapps.math.util.ArrayVector;
 import com.tambapps.math.util.Vector;
 
 import java.util.concurrent.Callable;
@@ -35,7 +36,7 @@ public class FastFourierTransformer2D {
     transform(f, true, false);
   }
 
-  private void transform(Complex2DArray f, boolean inverse, boolean row) {
+  private void transform(Complex2DArray f,final boolean inverse,final boolean row) {
     int treated = 0;
     int max = row ? f.getM() : f.getN();
     int perThread = (int) Math.floor(((double)max) / maxThreads);
@@ -67,7 +68,6 @@ public class FastFourierTransformer2D {
     private final int to;
     private final boolean row;
 
-
     FourierTask(Complex2DArray data, int from, int to, boolean row) {
       this.data = data;
       this.from = from;
@@ -80,7 +80,6 @@ public class FastFourierTransformer2D {
       if (row) {
         for (int i = from; i < to; i++) {
           computeVector(data.getRow(i));
-
         }
       } else {
         for (int i = from; i < to; i++) {
@@ -104,7 +103,9 @@ public class FastFourierTransformer2D {
 
     @Override
     void computeVector(Vector<Complex> vector) {
-      FastFourierTransform.iterativeFFT(vector);
+
+
+      FastFourierTransform.recursiveFFT(vector);
     }
 
   }

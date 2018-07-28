@@ -6,7 +6,7 @@ public abstract class AbstractVector<T> implements Vector<T> {
 
   @Override
   public boolean equals(Object o) {
-    if (o == null || !o.getClass().equals(getClass())) {
+    if (!(o instanceof Vector)) {
       return false;
     }
     Vector v = (Vector) o;
@@ -20,5 +20,18 @@ public abstract class AbstractVector<T> implements Vector<T> {
       }
     }
     return true;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder stringBuilder = new StringBuilder().append("[ ");
+    for (int i = 0; i < getSize(); i++) {
+      stringBuilder.append(getElement(i));
+      if (i < getSize() - 1) {
+        stringBuilder.append(", ");
+      }
+    }
+    stringBuilder.append(" ]");
+    return stringBuilder.toString();
   }
 }
