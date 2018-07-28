@@ -3,7 +3,9 @@ package com.tambapps.math.array_2d;
 import com.tambapps.math.util.AbstractVector;
 
 /**
+ * class representing a 2D array
  * (row, col)
+ *
  * @param <T>
  */
 public abstract class Array2D<T> {
@@ -84,6 +86,7 @@ public abstract class Array2D<T> {
 
   private class Row extends AbstractVector<T> {
     private int r;
+
     Row(int r) {
       this.r = r;
     }
@@ -98,19 +101,22 @@ public abstract class Array2D<T> {
       set(r, i, value);
     }
 
-    @Override public int getSize() {
+    @Override
+    public int getSize() {
       return N;
     }
   }
 
-  @Override public String toString() {
+  @Override
+  public String toString() {
     StringBuilder stringBuilder = new StringBuilder();
     for (int i = 0; i < N * M; i++) {
       stringBuilder.append("(").append(get(i)).append(")\t");
-      if ((i+1) % N == 0) {
+      if ((i + 1) % N == 0) {
         stringBuilder.append("\n");
       }
     }
     return stringBuilder.toString();
   }
+
 }

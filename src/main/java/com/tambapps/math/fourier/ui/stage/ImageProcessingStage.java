@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class ImageProcessingStage extends Stage {
+
   private GridPane root;
   private MyImageView imageView;
   private ImageView startImageView;
@@ -20,4 +21,5 @@ public class ImageProcessingStage extends Stage {
 
     root.add(startImageView, 1, 0);
   }
+
 }

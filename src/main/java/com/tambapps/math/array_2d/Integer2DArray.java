@@ -6,7 +6,8 @@ public class Integer2DArray extends Array2D<Integer> {
     super(M, N);
   }
 
-  @Override Integer[] initialize(int size) {
+  @Override
+  Integer[] initialize(int size) {
     return new Integer[size];
   }
 }

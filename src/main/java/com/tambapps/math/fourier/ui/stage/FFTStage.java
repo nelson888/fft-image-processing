@@ -23,7 +23,7 @@ public class FFTStage extends Stage {
   private int nbImages;
 
   public FFTStage(Parent root, double width, double height,
-      Parent ipsParent) {
+                  Parent ipsParent) {
     this.ipsParent = ipsParent;
     Scene scene = new Scene(root, width, height);
     fileChooser = new FileChooser();
@@ -52,7 +52,7 @@ public class FFTStage extends Stage {
         e.printStackTrace(); //TODO
       }
 
-      imageView.setFitWidth(getWidth()/6d);
+      imageView.setFitWidth(getWidth() / 6d);
       imageView.setFitHeight(imageView.getFitWidth());
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
         showImageProcessingStage(imageView);
@@ -68,4 +68,5 @@ public class FFTStage extends Stage {
         new Scene(ipsParent, getWidth(), getHeight()));
     ips.show();
   }
+
 }

@@ -34,4 +34,5 @@ public abstract class AbstractVector<T> implements Vector<T> {
     stringBuilder.append(" ]");
     return stringBuilder.toString();
   }
+
 }

@@ -34,4 +34,5 @@ public class FFTApplication extends Application {
     stage.setScene(scene);
     stage.show();
   }
+
 }

@@ -35,4 +35,5 @@ public class ComplexTest {
     assertEquals("Should be equal", Complex.I.scl(2), c1.mul(c2));
     assertEquals("Should be equal", Complex.I.scl(2), c2.mul(c1));
   }
+
 }

@@ -4,6 +4,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 
 public class ScreenDimensions {
+
   public static final double WIDTH;
   public static final double HEIGHT;
 
@@ -12,4 +13,5 @@ public class ScreenDimensions {
     WIDTH = screenBounds.getWidth();
     HEIGHT = screenBounds.getHeight();
   }
+
 }

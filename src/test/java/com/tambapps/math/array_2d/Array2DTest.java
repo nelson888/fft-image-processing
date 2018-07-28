@@ -57,26 +57,27 @@ public class Array2DTest {
 
   @Test
   public void complexRowColumnSetTest() {
-    genericRowColumnSetTest(new Complex2DArray(4, 7), Complex.of(2,4), Complex.of(34,10));
+    genericRowColumnSetTest(new Complex2DArray(4, 7), Complex.of(2, 4), Complex.of(34, 10));
   }
 
   public <T> void genericRowColumnSetTest(Array2D<T> array, T valueCol, T valueRow) {
-    Vector<T> column = array.getColumn(array.getN()/2);
+    Vector<T> column = array.getColumn(array.getN() / 2);
     for (int i = 0; i < column.getSize(); i++) {
       column.setElement(i, valueCol);
     }
 
     for (int j = 0; j < array.getM(); j++) {
-      assertEquals("Should be equal", valueCol, array.get(j, array.getN()/2));
+      assertEquals("Should be equal", valueCol, array.get(j, array.getN() / 2));
     }
 
-    Vector<T> row = array.getRow(array.getM()/2);
+    Vector<T> row = array.getRow(array.getM() / 2);
     for (int i = 0; i < row.getSize(); i++) {
       row.setElement(i, valueRow);
     }
 
     for (int j = 0; j < array.getN(); j++) {
-      assertEquals("Should be equal", valueRow, array.get(array.getM()/2, j));
+      assertEquals("Should be equal", valueRow, array.get(array.getM() / 2, j));
     }
   }
+
 }

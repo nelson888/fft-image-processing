@@ -11,18 +11,20 @@ public class FastFourierTransform {
   public static void basicFFT(Vector<Complex> array, Vector<Complex> result) {
     double N = array.getSize();
     for (int k = 0; k < array.getSize(); k++) {
-      Complex sum  = Complex.ZERO;
+      Complex sum = Complex.ZERO;
       for (int n = 0; n < array.getSize(); n++) {
-        sum = sum.add(array.getElement(n).mul(Complex.expI(- 2d * Math.PI * ((double)k) * ((double)n) / N)));
+        sum = sum.add(array.getElement(n).mul(Complex.expI(-2d * Math.PI * ((double) k) * ((double) n) / N)));
       }
       result.setElement(k, sum);
     }
   }
 
-    /**
-     * Compute the 1D FFT in the given array
-     * @param array the discrete function to compute the DFT
-     */
+  /**
+   * Compute the 1D FFT in the given array
+   *
+   * @param array the discrete function to compute the DFT
+   */
+  //FIXME WORK FOR 1D BUT NOT FOR 2D
   public static void iterativeFFT(Vector<Complex> array) {
     int n = array.getSize();
 
@@ -30,7 +32,7 @@ public class FastFourierTransform {
     bitReverseArray(array, bits);
 
     for (int m = 2; m <= n; m <<= 1) {
-      double dM = (double)m;
+      double dM = (double) m;
       for (int i = 0; i < n; i += m) {
         for (int k = 0; k < m / 2; k++) {
           int evenIndex = i + k;
@@ -76,7 +78,7 @@ public class FastFourierTransform {
 
     iterativeFFT(array);
 
-    double iN = 1d / ((double)array.getSize());
+    double iN = 1d / ((double) array.getSize());
     for (int i = 0; i < array.getSize(); i++) {
       array.setElement(i, array.getElement(i).conj().scl(iN));
     }
@@ -94,18 +96,18 @@ public class FastFourierTransform {
     Vector<Complex> evens = recursiveCopyFFT(evensCopy(array));
     Vector<Complex> odds = recursiveCopyFFT(oddsCopy(array));
 
-    Complex[] T = new Complex[N/2];
+    Complex[] T = new Complex[N / 2];
     for (int i = 0; i < N / 2; i++) {
-      T[i] = odds.getElement(i).mul(Complex.expI(- 2d *  Math.PI * ((double)i) / ((double)N)));
+      T[i] = odds.getElement(i).mul(Complex.expI(-2d * Math.PI * ((double) i) / ((double) N)));
     }
 
     Vector<Complex> result = new ArrayVector<>(N);
     for (int i = 0; i < N; i++) {
-      if (i < N/2) {
+      if (i < N / 2) {
         result.setElement(i, evens.getElement(i).add(T[i]));
       } else {
         result.setElement(i, evens
-                .getElement(i - N/2).sub(T[i - N/2]));
+            .getElement(i - N / 2).sub(T[i - N / 2]));
       }
     }
     return result;
@@ -118,7 +120,7 @@ public class FastFourierTransform {
     }
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
-    for (int i = 0; i < vector.getSize(); i+= 2) {
+    for (int i = 0; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
     }
@@ -135,7 +137,7 @@ public class FastFourierTransform {
     }
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
-    for (int i = 1; i < vector.getSize(); i+= 2) {
+    for (int i = 1; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
     }
@@ -144,4 +146,5 @@ public class FastFourierTransform {
     }
     return copy;
   }
+
 }

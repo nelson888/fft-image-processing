@@ -30,4 +30,5 @@ public class MyImageView extends ImageView {
     this.originImage = image;
     setImage(SwingFXUtils.toFXImage(image, null));
   }
+
 }

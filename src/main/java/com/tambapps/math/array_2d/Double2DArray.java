@@ -10,4 +10,5 @@ public class Double2DArray extends Array2D<Double> {
   Double[] initialize(int size) {
     return new Double[size];
   }
+
 }

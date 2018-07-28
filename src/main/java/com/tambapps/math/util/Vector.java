@@ -3,11 +3,13 @@ package com.tambapps.math.util;
 public interface Vector<T> {
 
   T getElement(int i);
+
   void setElement(int i, T value);
+
   int getSize();
 
   @SafeVarargs
-  static <T>  Vector<T> of(T... values) {
+  static <T> Vector<T> of(T... values) {
     return new ImmutableVector<>(values);
   }
 
@@ -19,4 +21,5 @@ public interface Vector<T> {
       dst.setElement(i, src.getElement(i));
     }
   }
+
 }
