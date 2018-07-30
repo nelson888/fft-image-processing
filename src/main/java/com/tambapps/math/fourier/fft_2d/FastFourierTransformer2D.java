@@ -2,6 +2,7 @@ package com.tambapps.math.fourier.fft_2d;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
+import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FastFourierTransform;
 import com.tambapps.math.util.Vector;
 
@@ -25,9 +26,9 @@ public class FastFourierTransformer2D {
     this.maxThreads = maxThreads;
   }
 
-  public void transform(Complex2DArray f) {
-    transform(f, false, true);
-    transform(f, false, false);
+  public void transform(Complex2DArray f, FFTAlgorithm algorithm) {
+    transform(f, false, true, algorithm);
+    transform(f, false, false, algorithm);
   }
 
   public void inverse(Complex2DArray f) {
@@ -36,16 +37,22 @@ public class FastFourierTransformer2D {
   }
 
   private void transform(Complex2DArray f, final boolean inverse, final boolean row) {
+    transform(f, inverse, row, null);
+  }
+
+  private void transform(Complex2DArray f, final boolean inverse, final boolean row,
+      FFTAlgorithm algorithm) {
     int treated = 0;
     int max = row ? f.getM() : f.getN();
-    int perThread = (int) Math.floor(((double) max) / maxThreads);
+    int perThread = max;//(int) Math.floor(((double) max) / maxThreads);
     int count = 0;
 
     while (treated < max) {
       if (inverse) {
         executorService.submit(new InverseTask(f, treated, Math.min(max, treated + perThread), row));
       } else {
-        executorService.submit(new TransformTask(f, treated, Math.min(max, treated + perThread), row));
+        executorService.submit(new TransformTask(algorithm, f, treated,
+            Math.min(max, treated + perThread), row));
       }
 
       treated += perThread;
@@ -96,13 +103,16 @@ public class FastFourierTransformer2D {
    */
   private class TransformTask extends FourierTask {
 
-    TransformTask(Complex2DArray data, int from, int to, boolean row) {
+    private FFTAlgorithm algorithm;
+
+    TransformTask(FFTAlgorithm algorithm, Complex2DArray data, int from, int to, boolean row) {
       super(data, from, to, row);
+      this.algorithm = algorithm;
     }
 
     @Override
     void computeVector(Vector<Complex> vector) {
-      FastFourierTransform.recursiveFFT(vector);
+      algorithm.compute(vector);
     }
 
   }
@@ -118,7 +128,7 @@ public class FastFourierTransformer2D {
 
     @Override
     void computeVector(Vector<Complex> vector) {
-      FastFourierTransform.inverse(vector);
+      FastFourierTransform.INVERSE.compute(vector, FastFourierTransform.CT_RECURSIVE);
     }
 
   }

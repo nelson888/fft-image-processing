@@ -10,6 +10,11 @@ import com.tambapps.math.util.Vector;
  */
 public class FastFourierTransform {
 
+  public static final FFTAlgorithm BASIC = FastFourierTransform::basicFFT;
+  public static final FFTAlgorithm CT_RECURSIVE = FastFourierTransform::recursiveFFT;
+  public static final FFTAlgorithm CT_ITERATIVE = FastFourierTransform::iterativeFFT;
+  public static final FFTInverseAlgorithm INVERSE = FastFourierTransform::inverse;
+
   /**
    * The basic algorithm for the FFT
    *
@@ -27,14 +32,20 @@ public class FastFourierTransform {
     }
   }
 
-  /**
-   * Compute the 1D FFT in the given vector
-   * with the iterative Cooley-Tukey algorithm
-   * The computation is made in the given vector
-   *
-   * @param vector the discrete function to compute the DFT
-   * @link from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
-   */
+  public static void basicFFT(Vector<Complex> vector) {
+    Vector<Complex> result = new ArrayVector<>(vector.getSize());
+    basicFFT(vector, result);
+    Vector.copy(result, vector);
+  }
+
+    /**
+     * Compute the 1D FFT in the given vector
+     * with the iterative Cooley-Tukey algorithm
+     * The computation is made in the given vector
+     *
+     * @param vector the discrete function to compute the DFT
+     * @link from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
+     */
   public static void iterativeFFT(Vector<Complex> vector) { //FIXME WORKS FOR 1D BUT NOT FOR 2D
     int n = vector.getSize();
 
@@ -78,19 +89,6 @@ public class FastFourierTransform {
       Complex temp = buffer.getElement(j);
       buffer.setElement(j, buffer.getElement(swapPos));
       buffer.setElement(swapPos, temp);
-    }
-  }
-
-  public static void inverse(Vector<Complex> vector) {
-    for (int i = 0; i < vector.getSize(); i++) {
-      vector.setElement(i, vector.getElement(i).conj());
-    }
-
-    iterativeFFT(vector);
-
-    double iN = 1d / ((double) vector.getSize());
-    for (int i = 0; i < vector.getSize(); i++) {
-      vector.setElement(i, vector.getElement(i).conj().scl(iN));
     }
   }
 
@@ -159,4 +157,21 @@ public class FastFourierTransform {
     return copy;
   }
 
+  /**
+   * Inverse a Fourier Transformed vector with a given FFT algorithm
+   * @param vector the vector to inverse
+   * @param algorithm the FFT algorithm used in the inverse
+   */
+  private static void inverse(Vector<Complex> vector, FFTAlgorithm algorithm) {
+    for (int i = 0; i < vector.getSize(); i++) {
+      vector.setElement(i, vector.getElement(i).conj());
+    }
+
+    algorithm.compute(vector);
+
+    double iN = 1d / ((double) vector.getSize());
+    for (int i = 0; i < vector.getSize(); i++) {
+      vector.setElement(i, vector.getElement(i).conj().scl(iN));
+    }
+  }
 }

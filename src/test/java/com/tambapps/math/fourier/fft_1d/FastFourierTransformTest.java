@@ -50,4 +50,15 @@ public class FastFourierTransformTest {
     assertEquals("Should be equal", expected, result);
   }
 
+  @Test
+  public void inverseTest() {
+    for (FFTAlgorithm algorithm : new FFTAlgorithm[] {FastFourierTransform.CT_ITERATIVE,
+        FastFourierTransform.BASIC, FastFourierTransform.CT_RECURSIVE}) {
+      Vector<Complex> result = new ArrayVector<>(expected.getSize());
+      Vector.copy(expected, result);
+      FastFourierTransform.INVERSE.compute(result, algorithm);
+      assertEquals("Should be equal", input, result);
+    }
+  }
+
 }

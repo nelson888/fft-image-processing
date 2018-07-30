@@ -2,6 +2,8 @@ package com.tambapps.math.array_2d;
 
 import com.tambapps.math.util.AbstractVector;
 
+import java.util.Objects;
+
 /**
  * class representing a 2D array
  * (row, col)
@@ -119,4 +121,21 @@ public abstract class Array2D<T> {
     return stringBuilder.toString();
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (! (o instanceof Array2D)) {
+      return false;
+    }
+    Array2D a = (Array2D) o;
+    if (a.M != M || a.N != N) {
+      return false;
+    }
+
+    for (int i = 0; i < M * N; i++) {
+      if (!Objects.equals(array[i], a.array[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
