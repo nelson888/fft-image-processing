@@ -8,6 +8,7 @@ public class Complex {
 
   public static final Complex I = new Complex(0d, 1d);
   public static final Complex ZERO = new Complex(0d, 0d);
+  public static final Complex ONE = new Complex(1d, 0d);
 
   private final double real;
   private final double imaginary;

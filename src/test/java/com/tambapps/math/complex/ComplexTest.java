@@ -26,7 +26,7 @@ public class ComplexTest {
 
   @Test
   public void mulTest() {
-    Complex c1 = Complex.of(1);
+    Complex c1 = Complex.ONE;
     Complex c2 = Complex.of(0, 2);
 
     assertEquals("Should be equal", Complex.ZERO, c1.mul(Complex.ZERO));
