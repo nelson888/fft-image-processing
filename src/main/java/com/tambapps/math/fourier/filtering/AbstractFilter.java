@@ -17,4 +17,5 @@ abstract class AbstractFilter implements Filter {
   }
 
   abstract Complex apply(Complex c, int i, int j, int M, int N);
+
 }

@@ -32,7 +32,7 @@
   <left>
     <GridPane fx:id="menu">
 
-      <Button GridPane.rowIndex="0" fx:id="pick_image" GridPane.valignment="CENTER">
+      <Button GridPane.rowIndex="0" fx:id="compute_fft" GridPane.valignment="CENTER">
         Compute Fourier Transform
       </Button>
     </GridPane>

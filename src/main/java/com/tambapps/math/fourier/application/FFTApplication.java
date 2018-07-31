@@ -1,7 +1,7 @@
-package com.tambapps.math.fourier;
+package com.tambapps.math.fourier.application;
 
-import com.tambapps.math.fourier.ui.stage.FFTStage;
-import com.tambapps.math.fourier.ui.ScreenDimensions;
+import com.tambapps.math.fourier.application.ui.stage.FFTStage;
+import com.tambapps.math.fourier.application.ui.ScreenDimensions;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

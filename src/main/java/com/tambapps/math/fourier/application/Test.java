@@ -1,4 +1,4 @@
-package com.tambapps.math.fourier;
+package com.tambapps.math.fourier.application;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_1d.FastFourierTransform;

@@ -3,7 +3,7 @@ package com.tambapps.math.fourier.filtering;
 import com.tambapps.math.array_2d.Double2DArray;
 import com.tambapps.math.complex.Complex;
 
-public class MatrixFilter extends AbstractFilter {
+class MatrixFilter extends AbstractFilter {
   private final Double2DArray array;
 
   MatrixFilter(Double2DArray array) {

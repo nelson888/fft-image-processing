@@ -9,16 +9,26 @@ import com.tambapps.math.complex.Complex;
  */
 public class Padder {
 
-  public static Complex2DArray copy(Complex2DArray array, int padding) {
-    Complex2DArray copy = new Complex2DArray(array.getM() + 2 * padding, array.getN() + 2 * padding);
+  public static Complex2DArray paddedCopy(Complex2DArray array, int paddingM, int paddingN) {
+    Complex2DArray copy = new Complex2DArray(array.getM() + 2 * paddingM, array.getN() + 2 * paddingN);
     for (int i = 0; i < copy.getM(); i++) {
       for (int j = 0; j < copy.getN(); j++) {
-        if (i < padding || i >= padding + array.getM() ||
-        j < padding || j >= padding + array.getN()) {
+        if (i < paddingM || i >= paddingM + array.getM() ||
+        j < paddingN || j >= paddingN + array.getN()) {
           copy.set(i, j, Complex.ZERO);
         } else {
-          copy.set(i, j, array.get(i - padding, j - padding));
+          copy.set(i, j, array.get(i - paddingM, j - paddingN));
         }
+      }
+    }
+    return copy;
+  }
+
+  public static Complex2DArray unpaddedCopy(Complex2DArray array, int paddingM, int paddingN) {
+    Complex2DArray copy = new Complex2DArray(array.getM() - 2 * paddingM, array.getN() - 2 * paddingN);
+    for (int i = 0; i < copy.getM(); i++) {
+      for (int j = 0; j < copy.getN(); j++) {
+        copy.set(i, j, array.get(i + paddingM, j + paddingN));
       }
     }
     return copy;

@@ -1,6 +1,6 @@
-package com.tambapps.math.fourier.ui.stage;
+package com.tambapps.math.fourier.application.ui.stage;
 
-import com.tambapps.math.fourier.ui.view.MyImageView;
+import com.tambapps.math.fourier.application.ui.view.MyImageView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -49,7 +49,8 @@ public class FFTStage extends Stage {
         BufferedImage image = ImageIO.read(files.get(i));
         imageView.setImage(image);
       } catch (IOException e) {
-        e.printStackTrace(); //TODO
+        e.printStackTrace(); //TODO handle it better
+        throw new RuntimeException(e);
       }
 
       imageView.setFitWidth(getWidth() / 6d);
