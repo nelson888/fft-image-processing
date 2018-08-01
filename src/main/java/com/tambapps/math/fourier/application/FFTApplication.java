@@ -8,8 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-//TODO USER JAVAFX SCENE BUILDER TO MAKE UI
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class FFTApplication extends Application {
+
+  public static final  int MAX_FFT_THREADS = 4;
+  public static final ExecutorService FFT_EXECUTOR_SERVICE = Executors
+      .newFixedThreadPool(FFTApplication.MAX_FFT_THREADS);
+  public static final ExecutorService TASK_EXECUTOR_SERVICE = Executors
+      .newCachedThreadPool();
 
   public static void main(String[] args) {
     launch(args);
@@ -31,4 +39,9 @@ public class FFTApplication extends Application {
     stage.show();
   }
 
+  @Override
+  public void stop() {
+    FFT_EXECUTOR_SERVICE.shutdown();
+    TASK_EXECUTOR_SERVICE.shutdown();
+  }
 }

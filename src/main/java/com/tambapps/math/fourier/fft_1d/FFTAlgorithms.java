@@ -8,12 +8,13 @@ import com.tambapps.math.util.Vector;
 /**
  * Class that implements multiple 1D FFT algorithms
  */
-public class FastFourierTransform {
+public class FFTAlgorithms {
 
-  public static final FFTAlgorithm BASIC = FastFourierTransform::basicFFT;
-  public static final FFTAlgorithm CT_RECURSIVE = FastFourierTransform::recursiveFFT;
-  public static final FFTAlgorithm CT_ITERATIVE = FastFourierTransform::iterativeFFT;
-  public static final FFTInverseAlgorithm INVERSE = FastFourierTransform::inverse;
+  public static final FFTAlgorithm BASIC = FFTAlgorithms::basicFFT;
+  public static final FFTAlgorithm CT_RECURSIVE = FFTAlgorithms::recursiveFFT;
+  public static final FFTAlgorithm CT_ITERATIVE = FFTAlgorithms::iterativeFFT;
+
+  public static final FFTInverseAlgorithm INVERSE = FFTAlgorithms::inverse;
 
   /**
    * The basic algorithm for the FFT
@@ -42,11 +43,11 @@ public class FastFourierTransform {
      * Compute the 1D FFT in the given vector
      * with the iterative Cooley-Tukey algorithm
      * The computation is made in the given vector
-     *
+     * (not very precise for large 2D arrays)
      * @param vector the discrete function to compute the DFT
      * @link from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
      */
-  public static void iterativeFFT(Vector<Complex> vector) { //FIXME WORKS FOR 1D BUT NOT FOR 2D
+  public static void iterativeFFT(Vector<Complex> vector) {
     int n = vector.getSize();
 
     int bits = PowerOfTwo.getExponent(n);

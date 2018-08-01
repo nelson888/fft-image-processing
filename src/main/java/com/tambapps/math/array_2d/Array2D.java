@@ -109,6 +109,12 @@ public abstract class Array2D<T> {
     }
   }
 
+  public void copy(Array2D<T> copy) {
+    for (int i = 0; i < getM() * getN(); i++) {
+      copy.set(i, get(i));
+    }
+  }
+
   @Override
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder();

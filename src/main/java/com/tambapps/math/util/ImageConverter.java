@@ -4,6 +4,8 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 
 public class ImageConverter {
 
@@ -48,6 +50,10 @@ public class ImageConverter {
     return array;
   }
 
+  public static BufferedImage fromArray(Complex2DArray f) {
+    return fromArray(f, BufferedImage.TYPE_INT_RGB);
+  }
+
   public static BufferedImage fromArray(Complex2DArray f, int imageType) {
     BufferedImage image = new BufferedImage(f.getN(), f.getM(), imageType);
     for (int x = 0; x < image.getWidth(); x++) {
@@ -56,5 +62,12 @@ public class ImageConverter {
       }
     }
     return image;
+  }
+
+  public static BufferedImage copy(BufferedImage bi) {
+    ColorModel cm = bi.getColorModel();
+    boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+    WritableRaster raster = bi.copyData(null);
+    return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
   }
 }

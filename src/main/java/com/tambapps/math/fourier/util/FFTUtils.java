@@ -9,8 +9,8 @@ import com.tambapps.math.complex.Complex;
 public class FFTUtils {
 
   public static void changeCenter(Complex2DArray array) {
-    for (int i = 0; i < array.getN() / 4; i++) {
-      for (int j = 0; j < array.getM() / 4; j++) {
+    for (int i = 0; i < array.getN() / 2; i++) {
+      for (int j = 0; j < array.getM() / 2; j++) {
         swap(array, i, j, i + array.getN() / 2 , j + array.getM() / 2);
         swap(array, i, j + array.getM() / 2, i + array.getN() / 2, j);
       }

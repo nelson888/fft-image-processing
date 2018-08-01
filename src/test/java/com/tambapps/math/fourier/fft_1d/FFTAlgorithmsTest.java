@@ -8,7 +8,7 @@ import com.tambapps.math.util.Vector;
 
 import org.junit.Test;
 
-public class FastFourierTransformTest {
+public class FFTAlgorithmsTest {
 
   private final static Complex ONE = Complex.of(1);
   private final Vector<Complex> input = Vector.of(ONE,
@@ -32,13 +32,13 @@ public class FastFourierTransformTest {
   @Test
   public void basicTest() {
     Vector<Complex> result = new ArrayVector<>(input.getSize());
-    FastFourierTransform.basicFFT(input, result);
+    FFTAlgorithms.basicFFT(input, result);
     assertEquals("Should be equal", expected, result);
   }
 
   @Test
   public void recursiveTest() {
-    Vector<Complex> result = FastFourierTransform.recursiveCopyFFT(input);
+    Vector<Complex> result = FFTAlgorithms.recursiveCopyFFT(input);
     assertEquals("Should be equal", expected, result);
   }
 
@@ -46,17 +46,17 @@ public class FastFourierTransformTest {
   public void iterativeTest() {
     Vector<Complex> result = new ArrayVector<>(input.getSize());
     Vector.copy(input, result);
-    FastFourierTransform.iterativeFFT(result);
+    FFTAlgorithms.iterativeFFT(result);
     assertEquals("Should be equal", expected, result);
   }
 
   @Test
   public void inverseTest() {
-    for (FFTAlgorithm algorithm : new FFTAlgorithm[] {FastFourierTransform.CT_ITERATIVE,
-        FastFourierTransform.BASIC, FastFourierTransform.CT_RECURSIVE}) {
+    for (FFTAlgorithm algorithm : new FFTAlgorithm[] {FFTAlgorithms.CT_ITERATIVE,
+        FFTAlgorithms.BASIC, FFTAlgorithms.CT_RECURSIVE}) {
       Vector<Complex> result = new ArrayVector<>(expected.getSize());
       Vector.copy(expected, result);
-      FastFourierTransform.INVERSE.compute(result, algorithm);
+      FFTAlgorithms.INVERSE.compute(result, algorithm);
       assertEquals("Should be equal", input, result);
     }
   }
