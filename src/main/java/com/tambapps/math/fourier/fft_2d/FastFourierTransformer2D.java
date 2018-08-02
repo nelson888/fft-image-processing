@@ -7,8 +7,11 @@ import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.util.Vector;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is the class to apply 2D Fast Fourier Transform
@@ -16,29 +19,35 @@ import java.util.concurrent.ExecutorService;
  */
 public class FastFourierTransformer2D {
 
+  private static final Logger LOGGER =
+      Logger.getLogger(FastFourierTransformer2D.class.getSimpleName());
+  private static final FFTAlgorithm DEFAULT_ALGORITHM = FFTAlgorithms.CT_RECURSIVE;
+
   private final double maxThreads;
-  private final ExecutorCompletionService<Void> executorService;
+  private final ExecutorCompletionService<Boolean> executorService;
 
   public FastFourierTransformer2D(ExecutorService executor, int maxThreads) {
     executorService = new ExecutorCompletionService<>(executor);
     this.maxThreads = maxThreads;
   }
 
-  public void transform(Complex2DArray f, FFTAlgorithm algorithm) {
-    transform(f, false, true, algorithm);
-    transform(f, false, false, algorithm);
+  public boolean transform(Complex2DArray f, FFTAlgorithm algorithm) {
+    return compute(f, false, true, algorithm) && compute(f, false, false, algorithm);
   }
 
-  public void inverse(Complex2DArray f) {
-    transform(f, true, true);
-    transform(f, true, false);
+  public boolean transform(Complex2DArray f) {
+    return transform(f, DEFAULT_ALGORITHM);
   }
 
-  private void transform(Complex2DArray f, final boolean inverse, final boolean row) {
-    transform(f, inverse, row, null);
+  public boolean inverse(Complex2DArray f, FFTAlgorithm algorithm) {
+    return compute(f, true, true, algorithm) && compute(f, true, false, algorithm);
   }
 
-  private void transform(Complex2DArray f, final boolean inverse, final boolean row,
+  public boolean inverse(Complex2DArray f) {
+    return inverse(f, DEFAULT_ALGORITHM);
+  }
+
+  private boolean compute(Complex2DArray f, final boolean inverse, final boolean row,
       FFTAlgorithm algorithm) {
     int treated = 0;
     int max = row ? f.getM() : f.getN();
@@ -47,7 +56,7 @@ public class FastFourierTransformer2D {
 
     while (treated < max) {
       if (inverse) {
-        executorService.submit(new InverseTask(f, treated, Math.min(max, treated + perThread), row));
+        executorService.submit(new InverseTask(algorithm, f, treated, Math.min(max, treated + perThread), row));
       } else {
         executorService.submit(new TransformTask(algorithm, f, treated,
             Math.min(max, treated + perThread), row));
@@ -57,22 +66,32 @@ public class FastFourierTransformer2D {
       count++;
     }
 
+    boolean success = true;
     for (int i = 0; i < count; i++) {
       try {
-        executorService.take();
+        executorService.take().get();
       } catch (InterruptedException e) {
-        throw new RuntimeException("Couldn't wait longer");
+        LOGGER.log(Level.SEVERE, "Couldn't wait longer", e);
+        return false;
+      } catch (ExecutionException e) {
+        LOGGER.log(Level.SEVERE, "Couldn't retrieve success value", e);
+        return false;
       }
     }
+
+    return success;
   }
 
-  private abstract class FourierTask implements Callable<Void> {
+  private abstract class FourierTask implements Callable<Boolean> {
+
+    protected final FFTAlgorithm algorithm;
     private final Complex2DArray data;
     private final int from;
     private final int to;
     private final boolean row;
 
-    FourierTask(Complex2DArray data, int from, int to, boolean row) {
+    FourierTask(FFTAlgorithm algorithm, Complex2DArray data, int from, int to, boolean row) {
+      this.algorithm = algorithm;
       this.data = data;
       this.from = from;
       this.to = to;
@@ -80,7 +99,7 @@ public class FastFourierTransformer2D {
     }
 
     @Override
-    public final Void call() {
+    public final Boolean call() {
       if (row) {
         for (int i = from; i < to; i++) {
           computeVector(data.getRow(i));
@@ -90,7 +109,7 @@ public class FastFourierTransformer2D {
           computeVector(data.getColumn(i));
         }
       }
-      return null;
+      return true;
     }
 
     abstract void computeVector(Vector<Complex> vector);
@@ -101,11 +120,8 @@ public class FastFourierTransformer2D {
    */
   private class TransformTask extends FourierTask {
 
-    private FFTAlgorithm algorithm;
-
     TransformTask(FFTAlgorithm algorithm, Complex2DArray data, int from, int to, boolean row) {
-      super(data, from, to, row);
-      this.algorithm = algorithm;
+      super(algorithm, data, from, to, row);
     }
 
     @Override
@@ -120,13 +136,13 @@ public class FastFourierTransformer2D {
    */
   private class InverseTask extends FourierTask {
 
-    InverseTask(Complex2DArray data, int from, int to, boolean row) {
-      super(data, from, to, row);
+    InverseTask(FFTAlgorithm algorithm, Complex2DArray data, int from, int to, boolean row) {
+      super(algorithm, data, from, to, row);
     }
 
     @Override
     void computeVector(Vector<Complex> vector) {
-      FFTAlgorithms.INVERSE.compute(vector, FFTAlgorithms.CT_RECURSIVE);
+      FFTAlgorithms.INVERSE.compute(vector, algorithm);
     }
 
   }

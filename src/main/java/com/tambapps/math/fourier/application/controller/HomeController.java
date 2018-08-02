@@ -10,7 +10,11 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -27,6 +31,7 @@ import java.util.List;
 public class HomeController {
 
   private final ObservableList<ImageTask> imageTasks = FXCollections.observableArrayList();
+  private Stage imageTaskStage = new Stage();
 
   @FXML
   private GridPane gridPane;
@@ -43,6 +48,21 @@ public class HomeController {
     fileChooser.setTitle("Pick an image");
     fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image files",
         "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"));
+    gridPane.widthProperty().addListener((obs, oldVal, newVal) -> {
+      for (Node node : gridPane.getChildren()) {
+        if (node instanceof MyImageView) {
+          ((MyImageView) node).setFitWidth(gridPane.getWidth() / 5d);
+        }
+      }
+    });
+
+    gridPane.heightProperty().addListener((obs, oldVal, newVal) -> {
+      for (Node node : gridPane.getChildren()) {
+        if (node instanceof MyImageView) {
+          ((MyImageView) node).setFitHeight(gridPane.getHeight() / 3d);
+        }
+      }
+    });
   }
 
   public void setStage(Stage stage) {
@@ -51,6 +71,10 @@ public class HomeController {
 
   @FXML
   private void pickImages(ActionEvent event) {
+    if (nbImages == 8) {
+      maxImagesDialog();
+      return;
+    }
     List<File> files = fileChooser.showOpenMultipleDialog(stage);
     if (files == null) {
       return;
@@ -58,21 +82,33 @@ public class HomeController {
 
     gridPane.getChildren().remove(addButton);
     for (int i = nbImages; i < files.size(); i++) {
+      if (nbImages == 8) {
+        maxImagesDialog();
+        return;
+      }
       File file = files.get(i);
       BufferedImage image;
       try {
         image = ImageIO.read(file);
       } catch (IOException e) {
-        throw new RuntimeException("Couldn't read image", e);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Couldn't read image");
+        alert.setContentText(String.format("An error occurred while reading image %s. Please, retry.", file.getName()));
+        alert.show();
+        continue;
       }
 
-      ImageTask imageTask = new ImageTask(ImageConverter.copy(image));
+      BufferedImage originalImage = ImageConverter.copy(image);
+      ImageTask imageTask = new ImageTask(originalImage);
       imageTasks.add(imageTask);
 
       MyImageView imageView = createImageView(image);
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-          e -> showImageTaskView(imageTask, file.getName()));
-      gridPane.add(imageView, nbImages % 4, nbImages / 4); //TODO check when nbImages == 8
+          e -> showImageTaskView(imageTask, file.getName() + String.format(" (%d, %d)", originalImage.getWidth(), originalImage.getHeight())));
+      gridPane.add(imageView, nbImages % 4, nbImages / 4);
+      GridPane.setHalignment(imageView, HPos.CENTER);
+      GridPane.setValignment(imageView, VPos.CENTER);
+
       imageTask.processedImageProperty().addListener((observable, oldValue, newValue) -> {
         if (newValue != null) {
           imageView.setImage(SwingFXUtils.toFXImage(newValue, null));
@@ -81,16 +117,24 @@ public class HomeController {
       nbImages++;
     }
 
-    if (nbImages < FFTApplication.MAX_FFT_THREADS) {
+    if (nbImages < 8) {
       gridPane.add(addButton, nbImages % 4, nbImages / 4);
     }
+  }
+
+  private void maxImagesDialog() {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Max number of images reached");
+    alert.setContentText("You cannot have more than 8 images.");
+    alert.show();
   }
 
   private MyImageView createImageView(BufferedImage image) {
     MyImageView imageView = new MyImageView();
     imageView.setFitWidth(stage.getWidth() / 5d);
-    imageView.setFitHeight(stage.getHeight() / 5d);
+    imageView.setFitHeight(stage.getHeight() / 3d);
     imageView.setImage(SwingFXUtils.toFXImage(image, null));
+
     return imageView;
   }
 
@@ -100,14 +144,18 @@ public class HomeController {
     BufferedImage image = imageTask.getImage();
     double width = image.getWidth();
     double height = image.getHeight();
-    if (width / height < 0.85) {
-      path = "/view/image_task_view_vertical.fxml"; //TODO modify scene with gluon scene editor
+    if (width / height > 0.85) {
+      path = "/view/image_task_view_vertical.fxml";
     } else {
       path = "/view/image_task_view_horizontal.fxml";
     }
     loader.setLocation(FFTApplication.class.getResource(path));
-    Stage stage = new Stage();
-    stage.setTitle(title);
+    if (imageTaskStage == null) {
+      imageTaskStage = new Stage();
+    } else {
+      imageTaskStage.close();
+    }
+    imageTaskStage.setTitle(title);
     AnchorPane root;
     try {
       root = loader.load();
@@ -116,10 +164,10 @@ public class HomeController {
     }
 
     Scene scene = new Scene(root);
-    stage.setScene(scene);
+    imageTaskStage.setScene(scene);
     ImageTaskController controller = loader.getController();
     controller.setImageTask(imageTask);
 
-    stage.show();
+    imageTaskStage.show();
   }
 }

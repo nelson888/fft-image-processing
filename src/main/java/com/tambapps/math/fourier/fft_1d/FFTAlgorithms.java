@@ -119,41 +119,39 @@ public class FFTAlgorithms {
     }
 
     Vector<Complex> result = new ArrayVector<>(N);
-    for (int i = 0; i < N; i++) {
-      if (i < N / 2) {
-        result.setElement(i, evens.getElement(i).add(T[i]));
-      } else {
-        result.setElement(i, evens
-            .getElement(i - N / 2).sub(T[i - N / 2]));
-      }
+    for (int i = 0; i < N / 2; i++) {
+      result.setElement(i, evens.getElement(i).add(T[i]));
+      result.setElement(i + N / 2, evens.getElement(i).sub(T[i]));
     }
     return result;
   }
 
   private static Vector<Complex> evensCopy(Vector<Complex> vector) {
-    int size = vector.getSize() / 2;
-    if (vector.getSize() % 2 != 0) {
-      size++;
-    }
+    int size = (vector.getSize() + 1) / 2;
+
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
     for (int i = 0; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
     }
+    if (size != count) {
+      System.err.println("evens");
+    }
     return copy;
   }
 
   private static Vector<Complex> oddsCopy(Vector<Complex> vector) {
     int size = vector.getSize() / 2;
-    if (vector.getSize() % 2 != 0) {
-      size++;
-    }
+
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
     for (int i = 1; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
+    }
+    if (size != count) {
+      System.err.println("odds");
     }
     return copy;
   }

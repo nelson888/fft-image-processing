@@ -117,7 +117,8 @@ public abstract class Array2D<T> {
 
   @Override
   public String toString() {
-    StringBuilder stringBuilder = new StringBuilder();
+    StringBuilder stringBuilder = new StringBuilder().append("(")
+        .append(M).append(", ").append(N).append(")\n");
     for (int i = 0; i < N * M; i++) {
       stringBuilder.append("(").append(get(i)).append(")\t");
       if ((i + 1) % N == 0) {
