@@ -1,5 +1,6 @@
 package com.tambapps.math.fourier.application.controller;
 
+import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.application.FFTApplication;
 import com.tambapps.math.fourier.application.model.ImageTask;
 import com.tambapps.math.fourier.application.ui.view.MyImageView;
@@ -81,37 +82,39 @@ public class HomeController {
     }
 
     gridPane.getChildren().remove(addButton);
-    for (int i = nbImages; i < files.size(); i++) {
+    for (File file : files) {
       if (nbImages == 8) {
         maxImagesDialog();
         return;
       }
-      File file = files.get(i);
       BufferedImage image;
       try {
         image = ImageIO.read(file);
       } catch (IOException e) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Couldn't read image");
-        alert.setContentText(String.format("An error occurred while reading image %s. Please, retry.", file.getName()));
+        alert.setContentText(String
+            .format("An error occurred while reading image %s. Please, retry.", file.getName()));
         alert.show();
         continue;
       }
 
       BufferedImage originalImage = ImageConverter.copy(image);
-      ImageTask imageTask = new ImageTask(originalImage);
+      ImageTask imageTask = new ImageTask();
+      imageTask.setImage(Complex2DArray.immutableCopy(ImageConverter.toArray(image)));
       imageTasks.add(imageTask);
 
       MyImageView imageView = createImageView(image);
       imageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-          e -> showImageTaskView(imageTask, file.getName() + String.format(" (%d, %d)", originalImage.getWidth(), originalImage.getHeight())));
+          e -> showImageTaskView(imageTask, image, file.getName() + String
+              .format(" (%d x %d)", originalImage.getWidth(), originalImage.getHeight())));
       gridPane.add(imageView, nbImages % 4, nbImages / 4);
       GridPane.setHalignment(imageView, HPos.CENTER);
       GridPane.setValignment(imageView, VPos.CENTER);
 
       imageTask.processedImageProperty().addListener((observable, oldValue, newValue) -> {
         if (newValue != null) {
-          imageView.setImage(SwingFXUtils.toFXImage(newValue, null));
+          imageView.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(newValue), null));
         }
       });
       nbImages++;
@@ -138,10 +141,10 @@ public class HomeController {
     return imageView;
   }
 
-  private void showImageTaskView(ImageTask imageTask, String title) {
+  private void showImageTaskView(ImageTask imageTask, BufferedImage image, String title) {
     FXMLLoader loader = new FXMLLoader();
     String path;
-    BufferedImage image = imageTask.getImage();
+
     double width = image.getWidth();
     double height = image.getHeight();
     if (width / height > 0.85) {

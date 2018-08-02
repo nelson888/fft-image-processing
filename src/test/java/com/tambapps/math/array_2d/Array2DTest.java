@@ -26,7 +26,7 @@ public class Array2DTest {
     genericRowColumnTest(new Double2DArray(10, 10), doubleInitializer);
   }
 
-  private <T> void genericRowColumnTest(Array2D<T> array, Initializer<T> initializer) {
+private <T> void genericRowColumnTest(Array2D<T> array, Initializer<T> initializer) {
     int M = array.getM(), N = array.getN();
 
     for (int j = 0; j < N; j++) {

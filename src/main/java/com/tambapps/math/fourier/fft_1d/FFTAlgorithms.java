@@ -135,9 +135,6 @@ public class FFTAlgorithms {
       copy.setElement(count, vector.getElement(i));
       count++;
     }
-    if (size != count) {
-      System.err.println("evens");
-    }
     return copy;
   }
 
@@ -149,9 +146,6 @@ public class FFTAlgorithms {
     for (int i = 1; i < vector.getSize(); i += 2) {
       copy.setElement(count, vector.getElement(i));
       count++;
-    }
-    if (size != count) {
-      System.err.println("odds");
     }
     return copy;
   }

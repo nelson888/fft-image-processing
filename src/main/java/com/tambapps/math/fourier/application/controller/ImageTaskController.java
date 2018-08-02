@@ -52,7 +52,13 @@ public class ImageTaskController {
 
   public void setImageTask(ImageTask imageTask) {
     this.imageTask = imageTask;
-    original.setImage(SwingFXUtils.toFXImage(imageTask.getImage(), null));
+    original.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(imageTask.getImage()), null));
+    if (imageTask.getFourierTransform() != null) {
+      fourierTransform.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(imageTask.getFourierTransform()), null));
+    }
+    if (imageTask.getProcessedImage() != null) {
+      processedImage.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(imageTask.getProcessedImage()), null));
+    }
   }
 
   @FXML
@@ -67,8 +73,8 @@ public class ImageTaskController {
     centerButton.setVisible(false);
     filterButton.setVisible(false);
     inverseButton.setVisible(false);
-    //TODO LOAD FT IMAGE IF ALREADY COMPUTED
-/*
+
+    /*
     imagesContainer.widthProperty().addListener((obs, oldVal, newVal) -> {
       original.setFitWidth(newVal.doubleValue());
       fourierTransform.setFitWidth(newVal.doubleValue());
@@ -82,15 +88,15 @@ public class ImageTaskController {
     */
   }
 
-  @FXML //FIXME DON'T KNOW WTF IS GOING ON IN THIS FUNCTION
+  @FXML
   private void computeFFT(ActionEvent event) {
     final Complex2DArray array;
     int padding = Integer.parseInt(paddingInput.getText());
     if (padding > 0) {
       currentPadding = padding;
-      array = FFTUtils.paddedCopy(ImageConverter.toArray(imageTask.getImage()), padding, padding);
+      array = FFTUtils.paddedCopy(imageTask.getImage(), padding, padding);
     } else {
-      array = ImageConverter.toArray(imageTask.getImage());
+      array = Complex2DArray.copy(imageTask.getImage());
     }
     TASK_EXECUTOR_SERVICE.submit(() -> {
       if (!fastFourierTransformer.transform(array)) {
@@ -100,7 +106,7 @@ public class ImageTaskController {
         alert.show();
         return;
       }
-      imageTask.setFourierTransform(array);
+      imageTask.setFourierTransform(Complex2DArray.copy(array));
       updateFTImage(array);
 
       centerButton.setVisible(true);
@@ -131,10 +137,9 @@ public class ImageTaskController {
 
   @FXML
   private void inverse(ActionEvent event) {
-    Complex2DArray ft = imageTask.getFourierTransform(); //TODO check when centered?
+    Complex2DArray ft = imageTask.getFourierTransform();
     TASK_EXECUTOR_SERVICE.submit(() -> {
-      Complex2DArray inverse = new Complex2DArray(ft.getM(), ft.getN());
-      ft.copy(inverse);
+      Complex2DArray inverse = Complex2DArray.copy(ft);
 
       fastFourierTransformer.inverse(inverse);
       if (currentPadding > 0) {
@@ -143,7 +148,7 @@ public class ImageTaskController {
 
       BufferedImage bufferedImage = ImageConverter.fromArray(inverse);
       processedImage.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
-      imageTask.setProcessedImage(bufferedImage);
+      imageTask.setProcessedImage(inverse);
     });
   }
 

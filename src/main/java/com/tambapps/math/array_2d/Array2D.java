@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * @param <T>
  */
-public abstract class Array2D<T> {
+abstract class Array2D<T> {
 
   private final int M; //nb of rows (= column size)
   private final int N; // nb of columns (= row size)
@@ -18,10 +18,16 @@ public abstract class Array2D<T> {
   //we store the 2D array in a 1D array of size N * M
   private final T[] array;
 
-  public Array2D(int M, int N) {
+  Array2D(int M, int N) {
     this.M = M;
     this.N = N;
     array = initialize(M * N);
+  }
+
+  Array2D(int M, int N, T[] values) {
+    this.M = M;
+    this.N = N;
+    array = values;
   }
 
   abstract T[] initialize(int size);
@@ -106,12 +112,6 @@ public abstract class Array2D<T> {
     @Override
     public int getSize() {
       return N;
-    }
-  }
-
-  public void copy(Array2D<T> copy) {
-    for (int i = 0; i < getM() * getN(); i++) {
-      copy.set(i, get(i));
     }
   }
 

@@ -71,11 +71,11 @@ public class FastFourierTransformer2D {
       try {
         executorService.take().get();
       } catch (InterruptedException e) {
-        LOGGER.log(Level.SEVERE, "Couldn't wait longer", e);
-        return false;
+        LOGGER.log(Level.SEVERE, String.format("Couldn't wait longer for thread %d", i), e);
+        success = false;
       } catch (ExecutionException e) {
-        LOGGER.log(Level.SEVERE, "Couldn't retrieve success value", e);
-        return false;
+        LOGGER.log(Level.SEVERE, String.format("Thread %d couldn't retrieve success value", i), e);
+        success = false;
       }
     }
 

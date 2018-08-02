@@ -4,28 +4,26 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.awt.image.BufferedImage;
-
 public class ImageTask {
-  private ObjectProperty<BufferedImage> image;
+  private ObjectProperty<Complex2DArray> image;
   private ObjectProperty<Complex2DArray> fourierTransform;
-  private ObjectProperty<BufferedImage> processedImage;
+  private ObjectProperty<Complex2DArray> processedImage;
 
-  public ImageTask(BufferedImage original) {
-    this.image = new SimpleObjectProperty<>(original);
+  public ImageTask() {
+    this.image = new SimpleObjectProperty<>(null);
     this.fourierTransform = new SimpleObjectProperty<>(null);
     this.processedImage = new SimpleObjectProperty<>(null);
   }
 
-  public BufferedImage getImage() {
+  public Complex2DArray getImage() {
     return image.get();
   }
 
-  public ObjectProperty<BufferedImage> imageProperty() {
+  public ObjectProperty<Complex2DArray> imageProperty() {
     return image;
   }
 
-  public void setImage(BufferedImage image) {
+  public void setImage(Complex2DArray image) {
     this.image.set(image);
   }
 
@@ -41,15 +39,15 @@ public class ImageTask {
     this.fourierTransform.set(fourierTransform);
   }
 
-  public BufferedImage getProcessedImage() {
+  public Complex2DArray getProcessedImage() {
     return processedImage.get();
   }
 
-  public ObjectProperty<BufferedImage> processedImageProperty() {
+  public ObjectProperty<Complex2DArray> processedImageProperty() {
     return processedImage;
   }
 
-  public void setProcessedImage(BufferedImage processedImage) {
+  public void setProcessedImage(Complex2DArray processedImage) {
     this.processedImage.set(processedImage);
   }
 }
