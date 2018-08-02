@@ -21,7 +21,7 @@ public class FastFourierTransformer2D {
 
   private static final Logger LOGGER =
       Logger.getLogger(FastFourierTransformer2D.class.getSimpleName());
-  private static final FFTAlgorithm DEFAULT_ALGORITHM = FFTAlgorithms.CT_RECURSIVE;
+  private static final FFTAlgorithm DEFAULT_ALGORITHM = FFTAlgorithms.BASIC;
 
   private final double maxThreads;
   private final ExecutorCompletionService<Boolean> executorService;

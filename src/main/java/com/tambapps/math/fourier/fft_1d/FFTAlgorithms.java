@@ -11,6 +11,8 @@ import com.tambapps.math.util.Vector;
 public class FFTAlgorithms {
 
   public static final FFTAlgorithm BASIC = FFTAlgorithms::basicFFT;
+
+  //Cooley-Tukey algorithms (image sizes must be a power of two)
   public static final FFTAlgorithm CT_RECURSIVE = FFTAlgorithms::recursiveFFT;
   public static final FFTAlgorithm CT_ITERATIVE = FFTAlgorithms::iterativeFFT;
 
