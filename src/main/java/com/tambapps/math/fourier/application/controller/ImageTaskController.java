@@ -7,11 +7,13 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.application.FFTApplication;
 import com.tambapps.math.fourier.application.model.ImageTask;
 import com.tambapps.math.fourier.application.ui.view.MyImageView;
+import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.util.ImageConverter;
+import com.tambapps.math.util.PowerOfTwo;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,7 +52,7 @@ public class ImageTaskController {
   private FastFourierTransformer2D fastFourierTransformer;
   private int currentPadding;
 
-  public void setImageTask(ImageTask imageTask) {
+  void setImageTask(ImageTask imageTask) {
     this.imageTask = imageTask;
     original.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(imageTask.getImage()), null));
     if (imageTask.getFourierTransform() != null) {
@@ -99,7 +101,7 @@ public class ImageTaskController {
       array = Complex2DArray.copy(imageTask.getImage());
     }
     TASK_EXECUTOR_SERVICE.submit(() -> {
-      if (!fastFourierTransformer.transform(array)) {
+      if (!fastFourierTransformer.transform(array, getAlgorithm(array))) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setContentText("An error occurred while computing Fourier Transform.");
@@ -113,6 +115,11 @@ public class ImageTaskController {
       filterButton.setVisible(true);
       inverseButton.setVisible(true);
     });
+  }
+
+  private FFTAlgorithm getAlgorithm(Complex2DArray array) {
+    return PowerOfTwo.isPowerOfTwo(array.getM()) && PowerOfTwo.isPowerOfTwo(array.getN()) ?
+        FFTAlgorithms.CT_RECURSIVE : FFTAlgorithms.BASIC;
   }
 
   @FXML
@@ -141,7 +148,7 @@ public class ImageTaskController {
     TASK_EXECUTOR_SERVICE.submit(() -> {
       Complex2DArray inverse = Complex2DArray.copy(ft);
 
-      fastFourierTransformer.inverse(inverse);
+      fastFourierTransformer.inverse(inverse, getAlgorithm(ft));
       if (currentPadding > 0) {
         inverse = FFTUtils.unpaddedCopy(inverse, currentPadding, currentPadding);
       }

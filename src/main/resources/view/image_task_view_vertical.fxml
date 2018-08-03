@@ -9,46 +9,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.math.fourier.application.controller.ImageTaskController">
-   <children>
-      <SplitPane dividerPositions="0.18227424749163879" layoutX="74.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+
+<SplitPane dividerPositions="0.18227424749163879" prefHeight="600.0" prefWidth="800.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.math.fourier.application.controller.ImageTaskController">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+         <children>
+            <VBox fx:id="buttonsPane" layoutX="1.0" layoutY="128.0" prefHeight="99.0" prefWidth="102.0" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="128.0">
                <children>
-                  <VBox fx:id="buttonsPane" layoutX="1.0" layoutY="128.0" prefHeight="99.0" prefWidth="102.0" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="128.0">
-                     <children>
-                        <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
-                        <TextField fx:id="paddingInput" text="0" />
-                        <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Button>
-                        <Button id="centerButton" fx:id="centerButton" mnemonicParsing="false" onAction="#changeCenter" prefWidth="100.0" text="change center" textAlignment="CENTER" wrapText="true">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </Button>
-                        <Button id="filterButton" fx:id="filterButton" mnemonicParsing="false" onAction="#applyFilter" text="apply filter" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="inverse" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="remove" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
-                     </children>
-                  </VBox>
+                  <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
+                  <TextField fx:id="paddingInput" text="0" />
+                  <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Button id="centerButton" fx:id="centerButton" mnemonicParsing="false" onAction="#changeCenter" prefWidth="100.0" text="change center" textAlignment="CENTER" wrapText="true">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Button>
+                  <Button id="filterButton" fx:id="filterButton" mnemonicParsing="false" onAction="#applyFilter" text="apply filter" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="inverse" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="remove" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
                </children>
-            </AnchorPane>
-          <AnchorPane fx:id="imagesContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="649.0">
+            </VBox>
+         </children>
+      </AnchorPane>
+    <AnchorPane fx:id="imagesContainer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="649.0">
+         <children>
+            <VBox prefHeight="398.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <VBox prefHeight="398.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ImageView fx:id="original" fitHeight="133.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="fourierTransform" fitHeight="132.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="processedImage" fitHeight="133.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </VBox>
+                  <ImageView fx:id="original" fitHeight="133.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="fourierTransform" fitHeight="132.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="processedImage" fitHeight="133.0" fitWidth="485.0" pickOnBounds="true" preserveRatio="true" />
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
-</AnchorPane>
+            </VBox>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

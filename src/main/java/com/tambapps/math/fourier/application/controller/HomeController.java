@@ -17,9 +17,11 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -159,7 +161,7 @@ public class HomeController {
       imageTaskStage.close();
     }
     imageTaskStage.setTitle(title);
-    AnchorPane root;
+    SplitPane root;
     try {
       root = loader.load();
     } catch (IOException e) {

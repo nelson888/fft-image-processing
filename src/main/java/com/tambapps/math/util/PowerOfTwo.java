@@ -16,4 +16,7 @@ public class PowerOfTwo {
     return p;
   }
 
+  public static boolean isPowerOfTwo(int number) {
+    return Arrays.binarySearch(LIST, number) >= 0;
+  }
 }

@@ -1,17 +1,10 @@
-.background {
-    -fx-background-color: #1d1d1d;
+.button {
+    -fx-background-color: linear-gradient(#0499ff, #1358d7);
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: white;
 }
 
-.label {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 0.6;
-}
-
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
+.button:hover {
+    -fx-background-color: #0053d7;
 }
