@@ -20,7 +20,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="addButton" mnemonicParsing="false" onAction="#pickImages" text="Add Image" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="addButton" mnemonicParsing="false" onAction="#pickImages" styleClass="button-styled" text="Add Image" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
   </children>

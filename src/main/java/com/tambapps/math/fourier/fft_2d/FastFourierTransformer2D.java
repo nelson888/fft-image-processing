@@ -14,8 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This is the class to apply 2D Fast Fourier Transform
- * we apply the 1D FFT on each row then on each column
+ * This is the class that applies 2D Fast Fourier Transform
+ * by applying the 1D FFT on each row (concurrently) and then on each column
  */
 public class FastFourierTransformer2D {
 
@@ -56,7 +56,8 @@ public class FastFourierTransformer2D {
 
     while (treated < max) {
       if (inverse) {
-        executorService.submit(new InverseTask(algorithm, f, treated, Math.min(max, treated + perThread), row));
+        executorService.submit(
+            new InverseTask(algorithm, f, treated, Math.min(max, treated + perThread), row));
       } else {
         executorService.submit(new TransformTask(algorithm, f, treated,
             Math.min(max, treated + perThread), row));
@@ -115,6 +116,7 @@ public class FastFourierTransformer2D {
     abstract void computeVector(Vector<Complex> vector);
   }
 
+
   /**
    * Task that will compute the FFT for many columns/rows
    */
@@ -130,6 +132,7 @@ public class FastFourierTransformer2D {
     }
 
   }
+
 
   /**
    * Task that will compute the inverse FFT for many columns/rows

@@ -9,42 +9,39 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.math.fourier.application.controller.ImageTaskController">
-   <children>
-      <SplitPane dividerPositions="0.8743718592964824" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <items>
-          <AnchorPane fx:id="imagesContainer" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+
+<SplitPane dividerPositions="0.8015075376884422" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.math.fourier.application.controller.ImageTaskController">
+  <items>
+    <AnchorPane fx:id="imagesContainer" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <HBox prefHeight="398.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox prefHeight="398.0" prefWidth="485.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <ImageView fx:id="original" fitHeight="398.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="fourierTransform" fitHeight="398.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fx:id="processedImage" fitHeight="398.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </HBox>
+                  <ImageView fx:id="original" fitHeight="398.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="fourierTransform" fitHeight="398.0" fitWidth="161.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="processedImage" fitHeight="398.0" fitWidth="162.0" pickOnBounds="true" preserveRatio="true" />
                </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+            </HBox>
+         </children>
+      </AnchorPane>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+         <children>
+            <HBox prefHeight="46.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox prefHeight="46.0" prefWidth="598.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="buttonsPane" prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <VBox fx:id="buttonsPane" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
-                              <TextField fx:id="paddingInput" text="0" />
-                           </children>
-                        </VBox>
-                        <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER" />
-                        <Button id="centerButton" fx:id="centerButton" mnemonicParsing="false" onAction="#changeCenter" prefWidth="100.0" text="change center" textAlignment="CENTER" wrapText="true" />
-                        <Button id="filterButton" fx:id="filterButton" mnemonicParsing="false" onAction="#applyFilter" text="apply filter" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="inverse" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
-                        <Button id="inverseButton" fx:id="remove" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
+                        <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
+                        <TextField fx:id="paddingInput" text="0" />
                      </children>
-                  </HBox>
+                  </VBox>
+                  <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER" />
+                  <Button id="centerButton" fx:id="centerButton" mnemonicParsing="false" onAction="#changeCenter" prefWidth="100.0" text="change center" textAlignment="CENTER" wrapText="true" />
+                  <Button id="filterButton" fx:id="filterButton" mnemonicParsing="false" onAction="#applyFilter" text="apply filter" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="inverse" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
                </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
-</AnchorPane>
+            </HBox>
+         </children>
+      </AnchorPane>
+  </items>
+</SplitPane>

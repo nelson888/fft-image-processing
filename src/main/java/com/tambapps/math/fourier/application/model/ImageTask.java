@@ -4,15 +4,19 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.io.File;
+
 public class ImageTask {
   private ObjectProperty<Complex2DArray> image;
   private ObjectProperty<Complex2DArray> fourierTransform;
   private ObjectProperty<Complex2DArray> processedImage;
+  private ObjectProperty<File> imageFile;
 
   public ImageTask() {
     this.image = new SimpleObjectProperty<>(null);
     this.fourierTransform = new SimpleObjectProperty<>(null);
     this.processedImage = new SimpleObjectProperty<>(null);
+    this.imageFile = new SimpleObjectProperty<>(null);
   }
 
   public Complex2DArray getImage() {
@@ -50,4 +54,17 @@ public class ImageTask {
   public void setProcessedImage(Complex2DArray processedImage) {
     this.processedImage.set(processedImage);
   }
+
+  public File getImageFile() {
+    return imageFile.get();
+  }
+
+  public ObjectProperty<File> imageFileProperty() {
+    return imageFile;
+  }
+
+  public void setImageFile(File imageFile) {
+    this.imageFile.set(imageFile);
+  }
+
 }

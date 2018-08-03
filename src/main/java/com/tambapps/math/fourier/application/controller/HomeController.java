@@ -19,9 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -104,6 +102,7 @@ public class HomeController {
       BufferedImage originalImage = ImageConverter.copy(image);
       ImageTask imageTask = new ImageTask();
       imageTask.setImage(Complex2DArray.immutableCopy(ImageConverter.toArray(image)));
+      imageTask.setImageFile(file);
       imageTasks.add(imageTask);
 
       MyImageView imageView = createImageView(image);
@@ -172,6 +171,7 @@ public class HomeController {
     imageTaskStage.setScene(scene);
     ImageTaskController controller = loader.getController();
     controller.setImageTask(imageTask);
+    controller.setStage(imageTaskStage);
 
     imageTaskStage.show();
   }

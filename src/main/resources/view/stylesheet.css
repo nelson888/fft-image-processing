@@ -1,10 +1,10 @@
-.button {
+.button-styled {
     -fx-background-color: linear-gradient(#0499ff, #1358d7);
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;
     -fx-text-fill: white;
 }
 
-.button:hover {
+.button-styled:hover {
     -fx-background-color: #0053d7;
 }
