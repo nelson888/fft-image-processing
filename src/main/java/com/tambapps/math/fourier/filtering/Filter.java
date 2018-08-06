@@ -10,8 +10,8 @@ public interface Filter {
     return new MatrixFilter(matrix);
   }
 
-  static Filter rectangle(int width, int height, boolean reversed) {
-    return new RectangleFilter(width, height, reversed);
+  static Filter rectangle(int width, int height, boolean inverted) {
+    return new RectangleFilter(width, height, inverted);
   }
 
 }

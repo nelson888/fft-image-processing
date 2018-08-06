@@ -13,7 +13,8 @@ public class ImmutableComplexArray2D extends Complex2DArray {
     throw new UnsupportedOperationException("Cannot modify values of Immutable array");
   }
 
-  @Override public void set(int row, int col, Complex value) {
+  @Override
+  public void set(int row, int col, Complex value) {
     throw new UnsupportedOperationException("Cannot modify values of Immutable array");
   }
 }

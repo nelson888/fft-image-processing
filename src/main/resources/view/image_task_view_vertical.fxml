@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-
 <SplitPane dividerPositions="0.18227424749163879" prefHeight="600.0" prefWidth="800.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.math.fourier.application.controller.ImageTaskController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
@@ -34,7 +33,7 @@
                   <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
                   <CheckBox fx:id="saveFT" mnemonicParsing="false" text="fourier transform" />
                   <CheckBox fx:id="saveProcessed" mnemonicParsing="false" text="result" />
-                  <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="close" textAlignment="CENTER" />
                </children>
             </VBox>
          </children>

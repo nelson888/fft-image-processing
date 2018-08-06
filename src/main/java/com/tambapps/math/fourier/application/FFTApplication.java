@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 public class FFTApplication extends Application {
 
-  public static final  int MAX_FFT_THREADS = 4;
+  public static final  int MAX_FFT_THREADS = Runtime.getRuntime().availableProcessors() + 1;
   public static final ExecutorService FFT_EXECUTOR_SERVICE = Executors
       .newFixedThreadPool(FFTApplication.MAX_FFT_THREADS);
   public static final ExecutorService TASK_EXECUTOR_SERVICE = Executors

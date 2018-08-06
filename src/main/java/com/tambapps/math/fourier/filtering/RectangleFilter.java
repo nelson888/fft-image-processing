@@ -6,21 +6,21 @@ class RectangleFilter extends AbstractFilter {
 
   private final int width;
   private final int height;
-  private boolean reversed;
+  private final boolean inverted;
 
-  RectangleFilter(int width, int height, boolean reversed) {
+  RectangleFilter(int width, int height, boolean inverted) {
     this.width = width;
     this.height = height;
-    this.reversed = reversed;
+    this.inverted = inverted;
   }
 
   @Override
   Complex apply(Complex c, int i, int j, int M, int N) {
     if (i >= width / 2 || i < M - width / 2 ||
     j >= height / 2 || j < N - height / 2) {
-      return reversed ? Complex.ZERO : c;
+      return inverted ? Complex.ZERO : c;
     }
-    return reversed ? c : Complex.ZERO;
+    return inverted ? c : Complex.ZERO;
   }
 
 }

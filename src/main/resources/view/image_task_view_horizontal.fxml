@@ -44,7 +44,7 @@
                         <CheckBox fx:id="saveProcessed" mnemonicParsing="false" text="result" />
                      </children>
                   </VBox>
-                  <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER" />
+                  <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="close" textAlignment="CENTER" />
                </children>
             </HBox>
          </children>

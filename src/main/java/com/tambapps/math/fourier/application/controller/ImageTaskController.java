@@ -6,10 +6,12 @@ import static com.tambapps.math.fourier.application.FFTApplication.TASK_EXECUTOR
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.application.FFTApplication;
 import com.tambapps.math.fourier.application.model.ImageTask;
+import com.tambapps.math.fourier.application.ui.view.NumberField;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
+import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.util.ImageConverter;
 import com.tambapps.math.util.PowerOfTwo;
@@ -22,18 +24,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
+import javax.swing.event.ChangeListener;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -83,17 +88,14 @@ public class ImageTaskController {
     saveProcessed.setVisible(imageTask.getProcessedImage() != null);
   }
 
-  public void setStage(Stage stage) {
+  void setStage(Stage stage) {
     this.stage = stage;
   }
 
   @FXML
   private void initialize() {
-    paddingInput.textProperty().addListener((observable, oldValue, newValue) -> {
-      if (!newValue.matches("\\d*")) {
-        paddingInput.setText(newValue.replaceAll("[^\\d]", ""));
-      }
-    });
+    NumberField.addNumberListener(paddingInput);
+
     fastFourierTransformer = new FastFourierTransformer2D(FFT_EXECUTOR_SERVICE,
         FFTApplication.MAX_FFT_THREADS - 1);
     setFTButtonsVisibility(false);
@@ -138,7 +140,7 @@ public class ImageTaskController {
         return;
       }
       imageTask.setFourierTransform(Complex2DArray.copy(array));
-      updateFTImage(array);
+      updateFTImage();
 
       setFTButtonsVisibility(true);
       saveFT.setVisible(true);
@@ -154,11 +156,11 @@ public class ImageTaskController {
   private void changeCenter(ActionEvent event) {
     Complex2DArray ft = imageTask.getFourierTransform();
     FFTUtils.changeCenter(ft);
-    updateFTImage(ft);
+    updateFTImage();
   }
 
-  private void updateFTImage(Complex2DArray ft) {
-    fourierTransform.setImage(toImage(ft));
+  private void updateFTImage() {
+    fourierTransform.setImage(toImage(imageTask.getFourierTransform()));
   }
 
   private Image toImage(Complex2DArray array) {
@@ -167,8 +169,38 @@ public class ImageTaskController {
 
   @FXML
   private void applyFilter(ActionEvent event) {
+    Alert alert = new Alert(Alert.AlertType.NONE);
+    alert.setTitle("Apply rectangle filter");
+    VBox vBox = new VBox();
+    CheckBox inverted = new CheckBox("inverted");
+    Complex2DArray fourierTransform = imageTask.getFourierTransform();
+    HBox widthBox = new HBox();
+    Label widthLabel = new Label("Width:");
+    NumberField widthField = new NumberField();
+    widthField.setText(String.valueOf(fourierTransform.getN() / 4));
+    widthBox.getChildren().addAll(widthLabel, widthField);
 
+    HBox heightBox = new HBox();
+    Label heightLabel = new Label("Height:");
+    NumberField heightField = new NumberField();
+    heightField.setText(String.valueOf(fourierTransform.getN() / 4));
+    heightBox.getChildren().addAll(heightLabel, heightField);
+
+    vBox.getChildren().addAll(inverted, widthBox, heightBox);
+    alert.getDialogPane().setContent(vBox);
+
+    ButtonType apply = new ButtonType("Apply", ButtonBar.ButtonData.APPLY);
+    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+    alert.getButtonTypes().addAll(apply, cancel);
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.isPresent() && result.get() == apply) {
+      Complex2DArray ft = imageTask.getFourierTransform();
+      Filter.rectangle(widthField.getNumber(), heightField.getNumber(), inverted.isSelected()).apply(ft);
+      imageTask.setFourierTransform(ft);
+      updateFTImage();
+    }
   }
+
 
   @FXML
   private void inverse(ActionEvent event) {
@@ -207,7 +239,7 @@ public class ImageTaskController {
       return;
     }
 
-    System.err.println(imageTask.getImageFile().getName());
+
     //creating File of image(s) that will be saved
     String[] splitName = imageTask.getImageFile().getName().split("\\.");
     final File ftFile = saveFT.isSelected() ? new File(directory, newName(splitName, "_fourier_transform")) : null;
@@ -215,18 +247,17 @@ public class ImageTaskController {
 
     //confirmation dialog
     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Do you want to save these files?");
+    alert.setTitle("Save images");
 
     String contentText = Stream.of(ftFile, processedFile)
         .filter(Objects::nonNull)
         .map(file -> file.getPath() + file.getName())
         .reduce("", (s1, s2) -> s1 + "\n" + s2);
+    contentText = "Theses files will be created\n" + contentText;
     alert.setContentText(contentText);
-    ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-    ButtonType yes = new ButtonType("YES", ButtonBar.ButtonData.YES);
-    alert.getButtonTypes().addAll(cancel, yes);
+
     Optional<ButtonType> result = alert.showAndWait();
-    if (result.isPresent() && result.get() == yes) {
+    if (result.isPresent() && result.get() == ButtonType.OK) {
       //saving image(s)
       TASK_EXECUTOR_SERVICE.submit(() -> {
         if (ftFile != null) {
