@@ -1,4 +1,4 @@
-package com.tambapps.math.fourier.application.ui;
+package com.tambapps.image_processing.application.ui;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;

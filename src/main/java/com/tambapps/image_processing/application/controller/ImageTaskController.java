@@ -1,12 +1,12 @@
-package com.tambapps.math.fourier.application.controller;
+package com.tambapps.image_processing.application.controller;
 
-import static com.tambapps.math.fourier.application.FFTApplication.FFT_EXECUTOR_SERVICE;
-import static com.tambapps.math.fourier.application.FFTApplication.TASK_EXECUTOR_SERVICE;
+import static com.tambapps.image_processing.application.FFTApplication.FFT_EXECUTOR_SERVICE;
+import static com.tambapps.image_processing.application.FFTApplication.TASK_EXECUTOR_SERVICE;
 
 import com.tambapps.math.array_2d.Complex2DArray;
-import com.tambapps.math.fourier.application.FFTApplication;
-import com.tambapps.math.fourier.application.model.ImageTask;
-import com.tambapps.math.fourier.application.ui.view.NumberField;
+import com.tambapps.image_processing.application.FFTApplication;
+import com.tambapps.image_processing.application.model.ImageTask;
+import com.tambapps.image_processing.application.ui.view.NumberField;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;

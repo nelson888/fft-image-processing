@@ -22,6 +22,12 @@ public abstract class AbstractVector<T> implements Vector<T> {
     return true;
   }
 
+  void checkIndex(int i) {
+    if (i < 0 || i >= getSize()) {
+      throw new IndexOutOfBoundsException(String.format("Tried to access index %d of vector with size %d", i, getSize()));
+    }
+  }
+
   @Override
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder().append("[ ");

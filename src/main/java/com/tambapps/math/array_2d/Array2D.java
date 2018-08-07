@@ -33,21 +33,36 @@ abstract class Array2D<T> {
   abstract T[] initialize(int size);
 
   public T get(int row, int col) {
+    checkIndex(row, col);
     return array[getIndex(row, col)];
   }
 
   public T get(int i) {
+    checkIndex(i);
     return array[i];
   }
 
   public void set(int row, int col, T value) {
+    checkIndex(row, col);
     array[getIndex(row, col)] = value;
   }
 
   public void set(int i, T value) {
+    checkIndex(i);
     array[i] = value;
   }
 
+  private void checkIndex(int row, int col) {
+    if (row < 0 || row  >= N || col < 0 || col >= N) {
+      throw new IndexOutOfBoundsException(String.format("Tried to access index (%d, %d) of array of size (%d, %d)", row, col, M, N));
+    }
+  }
+
+  private void checkIndex(int i) {
+    if (i < 0 || i >= array.length) {
+      throw new IndexOutOfBoundsException(String.format("Tried to access index %d of array of size %d", i, M * N));
+    }
+  }
 
   private int getIndex(int row, int col) {
     return row * N + col;

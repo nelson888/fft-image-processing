@@ -8,6 +8,8 @@ import com.tambapps.math.complex.Complex;
  */
 public class FFTUtils {
 
+  private FFTUtils() {}
+
   public static void changeCenter(Complex2DArray array) {
     for (int i = 0; i < array.getN() / 2; i++) {
       for (int j = 0; j < array.getM() / 2; j++) {

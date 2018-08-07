@@ -1,10 +1,7 @@
-package com.tambapps.math.fourier.application.ui.stage;
+package com.tambapps.image_processing.application.ui.stage;
 
-import com.tambapps.math.array_2d.Complex2DArray;
-import com.tambapps.math.fourier.application.ui.view.MyImageView;
+import com.tambapps.image_processing.application.ui.view.MyImageView;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;

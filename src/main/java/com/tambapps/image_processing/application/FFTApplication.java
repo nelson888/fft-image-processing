@@ -1,6 +1,6 @@
-package com.tambapps.math.fourier.application;
+package com.tambapps.image_processing.application;
 
-import com.tambapps.math.fourier.application.controller.HomeController;
+import com.tambapps.image_processing.application.controller.HomeController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 

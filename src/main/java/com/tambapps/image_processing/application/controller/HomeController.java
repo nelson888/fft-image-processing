@@ -1,9 +1,9 @@
-package com.tambapps.math.fourier.application.controller;
+package com.tambapps.image_processing.application.controller;
 
 import com.tambapps.math.array_2d.Complex2DArray;
-import com.tambapps.math.fourier.application.FFTApplication;
-import com.tambapps.math.fourier.application.model.ImageTask;
-import com.tambapps.math.fourier.application.ui.view.MyImageView;
+import com.tambapps.image_processing.application.FFTApplication;
+import com.tambapps.image_processing.application.model.ImageTask;
+import com.tambapps.image_processing.application.ui.view.MyImageView;
 import com.tambapps.math.util.ImageConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

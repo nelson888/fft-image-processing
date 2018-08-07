@@ -1,6 +1,6 @@
-package com.tambapps.math.fourier.application.ui.stage;
+package com.tambapps.image_processing.application.ui.stage;
 
-import com.tambapps.math.fourier.application.ui.view.MyImageView;
+import com.tambapps.image_processing.application.ui.view.MyImageView;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

@@ -18,6 +18,8 @@ public class FFTAlgorithms {
 
   public static final FFTInverseAlgorithm INVERSE = FFTAlgorithms::inverse;
 
+  private FFTAlgorithms() {}
+
   /**
    * The basic algorithm for the FFT
    *

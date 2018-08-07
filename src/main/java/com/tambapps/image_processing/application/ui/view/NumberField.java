@@ -1,4 +1,4 @@
-package com.tambapps.math.fourier.application.ui.view;
+package com.tambapps.image_processing.application.ui.view;
 
 import javafx.scene.control.TextField;
 
