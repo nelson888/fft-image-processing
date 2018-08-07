@@ -16,11 +16,10 @@ class RectangleFilter extends AbstractFilter {
 
   @Override
   Complex apply(Complex c, int i, int j, int M, int N) {
-    if (i >= width / 2 || i < M - width / 2 ||
-    j >= height / 2 || j < N - height / 2) {
-      return inverted ? Complex.ZERO : c;
+    if (i < width || i >= M - width || j < height || j >= N - height) {
+      return inverted ? c : Complex.ZERO;
     }
-    return inverted ? c : Complex.ZERO;
+    return inverted ? Complex.ZERO : c;
   }
 
 }

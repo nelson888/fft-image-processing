@@ -11,7 +11,7 @@ import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
-import com.tambapps.math.fourier.filtering.Filter;
+import com.tambapps.math.fourier.filtering.Filters;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.util.ImageConverter;
 import com.tambapps.math.util.PowerOfTwo;
@@ -34,7 +34,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
-import javax.swing.event.ChangeListener;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -195,7 +194,7 @@ public class ImageTaskController {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.isPresent() && result.get() == apply) {
       Complex2DArray ft = imageTask.getFourierTransform();
-      Filter.rectangle(widthField.getNumber(), heightField.getNumber(), inverted.isSelected()).apply(ft);
+      Filters.rectangle(widthField.getNumber(), heightField.getNumber(), inverted.isSelected()).apply(ft);
       imageTask.setFourierTransform(ft);
       updateFTImage();
     }
