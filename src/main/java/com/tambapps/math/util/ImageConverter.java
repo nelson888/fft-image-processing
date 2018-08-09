@@ -18,6 +18,33 @@ public class ImageConverter {
     }
     return array;
   }
+
+  public static Complex2DArray toArray(BufferedImage image, Complex2DArray[] channels, boolean transparencyEnabled) {
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = new Complex2DArray(image.getHeight(), image.getWidth());
+    }
+    Complex2DArray array = new Complex2DArray(image.getHeight(), image.getWidth());
+    for (int x = 0; x < image.getWidth(); x++) {
+      for (int y = 0; y < image.getHeight(); y++) {
+        int rgb = image.getRGB(x, y);
+        array.set(y, x, Complex.of(rgb));
+
+        double r = (rgb >> 16) & 0xFF;
+        double g = (rgb >> 8) & 0xFF;
+        double b = (rgb & 0xFF);
+        if (transparencyEnabled) {
+          double a = (rgb >>24) & 0xFF;
+          channels[3].set(y, x, Complex.of(a));
+        }
+        channels[2].set(y, x, Complex.of(b));
+        channels[1].set(y, x, Complex.of(g));
+        channels[0].set(y, x, Complex.of(r));
+
+      }
+    }
+    return array;
+  }
+
   public static Complex2DArray toArrayGrayScale(BufferedImage image) {
     Complex2DArray array = new Complex2DArray(image.getHeight(), image.getWidth());
     for (int x = 0; x < image.getWidth(); x++) {
@@ -41,6 +68,30 @@ public class ImageConverter {
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
         image.setRGB(x, y, (int) f.get(y, x).abs());
+      }
+    }
+    return image;
+  }
+
+  private static int getInt(Complex2DArray array, int i, int j) {
+    return (int) array.get(i, j).abs();
+  }
+  private static int getRgb(Complex2DArray[] channels, int i, int j, boolean alphaEnabled) {
+    int color =  (getInt(channels[0],i,j) & 255) << 16 | (getInt(channels[1],i,j) & 255) << 8 | (getInt(channels[2],i,j) & 255) << 0;
+    if (alphaEnabled) {
+      color = (getInt(channels[3],i,j) & 255) << 24 | color;
+    }
+    return color;
+  }
+
+  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled) {
+    if ((!alphaEnabled && channels.length != 3) || (alphaEnabled && channels.length != 4)) {
+      throw new IllegalArgumentException("There should be " + (alphaEnabled ? 4 : 3) + " channels");
+    }
+    BufferedImage image = new BufferedImage(channels[0].getN(), channels[0].getM(), alphaEnabled ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR);
+    for (int x = 0; x < image.getWidth(); x++) {
+      for (int y = 0; y < image.getHeight(); y++) {
+        image.setRGB(x, y, getRgb(channels, y, x, alphaEnabled));
       }
     }
     return image;

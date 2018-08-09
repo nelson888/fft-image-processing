@@ -4,6 +4,7 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
+import com.tambapps.math.util.PowerOfTwo;
 import com.tambapps.math.util.Vector;
 
 import java.util.concurrent.Callable;
@@ -21,7 +22,6 @@ public class FastFourierTransformer2D {
 
   private static final Logger LOGGER =
       Logger.getLogger(FastFourierTransformer2D.class.getSimpleName());
-  private static final FFTAlgorithm DEFAULT_ALGORITHM = FFTAlgorithms.BASIC;
 
   private final double maxThreads;
   private final ExecutorCompletionService<Boolean> executorService;
@@ -35,8 +35,16 @@ public class FastFourierTransformer2D {
     return compute(f, false, true, algorithm) && compute(f, false, false, algorithm);
   }
 
+  private boolean isSizePowerOfTwo(Complex2DArray f) {
+    return PowerOfTwo.isPowerOfTwo(f.getM()) && PowerOfTwo.isPowerOfTwo(f.getN());
+  }
+
+  private FFTAlgorithm getAlgorithm(Complex2DArray f) {
+    return isSizePowerOfTwo(f) ? FFTAlgorithms.CT_RECURSIVE : FFTAlgorithms.BASIC;
+  }
+
   public boolean transform(Complex2DArray f) {
-    return transform(f, DEFAULT_ALGORITHM);
+    return transform(f, getAlgorithm(f));
   }
 
   public boolean inverse(Complex2DArray f, FFTAlgorithm algorithm) {
@@ -44,7 +52,7 @@ public class FastFourierTransformer2D {
   }
 
   public boolean inverse(Complex2DArray f) {
-    return inverse(f, DEFAULT_ALGORITHM);
+    return inverse(f, getAlgorithm(f));
   }
 
   private boolean compute(Complex2DArray f, final boolean inverse, final boolean row,
