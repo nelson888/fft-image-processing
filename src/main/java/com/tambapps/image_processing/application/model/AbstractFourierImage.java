@@ -2,6 +2,7 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.filtering.Filter;
+import com.tambapps.math.fourier.util.FFTUtils;
 
 import java.awt.image.BufferedImage;
 
@@ -43,8 +44,21 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   }
 
   @Override
+  public BufferedImage getOriginal() {
+    return original.getImage();
+  }
+
+  @Override
   public void applyFilter(Filter filter) {
     filter.apply(transform.getArray());
+  }
+
+  @Override
+  public void changeCenter() {
+    changeCenter(transform);
+    if (changeListener != null) {
+      changeListener.onTransformChanged(transform.getImage());
+    }
   }
 
   @Override
@@ -55,5 +69,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   abstract T computeTransform(T original, FastFourierTransformer2D transformer);
 
   abstract T computeInverse(T transform, FastFourierTransformer2D transformer);
+
+  abstract void changeCenter(T transform);
 
 }

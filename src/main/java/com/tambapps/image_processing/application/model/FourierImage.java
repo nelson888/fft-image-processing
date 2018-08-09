@@ -11,9 +11,13 @@ public interface FourierImage {
 
   void computeInverse(FastFourierTransformer2D transformer);
 
+  BufferedImage getOriginal();
+
   BufferedImage getTransform();
 
   BufferedImage getInverse();
+
+  void changeCenter();
 
   void applyFilter(Filter filter);
 

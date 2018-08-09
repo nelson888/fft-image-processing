@@ -1,8 +1,9 @@
 package com.tambapps.image_processing.application.controller;
 
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.image_processing.application.model.ColoredFourierImage;
+import com.tambapps.image_processing.application.model.FourierImage;
+import com.tambapps.image_processing.application.model.GrayFourierImage;
 import com.tambapps.image_processing.application.FFTApplication;
-import com.tambapps.image_processing.application.model.ImageTask;
 import com.tambapps.image_processing.application.ui.view.MyImageView;
 import com.tambapps.math.util.ImageConverter;
 import javafx.collections.FXCollections;
@@ -17,6 +18,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -27,11 +30,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 public class HomeController {
 
-  private final ObservableList<ImageTask> imageTasks = FXCollections.observableArrayList();
+  private final ObservableList<FourierImage> fourierImages = FXCollections.observableArrayList();
   private Stage imageTaskStage = new Stage();
 
   @FXML
@@ -76,51 +79,59 @@ public class HomeController {
       maxImagesDialog();
       return;
     }
-    List<File> files = fileChooser.showOpenMultipleDialog(stage);
-    if (files == null) {
+    File file = fileChooser.showOpenDialog(stage);
+    if (file == null) {
       return;
     }
 
     gridPane.getChildren().remove(addButton);
-    for (File file : files) {
-      if (nbImages == 8) {
-        maxImagesDialog();
-        return;
-      }
-      BufferedImage image;
-      try {
-        image = ImageIO.read(file);
-      } catch (IOException e) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Couldn't read image");
-        alert.setContentText(String
-            .format("An error occurred while reading image %s. Please, retry.", file.getName()));
-        alert.show();
-        continue;
-      }
 
-      BufferedImage originalImage = ImageConverter.copy(image);
-      ImageTask imageTask = new ImageTask();
-      imageTask.setImage(Complex2DArray.immutableCopy(ImageConverter.toArray(image)));
-      imageTask.setImageFile(file);
-      imageTasks.add(imageTask);
-
-      MyImageView imageView = createImageView(image);
-      imageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-          e -> showImageTaskView(imageTask, image, file.getName() + String
-              .format(" (%d x %d)", originalImage.getWidth(), originalImage.getHeight())));
-      gridPane.add(imageView, nbImages % 4, nbImages / 4);
-      GridPane.setHalignment(imageView, HPos.CENTER);
-      GridPane.setValignment(imageView, VPos.CENTER);
-
-      imageTask.processedImageProperty().addListener((observable, oldValue, newValue) -> {
-        if (newValue != null) {
-          imageView.setImage(SwingFXUtils.toFXImage(ImageConverter.fromArray(newValue), null));
-        }
-      });
-      nbImages++;
+    BufferedImage image;
+    try {
+      image = ImageIO.read(file);
+    } catch (IOException e) {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Couldn't read image");
+      alert.setContentText(String
+          .format("An error occurred while reading image %s. Please, retry.", file.getName()));
+      alert.show();
+      return;
     }
 
+    Alert alert = new Alert(Alert.AlertType.NONE);
+    alert.setTitle("Type of image");
+    ButtonType gray = new ButtonType("gray");
+    ButtonType colored = new ButtonType("colored");
+    ButtonType alpha = new ButtonType("with transparency");
+    ButtonType cancel = new ButtonType("cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+    alert.getButtonTypes().addAll(gray, cancel, alpha, cancel);
+    Optional<ButtonType> result = alert.showAndWait(); //FIXME doesn't work
+    if (!result.isPresent() || result.get() == cancel) {
+      return;
+    }
+
+    BufferedImage originalImage = ImageConverter.copy(image);
+    FourierImage fourierImage;
+
+    if (result.get() == gray) {
+      fourierImage = new GrayFourierImage(originalImage);
+    } else if (result.get() == colored) {
+      fourierImage = new ColoredFourierImage(originalImage, false);
+    } else {
+      fourierImage = new ColoredFourierImage(originalImage, true);
+    }
+
+    fourierImages.add(fourierImage);
+
+    MyImageView imageView = createImageView(image);
+    imageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
+        e -> showImageTaskView(fourierImage, file, image, file.getName() + String
+            .format(" (%d x %d)", originalImage.getWidth(), originalImage.getHeight())));
+    gridPane.add(imageView, nbImages % 4, nbImages / 4);
+    GridPane.setHalignment(imageView, HPos.CENTER);
+    GridPane.setValignment(imageView, VPos.CENTER);
+
+    nbImages++;
     if (nbImages < 8) {
       gridPane.add(addButton, nbImages % 4, nbImages / 4);
     }
@@ -142,7 +153,7 @@ public class HomeController {
     return imageView;
   }
 
-  private void showImageTaskView(ImageTask imageTask, BufferedImage image, String title) {
+  private void showImageTaskView(FourierImage fourierImage, File imageFile, BufferedImage image, String title) {
     FXMLLoader loader = new FXMLLoader();
     String path;
 
@@ -169,9 +180,10 @@ public class HomeController {
 
     Scene scene = new Scene(root);
     imageTaskStage.setScene(scene);
-    ImageTaskController controller = loader.getController();
-    controller.setImageTask(imageTask);
+    FourierImageController controller = loader.getController();
+    controller.setFourierImage(fourierImage);
     controller.setStage(imageTaskStage);
+    controller.setImageFile(imageFile);
 
     imageTaskStage.show();
   }

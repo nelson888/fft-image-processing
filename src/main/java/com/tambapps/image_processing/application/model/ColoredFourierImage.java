@@ -2,6 +2,7 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
+import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.util.ImageConverter;
 
 import java.awt.image.BufferedImage;
@@ -44,6 +45,14 @@ public class ColoredFourierImage
     }
     inverse.setImage(ImageConverter.fromColoredChannels(inverse.channels, transparencyEnabled));
     return inverse;
+  }
+
+  @Override
+  void changeCenter(ColoredImageHolder transform) {
+    FFTUtils.changeCenter(transform.getArray());
+    for (Complex2DArray channel : transform.channels) {
+      FFTUtils.changeCenter(channel);
+    }
   }
 
   static class ColoredImageHolder extends ImageHolder {

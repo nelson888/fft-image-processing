@@ -2,6 +2,7 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
+import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.util.ImageConverter;
 
 import java.awt.image.BufferedImage;
@@ -34,6 +35,11 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
     inverse.setImage(
         ImageConverter.fromArrayGrayScale(inverse.getArray(), transform.getImage().getType()));
     return inverse;
+  }
+
+  @Override
+  void changeCenter(GrayImageHolder transform) {
+    FFTUtils.changeCenter(transform.getArray());
   }
 
   static class GrayImageHolder extends ImageHolder {
