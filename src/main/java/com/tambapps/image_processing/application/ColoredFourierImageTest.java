@@ -23,7 +23,7 @@ public class ColoredFourierImageTest {
         new FastFourierTransformer2D(executorService, MAX_THREADS);
     File imageFile = new File(args[0]);
     BufferedImage image = ImageIO.read(imageFile);
-    ColoredFourierImage fourierImage = new ColoredFourierImage(image, false);
+    ColoredFourierImage fourierImage = new ColoredFourierImage(image, imageFile.getName().endsWith(".png"));
     System.out.println("Computing transform");
     fourierImage.computeTransform(transformer);
     File directory = imageFile.getParentFile();
