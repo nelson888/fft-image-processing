@@ -17,10 +17,11 @@ public interface FourierImage {
 
   void applyFilter(Filter filter);
 
-  void setChangeListener(ChangeListener changeListener);
+  void setChangeListener(ImageChangeListener changeListener);
 
-  interface ChangeListener {
+  interface ImageChangeListener {
     void onTransformChanged(BufferedImage image);
+
     void onInverseChanged(BufferedImage image);
   }
 

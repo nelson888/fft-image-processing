@@ -9,38 +9,43 @@ import java.awt.image.BufferedImage;
 public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.GrayImageHolder> {
 
   public GrayFourierImage(BufferedImage original) {
-    super(original);
+    super(new GrayImageHolder(original));
   }
 
   @Override
-  GrayImageHolder createImage(int M, int N) {
-    return new GrayImageHolder(M, N);
-  }
-
-  @Override
-  void computeTransform(GrayImageHolder original, GrayImageHolder transform,
+  GrayImageHolder computeTransform(GrayImageHolder original,
       FastFourierTransformer2D transformer) {
-    transform.array = Complex2DArray.copy(original.getArray());
-    transformer.transform(transform.array);
-    transform.setImage(ImageConverter.fromArrayGrayScale(transform.array, original.getImage().getType()));
+    GrayImageHolder transform =
+        new GrayImageHolder(original.getArray().getM(), original.getArray().getN());
+    transform.setArray(Complex2DArray.copy(original.getArray()));
+    transformer.transform(transform.getArray());
+    transform.setImage(
+        ImageConverter.fromArrayGrayScale(transform.getArray(), original.getImage().getType()));
+    return transform;
   }
 
   @Override
-  void computeInverse(GrayImageHolder transform, GrayImageHolder inverse,
+  GrayImageHolder computeInverse(GrayImageHolder transform,
       FastFourierTransformer2D transformer) {
-    inverse.array = Complex2DArray.copy(transform.getArray());
-    transformer.inverse(inverse.array);
-    inverse.setImage(ImageConverter.fromArrayGrayScale(inverse.array, transform.getImage().getType()));
+    GrayImageHolder inverse =
+        new GrayImageHolder(transform.getArray().getM(), transform.getArray().getN());
+    inverse.setArray(Complex2DArray.copy(transform.getArray()));
+    transformer.inverse(inverse.getArray());
+    inverse.setImage(
+        ImageConverter.fromArrayGrayScale(inverse.getArray(), transform.getImage().getType()));
+    return inverse;
   }
 
   static class GrayImageHolder extends ImageHolder {
-    private Complex2DArray array;
+
+    GrayImageHolder(BufferedImage image) {
+      super(image);
+      setArray(ImageConverter.toArrayGrayScale(image));
+    }
+
     GrayImageHolder(int M, int N) {
-      array = new Complex2DArray(M, N);
+      super(M, N);
     }
-    @Override
-    Complex2DArray getArray() {
-      return array;
-    }
+
   }
 }

@@ -8,22 +8,17 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractFourierImage<T extends ImageHolder> implements FourierImage {
 
   private final T original;
-  private final T transform;
-  private final T inverse;
-  private ChangeListener changeListener;
+  private T transform;
+  private T inverse;
+  private ImageChangeListener changeListener;
 
-  AbstractFourierImage(BufferedImage image) {
-    int M = image.getHeight();
-    int N = image.getWidth();
-    this.original = createImage(N, M);
-    this.original.setImage(image);
-    this.transform = createImage(N, M);
-    this.inverse = createImage(N, M);
+  AbstractFourierImage(T original) {
+    this.original = original;
   }
 
   @Override
   public void computeTransform(FastFourierTransformer2D transformer) {
-    computeTransform(original, transform, transformer);
+    transform = computeTransform(original, transformer);
     if (changeListener != null) {
       changeListener.onTransformChanged(transform.getImage());
     }
@@ -31,7 +26,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
 
   @Override
   public void computeInverse(FastFourierTransformer2D transformer) {
-    computeInverse(transform, inverse, transformer);
+    inverse = computeInverse(transform, transformer);
     if (changeListener != null) {
       changeListener.onInverseChanged(inverse.getImage());
     }
@@ -53,12 +48,12 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   }
 
   @Override
-  public void setChangeListener(ChangeListener changeListener) {
+  public void setChangeListener(ImageChangeListener changeListener) {
     this.changeListener = changeListener;
   }
 
-  abstract T createImage(int M, int N);
-  abstract void computeTransform(T original, T transform, FastFourierTransformer2D transformer);
-  abstract void computeInverse(T transform, T inverse, FastFourierTransformer2D transformer);
+  abstract T computeTransform(T original, FastFourierTransformer2D transformer);
+
+  abstract T computeInverse(T transform, FastFourierTransformer2D transformer);
 
 }

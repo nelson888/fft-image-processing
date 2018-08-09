@@ -18,11 +18,13 @@ public class Test {
     int maxThreads = 4;
     ExecutorService executorService = Executors.newFixedThreadPool(maxThreads);
     FastFourierTransformer2D fft = new FastFourierTransformer2D(executorService, maxThreads);
-    Complex2DArray f = ImageConverter.toArrayGrayScale(ImageIO.read(new File("/home/nfonkoua/Téléchargements/img.jpg")));
+    BufferedImage image = ImageIO.read(new File("/home/nfonkoua/Téléchargements/img.jpg"));
+    Complex2DArray f = ImageConverter.toArrayGrayScale(image);
+    System.out.println(image.getType());
     fft.transform(f, FFTAlgorithms.CT_RECURSIVE);
-    ImageIO.write(ImageConverter.fromArrayGrayScale(f, BufferedImage.TYPE_INT_RGB), "jpg", new File("/home/nfonkoua/Téléchargements/dft.jpg"));
+    ImageIO.write(ImageConverter.fromArrayGrayScale(f, BufferedImage.TYPE_3BYTE_BGR), "jpg", new File("/home/nfonkoua/Téléchargements/dft.jpg"));
     fft.inverse(f);
-    ImageIO.write(ImageConverter.fromArrayGrayScale(f, BufferedImage.TYPE_INT_RGB), "jpg", new File("/home/nfonkoua/Téléchargements/dft_reversed.jpg"));
+    ImageIO.write(ImageConverter.fromArrayGrayScale(f, BufferedImage.TYPE_3BYTE_BGR), "jpg", new File("/home/nfonkoua/Téléchargements/dft_reversed.jpg"));
 
     executorService.shutdown();
   }
