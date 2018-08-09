@@ -47,7 +47,7 @@ public class HomeController {
     fileChooser = new FileChooser();
     nbImages = 0;
     fileChooser.setTitle("Pick an image");
-    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image files",
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ImageHolder files",
         "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"));
     gridPane.widthProperty().addListener((obs, oldVal, newVal) -> {
       for (Node node : gridPane.getChildren()) {

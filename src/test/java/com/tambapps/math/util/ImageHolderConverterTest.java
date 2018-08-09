@@ -9,13 +9,13 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class ImageConverterTest {
+public class ImageHolderConverterTest {
 
   @Test
   public void convertTest() throws IOException {
     //TODO
     /*
-    BufferedImage image = ImageIO.read(ImageConverterTest.class.getResource("/img.jpg"));
+    BufferedImage image = ImageIO.read(ImageHolderConverterTest.class.getResource("/img.jpg"));
     System.err.println(image.getType());
     Complex2DArray array = ImageConverter.toArray(image);
     BufferedImage image2 = ImageConverter.fromArray(array);

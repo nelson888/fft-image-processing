@@ -28,7 +28,7 @@ public class FFTStage extends Stage {
     Scene scene = new Scene(root, width, height);
     fileChooser = new FileChooser();
     fileChooser.setTitle("Pick an image");
-    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image files",
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ImageHolder files",
         "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"));
 
     setScene(scene);
