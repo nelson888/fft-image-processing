@@ -9,16 +9,6 @@ import java.awt.image.WritableRaster;
 
 public class ImageConverter {
 
-  public static Complex2DArray toArray(BufferedImage image) {
-    Complex2DArray array = new Complex2DArray(image.getHeight(), image.getWidth());
-    for (int x = 0; x < image.getWidth(); x++) {
-      for (int y = 0; y < image.getHeight(); y++) {
-        array.set(y, x, Complex.of(image.getRGB(x, y)));
-      }
-    }
-    return array;
-  }
-
   public static Complex2DArray toArray(BufferedImage image, Complex2DArray[] channels, boolean transparencyEnabled) {
     for (int i = 0; i < channels.length; i++) {
       channels[i] = new Complex2DArray(image.getHeight(), image.getWidth());
