@@ -17,12 +17,14 @@
             <VBox fx:id="buttonsPane" layoutX="1.0" layoutY="128.0" prefHeight="99.0" prefWidth="102.0" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="128.0">
                <children>
                   <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
-                  <TextField fx:id="paddingInput" text="0" />
-                  <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER">
+                  <TextField fx:id="paddingNInput" promptText="width" />
+                  <TextField fx:id="paddingMInput" promptText="height" />
+                  <Button id="computeButton" fx:id="autoPadding" mnemonicParsing="false" onAction="#computeFFT" text="auto padding" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Button>
+                  <Button id="computeButton" fx:id="computeButton1" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER" />
                   <Button id="centerButton" fx:id="centerButton" mnemonicParsing="false" onAction="#changeCenter" prefWidth="100.0" text="change center" textAlignment="CENTER" wrapText="true">
                      <VBox.margin>
                         <Insets />

@@ -9,8 +9,8 @@ public class ImageHolder {
   private BufferedImage image;
   private Complex2DArray array;
 
-  ImageHolder(int M, int N) {
-    array = new Complex2DArray(M, N);
+  ImageHolder(Complex2DArray array) {
+    this.array = array;
   }
 
   ImageHolder(BufferedImage image) {

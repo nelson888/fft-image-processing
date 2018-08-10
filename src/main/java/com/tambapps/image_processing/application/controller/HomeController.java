@@ -104,8 +104,8 @@ public class HomeController {
     ButtonType colored = new ButtonType("colored");
     ButtonType alpha = new ButtonType("with transparency");
     ButtonType cancel = new ButtonType("cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-    alert.getButtonTypes().addAll(gray, cancel, alpha, cancel);
-    Optional<ButtonType> result = alert.showAndWait(); //FIXME doesn't work
+    alert.getButtonTypes().addAll(gray, colored, alpha, cancel);
+    Optional<ButtonType> result = alert.showAndWait();
     if (!result.isPresent() || result.get() == cancel) {
       return;
     }

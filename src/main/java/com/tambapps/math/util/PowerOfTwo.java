@@ -16,6 +16,19 @@ public class PowerOfTwo {
     return p;
   }
 
+  public static int getClosestSuperior(int number) {
+    if (number > LIST[LIST.length - 1]) {
+      throw new IllegalArgumentException("number is superior of max exponent");
+    }
+    for (int i = 1; i < LIST.length; i++) {
+      int inf = LIST[i - 1];
+      int sup = LIST[i];
+      if (number >= inf && number <= sup) {
+        return sup;
+      }
+    }
+    return LIST[LIST.length - 1];
+  }
   public static boolean isPowerOfTwo(int number) {
     return Arrays.binarySearch(LIST, number) >= 0;
   }

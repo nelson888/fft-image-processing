@@ -3,6 +3,7 @@ package com.tambapps.image_processing.application.model;
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.util.FFTUtils;
+import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.ImageConverter;
 
 import java.awt.image.BufferedImage;
@@ -19,12 +20,10 @@ public class ColoredFourierImage
 
   @Override
   ColoredImageHolder computeTransform(ColoredImageHolder original,
-      FastFourierTransformer2D transformer) {
-    ColoredImageHolder transform =
-        new ColoredImageHolder(original.getArray().getM(), original.getArray().getN(),
-            transparencyEnabled);
+      FastFourierTransformer2D transformer, Padding padding) {
+    ColoredImageHolder transform = new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < original.channels.length; i++) {
-      Complex2DArray channel = Complex2DArray.copy(original.channels[i]);
+      Complex2DArray channel = FFTUtils.paddedCopy(original.channels[i], padding);
       transformer.transform(channel);
       transform.channels[i] = channel;
     }
@@ -34,16 +33,16 @@ public class ColoredFourierImage
 
   @Override
   ColoredImageHolder computeInverse(ColoredImageHolder transform,
-      FastFourierTransformer2D transformer) {
+      FastFourierTransformer2D transformer, Padding padding) {
     ColoredImageHolder inverse =
-        new ColoredImageHolder(transform.getArray().getM(), transform.getArray().getN(),
-            transparencyEnabled);
+        new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < transform.channels.length; i++) {
       Complex2DArray channel = Complex2DArray.copy(transform.channels[i]);
       transformer.inverse(channel);
       inverse.channels[i] = channel;
     }
-    inverse.setImage(ImageConverter.fromColoredChannels(inverse.channels, transparencyEnabled));
+    inverse.setImage(ImageConverter
+        .fromColoredChannels(inverse.channels, transparencyEnabled)); //TODO must unpad
     return inverse;
   }
 
@@ -65,12 +64,9 @@ public class ColoredFourierImage
       setArray(ImageConverter.toArray(image, channels, transparencyEnabled));
     }
 
-    ColoredImageHolder(int M, int N, boolean transparencyEnabled) {
-      super(M, N);
+    ColoredImageHolder(boolean transparencyEnabled) {
+      super((Complex2DArray) null);
       channels = new Complex2DArray[transparencyEnabled ? 4 : 3];
-      for (int i = 0; i < channels.length; i++) {
-        channels[i] = new Complex2DArray(M, N);
-      }
     }
 
   }

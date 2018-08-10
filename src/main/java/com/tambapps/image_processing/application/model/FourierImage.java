@@ -19,6 +19,8 @@ public interface FourierImage {
 
   void changeCenter();
 
+  void setPadding(int left, int right, int top, int end);
+
   void applyFilter(Filter filter);
 
   void setChangeListener(ImageChangeListener changeListener);
@@ -29,4 +31,7 @@ public interface FourierImage {
     void onInverseChanged(BufferedImage image);
   }
 
+  int getM();
+
+  int getN();
 }

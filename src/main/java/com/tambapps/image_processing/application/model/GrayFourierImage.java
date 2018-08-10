@@ -3,6 +3,7 @@ package com.tambapps.image_processing.application.model;
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.util.FFTUtils;
+import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.ImageConverter;
 
 import java.awt.image.BufferedImage;
@@ -15,25 +16,24 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
 
   @Override
   GrayImageHolder computeTransform(GrayImageHolder original,
-      FastFourierTransformer2D transformer) {
+      FastFourierTransformer2D transformer, Padding padding) {
     GrayImageHolder transform =
-        new GrayImageHolder(original.getArray().getM(), original.getArray().getN());
-    transform.setArray(Complex2DArray.copy(original.getArray()));
+        new GrayImageHolder(FFTUtils.paddedCopy(original.getArray(), padding));
     transformer.transform(transform.getArray());
     transform.setImage(
-        ImageConverter.fromArrayGrayScale(transform.getArray(), original.getImage().getType()));
+        ImageConverter.fromArrayGrayScale(transform.getArray(),
+            original.getImage().getType())); //TODO unpad image??
     return transform;
   }
 
   @Override
   GrayImageHolder computeInverse(GrayImageHolder transform,
-      FastFourierTransformer2D transformer) {
-    GrayImageHolder inverse =
-        new GrayImageHolder(transform.getArray().getM(), transform.getArray().getN());
-    inverse.setArray(Complex2DArray.copy(transform.getArray()));
+      FastFourierTransformer2D transformer, Padding padding) {
+    GrayImageHolder inverse = new GrayImageHolder(Complex2DArray.copy(transform.getArray()));
     transformer.inverse(inverse.getArray());
-    inverse.setImage(
-        ImageConverter.fromArrayGrayScale(inverse.getArray(), transform.getImage().getType()));
+    inverse.setImage(ImageConverter
+        .fromArrayGrayScale(FFTUtils.unpaddedCopy(inverse.getArray(), padding),
+            transform.getImage().getType()));
     return inverse;
   }
 
@@ -49,8 +49,8 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
       setArray(ImageConverter.toArrayGrayScale(image));
     }
 
-    GrayImageHolder(int M, int N) {
-      super(M, N);
+    GrayImageHolder(Complex2DArray array) {
+      super(array);
     }
 
   }

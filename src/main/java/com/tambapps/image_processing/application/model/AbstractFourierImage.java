@@ -2,6 +2,7 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.filtering.Filter;
+import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;
 
@@ -11,6 +12,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   private T transform;
   private T inverse;
   private ImageChangeListener changeListener;
+  private Padding padding = Padding.ZERO;
 
   AbstractFourierImage(T original) {
     this.original = original;
@@ -18,7 +20,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
 
   @Override
   public void computeTransform(FastFourierTransformer2D transformer) {
-    transform = computeTransform(original, transformer);
+    transform = computeTransform(original, transformer, padding);
     if (changeListener != null) {
       changeListener.onTransformChanged(transform.getImage());
     }
@@ -26,7 +28,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
 
   @Override
   public void computeInverse(FastFourierTransformer2D transformer) {
-    inverse = computeInverse(transform, transformer);
+    inverse = computeInverse(transform, transformer, padding);
     if (changeListener != null) {
       changeListener.onInverseChanged(inverse.getImage());
     }
@@ -34,12 +36,12 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
 
   @Override
   public BufferedImage getTransform() {
-    return transform.getImage();
+    return transform == null ? null : transform.getImage();
   }
 
   @Override
   public BufferedImage getInverse() {
-    return inverse.getImage();
+    return inverse == null ? null : inverse.getImage();
   }
 
   @Override
@@ -65,10 +67,26 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
     this.changeListener = changeListener;
   }
 
-  abstract T computeTransform(T original, FastFourierTransformer2D transformer);
+  abstract T computeTransform(T original, FastFourierTransformer2D transformer, Padding padding);
 
-  abstract T computeInverse(T transform, FastFourierTransformer2D transformer);
+  abstract T computeInverse(T transform, FastFourierTransformer2D transformer, Padding padding);
 
   abstract void changeCenter(T transform);
+
+
+  @Override
+  public void setPadding(int left, int right, int top, int end) {
+    padding = new Padding(left, right, top, end);
+  }
+
+  @Override
+  public int getM() {
+    return original.getArray().getM();
+  }
+
+  @Override
+  public int getN() {
+    return original.getArray().getN();
+  }
 
 }

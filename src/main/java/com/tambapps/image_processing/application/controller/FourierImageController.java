@@ -4,18 +4,15 @@ import static com.tambapps.image_processing.application.FFTApplication.FFT_EXECU
 import static com.tambapps.image_processing.application.FFTApplication.TASK_EXECUTOR_SERVICE;
 
 import com.tambapps.image_processing.application.model.FourierImage;
-import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.image_processing.application.FFTApplication;
 import com.tambapps.image_processing.application.ui.view.NumberField;
-import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
-import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
 import com.tambapps.math.fourier.filtering.Filters;
 import com.tambapps.math.util.PowerOfTwo;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Alert;
@@ -31,7 +28,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import javax.imageio.ImageIO;
 
@@ -59,7 +55,9 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   @FXML
   private Button inverseButton;
   @FXML
-  private TextField paddingInput;
+  private TextField paddingMInput;
+  @FXML
+  private TextField paddingNInput;
   @FXML
   private Button saveButton;
   @FXML
@@ -81,6 +79,9 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
     saveFT.setVisible(fourierImage.getTransform() != null);
     saveProcessed.setVisible(fourierImage.getInverse() != null);
+    if (saveFT.isVisible() || saveProcessed.isVisible()) {
+      saveButton.setVisible(true);
+    }
   }
 
   void setStage(Stage stage) {
@@ -98,7 +99,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
   @FXML
   private void initialize() {
-    NumberField.addNumberListener(paddingInput);
+    NumberField.addNumberListener(paddingMInput);
 
     fastFourierTransformer = new FastFourierTransformer2D(FFT_EXECUTOR_SERVICE,
         FFTApplication.MAX_FFT_THREADS - 1);
@@ -127,20 +128,20 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
   @FXML
   private void computeFFT(ActionEvent event) {
-    int padding = Integer.parseInt(paddingInput.getText());
-    if (padding > 0) {
-      //TODO HANDLE PADDING??
-    }
+    int paddingM = Integer.parseInt(paddingMInput.getText());
+    int paddingN = Integer.parseInt(paddingNInput.getText());
+    fourierImage.setPadding(paddingM / 2, paddingM % 2 == 1 ? paddingM / 2 + 1 : paddingM,
+        paddingN / 2, paddingN % 2 == 1 ? paddingN / 2 + 1 : paddingN);
+
+    String title = stage.getTitle();
+    stage.setTitle("Computing Fourier Transform...");
     TASK_EXECUTOR_SERVICE.submit(() -> {
       fourierImage.computeTransform(fastFourierTransformer);
       setFTButtonsVisibility(true);
       saveFT.setVisible(true);
-    });
-  }
+      Platform.runLater(() -> stage.setTitle(title));
 
-  private FFTAlgorithm getAlgorithm(Complex2DArray array) {
-    return PowerOfTwo.isPowerOfTwo(array.getM()) && PowerOfTwo.isPowerOfTwo(array.getN()) ?
-        FFTAlgorithms.CT_RECURSIVE : FFTAlgorithms.BASIC;
+    });
   }
 
   @FXML
@@ -154,11 +155,12 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
   @Override
   public void onInverseChanged(BufferedImage image) {
-    processedImage.setImage(toImage(image));
+    Platform.runLater(() -> processedImage.setImage(toImage(image)));
   }
 
-  @Override public void onTransformChanged(BufferedImage image) {
-    fourierTransform.setImage(toImage(image));
+  @Override
+  public void onTransformChanged(BufferedImage image) {
+    Platform.runLater(() -> fourierTransform.setImage(toImage(image)));
   }
 
   @FXML
@@ -196,9 +198,12 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
   @FXML
   private void inverse(ActionEvent event) {
+    String title = stage.getTitle();
+    stage.setTitle("Computing Fourier Inverse...");
     TASK_EXECUTOR_SERVICE.submit(() -> {
       fourierImage.computeInverse(fastFourierTransformer);
       saveProcessed.setVisible(true);
+      Platform.runLater(() -> stage.setTitle(title)); //UI changes have to happen on JavaFX thread
     });
   }
 
@@ -279,4 +284,12 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
     stage.close();
   }
 
+  @FXML
+  public void autoPadding(ActionEvent event) {
+    int closestM = PowerOfTwo.getClosestSuperior(fourierImage.getM());
+    int closestN = PowerOfTwo.getClosestSuperior(fourierImage.getN());
+    paddingMInput.setText(String.valueOf(closestM - fourierImage.getM()));
+    paddingNInput.setText(String.valueOf(closestN - fourierImage.getN()));
+
+  }
 }
