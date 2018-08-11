@@ -51,7 +51,10 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
 
   @Override
   public void applyFilter(Filter filter) {
-    filter.apply(transform.getArray());
+    applyFilter(transform, filter);
+    if (changeListener != null) {
+      changeListener.onTransformChanged(transform.getImage());
+    }
   }
 
   @Override
@@ -72,6 +75,8 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   abstract T computeInverse(T transform, FastFourierTransformer2D transformer, Padding padding);
 
   abstract void changeCenter(T transform);
+
+  abstract void applyFilter(T transform, Filter filter);
 
 
   @Override

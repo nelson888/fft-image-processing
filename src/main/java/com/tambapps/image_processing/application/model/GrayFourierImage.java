@@ -2,6 +2,7 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
+import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.ImageConverter;
@@ -22,7 +23,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
     transformer.transform(transform.getArray());
     transform.setImage(
         ImageConverter.fromArrayGrayScale(transform.getArray(),
-            original.getImage().getType())); //TODO unpad image??
+            original.getImage().getType()));
     return transform;
   }
 
@@ -40,6 +41,14 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
   @Override
   void changeCenter(GrayImageHolder transform) {
     FFTUtils.changeCenter(transform.getArray());
+    transform.setImage(
+            ImageConverter.fromArrayGrayScale(transform.getArray(),
+                    transform.getImage().getType()));
+  }
+
+  @Override
+  void applyFilter(GrayImageHolder transform, Filter filter) {
+    filter.apply(transform.getArray());
   }
 
   static class GrayImageHolder extends ImageHolder {

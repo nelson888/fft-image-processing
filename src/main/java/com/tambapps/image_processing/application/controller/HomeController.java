@@ -50,7 +50,7 @@ public class HomeController {
     fileChooser = new FileChooser();
     nbImages = 0;
     fileChooser.setTitle("Pick an image");
-    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("ImageHolder files",
+    fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("images files",
         "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"));
     gridPane.widthProperty().addListener((obs, oldVal, newVal) -> {
       for (Node node : gridPane.getChildren()) {
@@ -84,8 +84,6 @@ public class HomeController {
       return;
     }
 
-    gridPane.getChildren().remove(addButton);
-
     BufferedImage image;
     try {
       image = ImageIO.read(file);
@@ -109,6 +107,8 @@ public class HomeController {
     if (!result.isPresent() || result.get() == cancel) {
       return;
     }
+
+    gridPane.getChildren().remove(addButton);
 
     BufferedImage originalImage = ImageConverter.copy(image);
     FourierImage fourierImage;
