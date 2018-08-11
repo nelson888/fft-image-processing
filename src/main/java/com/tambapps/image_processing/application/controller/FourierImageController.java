@@ -126,10 +126,15 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
     saveButton.setVisible(visible);
   }
 
+  private int parsePadding(TextField textField) {
+    return textField.getText() == null || textField.getText().isEmpty() ?
+            0 : Integer.parseInt(paddingMInput.getText());
+  }
+
   @FXML
   private void computeFFT(ActionEvent event) {
-    int paddingM = Integer.parseInt(paddingMInput.getText());
-    int paddingN = Integer.parseInt(paddingNInput.getText());
+    int paddingM = parsePadding(paddingMInput);
+    int paddingN = parsePadding(paddingNInput);
     fourierImage.setPadding(paddingM / 2, paddingM % 2 == 1 ? paddingM / 2 + 1 : paddingM,
         paddingN / 2, paddingN % 2 == 1 ? paddingN / 2 + 1 : paddingN);
 
