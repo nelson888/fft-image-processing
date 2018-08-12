@@ -43,7 +43,7 @@ public class ColoredFourierImage
       inverse.channels[i] = channel;
     }
     inverse.setImage(ImageConverter
-        .fromColoredChannels(inverse.channels, transparencyEnabled)); //TODO must unpad
+        .fromColoredChannels(inverse.channels, transparencyEnabled, padding));
     return inverse;
   }
 

@@ -94,4 +94,8 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
     return original.getArray().getN();
   }
 
+  @Override
+  public Padding getPadding() {
+    return padding;
+  }
 }

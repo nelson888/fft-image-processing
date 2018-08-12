@@ -2,6 +2,7 @@ package com.tambapps.math.util;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
+import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -74,17 +75,21 @@ public class ImageConverter {
     return color;
   }
 
-  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled) {
+  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled, Padding padding) {
     if ((!alphaEnabled && channels.length != 3) || (alphaEnabled && channels.length != 4)) {
       throw new IllegalArgumentException("There should be " + (alphaEnabled ? 4 : 3) + " channels");
     }
-    BufferedImage image = new BufferedImage(channels[0].getN(), channels[0].getM(), alphaEnabled ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR);
+    BufferedImage image = new BufferedImage(channels[0].getN() - padding.getLeft() - padding.getRight(), channels[0].getM() - padding.getTop() - padding.getEnd(), alphaEnabled ? BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR);
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
-        image.setRGB(x, y, getRgb(channels, y, x, alphaEnabled));
+        image.setRGB(x, y, getRgb(channels, y + padding.getEnd(), x + padding.getLeft(), alphaEnabled));
       }
     }
     return image;
+  }
+
+  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled) {
+    return fromColoredChannels(channels, alphaEnabled, Padding.ZERO);
   }
 
   public static BufferedImage fromArrayGrayScale(Complex2DArray f, int imageType) {
