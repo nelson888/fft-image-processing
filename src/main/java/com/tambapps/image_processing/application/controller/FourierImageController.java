@@ -127,16 +127,16 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   }
 
   private int parsePadding(TextField textField) {
-    return textField.getText() == null || textField.getText().isEmpty() ?
-            0 : Integer.parseInt(paddingMInput.getText());
+    String text = textField.getText();
+    return text == null || text.isEmpty() ? 0 : Integer.parseInt(text);
   }
 
   @FXML
   private void computeFFT(ActionEvent event) {
     int paddingM = parsePadding(paddingMInput);
     int paddingN = parsePadding(paddingNInput);
-    fourierImage.setPadding(paddingM / 2, paddingM % 2 == 1 ? paddingM / 2 + 1 : paddingM,
-        paddingN / 2, paddingN % 2 == 1 ? paddingN / 2 + 1 : paddingN);
+    fourierImage.setPadding(paddingN / 2, paddingN / 2 + paddingN % 2,
+            paddingM / 2, paddingM / 2 + paddingM % 2);
 
     String title = stage.getTitle();
     stage.setTitle("Computing Fourier Transform...");

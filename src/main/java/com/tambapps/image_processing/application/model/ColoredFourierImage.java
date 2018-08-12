@@ -61,6 +61,8 @@ public class ColoredFourierImage
     for (Complex2DArray channel : transform.channels) {
       filter.apply(channel);
     }
+    transform.setImage(ImageConverter
+            .fromColoredChannels(transform.channels, transparencyEnabled));
   }
 
   static class ColoredImageHolder extends ImageHolder {

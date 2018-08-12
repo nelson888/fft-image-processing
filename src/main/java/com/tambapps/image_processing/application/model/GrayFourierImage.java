@@ -49,6 +49,9 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
   @Override
   void applyFilter(GrayImageHolder transform, Filter filter) {
     filter.apply(transform.getArray());
+    transform.setImage(
+            ImageConverter.fromArrayGrayScale(transform.getArray(),
+                    transform.getImage().getType()));
   }
 
   static class GrayImageHolder extends ImageHolder {

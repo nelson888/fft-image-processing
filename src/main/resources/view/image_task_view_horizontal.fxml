@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.6809045226130653" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
+<SplitPane dividerPositions="0.6809045226130653" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
   <items>
     <AnchorPane fx:id="imagesContainer" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
          <children>
@@ -32,7 +32,7 @@
                         <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
                         <TextField fx:id="paddingNInput" promptText="width" />
                         <TextField fx:id="paddingMInput1" promptText="height" />
-                        <Button id="computeButton" fx:id="autoPadding" mnemonicParsing="false" onAction="#computeFFT" text="auto padding" textAlignment="CENTER" />
+                        <Button id="autoPadding" fx:id="autoPadding" mnemonicParsing="false" onAction="#autoPadding" text="auto padding" textAlignment="CENTER" />
                      </children>
                   </VBox>
                   <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER" />

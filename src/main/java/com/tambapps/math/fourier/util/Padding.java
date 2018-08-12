@@ -1,7 +1,5 @@
 package com.tambapps.math.fourier.util;
 
-import java.util.Objects;
-
 public class Padding {
   public static final Padding ZERO = new Padding(0, 0, 0, 0);
   private final int left;

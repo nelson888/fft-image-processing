@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<SplitPane dividerPositions="0.18227424749163879" prefHeight="600.0" prefWidth="800.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
+<SplitPane dividerPositions="0.18227424749163879" prefHeight="600.0" prefWidth="800.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
   <items>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
@@ -19,7 +19,7 @@
                   <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
                   <TextField fx:id="paddingNInput" promptText="width" />
                   <TextField fx:id="paddingMInput" promptText="height" />
-                  <Button id="computeButton" fx:id="autoPadding" mnemonicParsing="false" onAction="#computeFFT" text="auto padding" textAlignment="CENTER">
+                  <Button id="autoPadding" fx:id="autoPadding" mnemonicParsing="false" onAction="#autoPadding" text="auto padding" textAlignment="CENTER">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
