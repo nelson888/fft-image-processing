@@ -2,7 +2,6 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
-import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.ImageConverter;
@@ -41,16 +40,11 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
     FFTUtils.changeCenter(transform.getArray());
   }
 
-  @Override
-  void applyFilter(GrayImageHolder transform, Filter filter) {
-    filter.apply(transform.getArray());
-  }
-
   static class GrayImageHolder extends AbstractImageHolder {
 
     GrayImageHolder(BufferedImage image) {
-      super(image);
-      setArray(ImageConverter.toArrayGrayScale(image));
+      super(image, 1);
+      channels[0] = ImageConverter.toArrayGrayScale(image);
     }
 
     GrayImageHolder(Complex2DArray array) {
@@ -76,9 +70,8 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
       return holder;
     }
 
-    @Override
-    public Complex2DArray[] getChannels() {
-      return new Complex2DArray[] {getArray()};
+    Complex2DArray getArray() {
+      return channels[0];
     }
   }
 }

@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
+//TODO CHECK SI IL RESTE DES FENETRE OUVERTES AVANT DE CLOSE L'APPLICATION
 public class HomeController {
 
   private final ObservableList<FourierImage> fourierImages = FXCollections.observableArrayList();

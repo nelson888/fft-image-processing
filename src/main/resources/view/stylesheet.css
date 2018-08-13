@@ -4,7 +4,13 @@
     -fx-font-size: 11pt;
     -fx-text-fill: white;
 }
-
+.button-highlighted {
+    -fx-background-color: linear-gradient(#0499ff, #1358d7);
+    -fx-text-fill: white;
+}
 .button-styled:hover {
+    -fx-background-color: #0053d7;
+}
+.button-highlighted:hover {
     -fx-background-color: #0053d7;
 }

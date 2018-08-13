@@ -2,7 +2,6 @@ package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
-import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.ImageConverter;
@@ -52,26 +51,15 @@ public class ColoredFourierImage
     }
   }
 
-  @Override
-  void applyFilter(ColoredImageHolder transform, Filter filter) {
-    for (Complex2DArray channel : transform.channels) {
-      filter.apply(channel);
-    }
-  }
-
   static class ColoredImageHolder extends AbstractImageHolder {
 
-    private final Complex2DArray[] channels;
-
     ColoredImageHolder(BufferedImage image, boolean transparencyEnabled) {
-      super(image);
-      channels = new Complex2DArray[transparencyEnabled ? 4 : 3];
-      setArray(ImageConverter.toArray(image, channels, transparencyEnabled));
+      super(image, transparencyEnabled ? 4 : 3);
+      ImageConverter.toArray(image, channels, transparencyEnabled);
     }
 
     ColoredImageHolder(boolean transparencyEnabled) {
-      super((Complex2DArray) null);
-      channels = new Complex2DArray[transparencyEnabled ? 4 : 3];
+      super(transparencyEnabled ? 4 : 3);
     }
 
     @Override
@@ -96,10 +84,6 @@ public class ColoredFourierImage
 
     private boolean transparancyEnabled() {
       return  channels.length == 4;
-    }
-    @Override
-    public Complex2DArray[] getChannels() {
-      return channels;
     }
   }
 }

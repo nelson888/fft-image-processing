@@ -12,15 +12,17 @@ public abstract class AbstractEffect implements Effect {
     @Override
     public void setTransform(ImageHolder transform) {
         this.transform = transform;
-        this.result = null;
+        this.result = transform.copy();
     }
 
     @Override
     public final void apply(double value) {
         Filter filter = getFilter(transform.getM(), transform.getN(), value);
-        for (Complex2DArray channel : result.getChannels()) {
-            filter.apply(channel);
+        for (int i = 0; i < result.getChannels().length; i++) {
+            result.getChannels()[i] = Complex2DArray.copy(transform.getChannels()[i]);
+            filter.apply(result.getChannels()[i]);
         }
+
         result.computeImage(transform.getImage().getType());
     }
 
@@ -35,7 +37,7 @@ public abstract class AbstractEffect implements Effect {
     }
 
     int percentageValue(double percentage, int max) {
-        return (int) (percentage * max / 100);
+        return (int) percentageValue(percentage, (double)max);
     }
 
 
@@ -49,4 +51,14 @@ public abstract class AbstractEffect implements Effect {
 
     abstract Filter getFilter(int M, int N, double value);
     abstract String name();
+
+    @Override
+    public double getMaxValue() {
+        return 100;
+    }
+
+    @Override
+    public double getMinValue() {
+        return 0;
+    }
 }

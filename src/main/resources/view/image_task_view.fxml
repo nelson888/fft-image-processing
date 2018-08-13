@@ -11,48 +11,136 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1000.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.tambapps.image_processing.application.controller.FourierImageController">
    <children>
-      <VBox fx:id="buttonsPane" prefHeight="400.0" prefWidth="222.0">
+      <VBox fx:id="buttonsPane" alignment="CENTER" prefHeight="400.0" prefWidth="222.0">
          <children>
-            <Label prefHeight="16.0" prefWidth="103.0" text="padding:" />
-            <TextField fx:id="paddingNInput" promptText="width" />
-            <TextField fx:id="paddingMInput" promptText="height" />
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="63.0" prefWidth="222.0">
+               <children>
+                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="103.0" text="padding: (optional)" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="61.0" prefWidth="100.0">
+                     <children>
+                        <TextField fx:id="paddingNInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="80.0" promptText="width">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="paddingMInput" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="80.0" promptText="height">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
             <Button id="autoPadding" fx:id="autoPadding" mnemonicParsing="false" onAction="#autoPadding" text="auto padding" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="20.0" />
                </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
             </Button>
-            <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER" />
-            <Label prefHeight="16.0" prefWidth="103.0" text="effect:" />
-            <Spinner fx:id="filterSpinner" />
-            <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="inverse" textAlignment="CENTER" />
-            <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER" />
-            <CheckBox fx:id="saveFT" mnemonicParsing="false" text="fourier transform" />
-            <CheckBox fx:id="saveProcessed" mnemonicParsing="false" text="result" />
-            <Button id="inverseButton" fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="close" textAlignment="CENTER" />
+            <Button id="computeButton" fx:id="computeButton" mnemonicParsing="false" onAction="#computeFFT" text="compute FT" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <Label prefHeight="16.0" prefWidth="103.0" text="effect:">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Spinner fx:id="filterSpinner">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Spinner>
+            <Button id="inverseButton" fx:id="inverseButton" mnemonicParsing="false" onAction="#inverse" text="compute inverse" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></Button>
+            <Button id="inverseButton" fx:id="saveButton" mnemonicParsing="false" onAction="#save" text="save" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <CheckBox fx:id="saveFT" mnemonicParsing="false" text="fourier transform">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin></CheckBox>
+            <CheckBox fx:id="saveProcessed" mnemonicParsing="false" text="result">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin></CheckBox>
+            <Button id="inverseButton" fx:id="closeButton" mnemonicParsing="false" onAction="#close" text="close" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <Button fx:id="removeButton" mnemonicParsing="false" onAction="#remove" text="remove" textAlignment="CENTER">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
          </children>
       </VBox>
-      <VBox prefHeight="400.0" prefWidth="508.0">
+      <VBox prefHeight="400.0" prefWidth="789.0">
          <children>
-            <ImageView fx:id="imageView" fitHeight="325.0" fitWidth="444.0" pickOnBounds="true" preserveRatio="true" />
-            <VBox fx:id="filterControls" prefHeight="200.0" prefWidth="100.0">
+            <ImageView fx:id="imageView" fitHeight="564.0" fitWidth="778.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox fx:id="filterControls" prefHeight="52.0" prefWidth="778.0">
                <children>
-                  <Slider fx:id="filterSlider">
+                  <Slider fx:id="filterSlider" blockIncrement="1.0">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
                   </Slider>
-                  <Button id="filterButton" fx:id="effectButton" mnemonicParsing="false" onAction="#applyEffect" text="apply effect" textAlignment="CENTER" />
+                  <Button id="filterButton" fx:id="effectButton" mnemonicParsing="false" onAction="#applyEffect" text="apply effect" textAlignment="CENTER">
+                     <font>
+                        <Font size="16.0" />
+                     </font></Button>
                </children>
             </VBox>
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button fx:id="original" mnemonicParsing="false" onAction="#originalImage" text="original" />
-                  <Button fx:id="transform" mnemonicParsing="false" onAction="#transformImage" text="fourier transform" />
-                  <Button fx:id="processed" mnemonicParsing="false" onAction="#processedImage" text="processed" />
+                <Button fx:id="original" mnemonicParsing="false" onAction="#originalImage" text="original">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Button fx:id="transform" mnemonicParsing="false" onAction="#transformImage" text="fourier transform">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
+                  <Button fx:id="processed" mnemonicParsing="false" onAction="#processedImage" text="processed">
+                     <font>
+                        <Font size="18.0" />
+                     </font></Button>
               </buttons>
             </ButtonBar>
          </children>

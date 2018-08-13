@@ -16,13 +16,15 @@ public interface FourierImage {
 
   BufferedImage getTransform();
 
+  ImageHolder getTransformHolder();
+
+  void setTransformHolder(ImageHolder holder);
+
   BufferedImage getInverse();
 
   void setPadding(int left, int right, int top, int end);
 
   Padding getPadding();
-
-  void applyFilter(Filter filter);
 
   void setChangeListener(ImageChangeListener changeListener);
 

@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 public interface ImageHolder {
 
     BufferedImage getImage();
-    Complex2DArray getArray();
     void computeImage(int imageType);
     ImageHolder copy();
     Complex2DArray[] getChannels();

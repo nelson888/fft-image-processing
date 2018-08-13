@@ -7,16 +7,20 @@ import java.awt.image.BufferedImage;
 
 public abstract class AbstractImageHolder implements ImageHolder {
 
-  //TODO USE AN ARRAY OF COMPLEX2DARRAY INSTEAD OF SIMPLE COMPLEX2DARRAY
   private BufferedImage image;
-  private Complex2DArray array;
+  final Complex2DArray[] channels;
 
   AbstractImageHolder(Complex2DArray array) {
-    this.array = array;
+    this.channels = new Complex2DArray[] {array};
   }
 
-  AbstractImageHolder(BufferedImage image) {
+  AbstractImageHolder(BufferedImage image, int nbChannels) {
+    this(nbChannels);
     this.image = image;
+  }
+
+  AbstractImageHolder(int nbChannels) {
+    channels = new Complex2DArray[nbChannels];
   }
 
   public void setImage(BufferedImage image) {
@@ -27,16 +31,34 @@ public abstract class AbstractImageHolder implements ImageHolder {
     return image;
   }
 
-  public void setArray(Complex2DArray array) {
-    this.array = array;
-  }
-
-  public Complex2DArray getArray() {
-    return array;
-  }
-
   void computeImage() {
     computeImage(getImage().getType());
+  }
+
+  @Override
+  public Complex2DArray[] getChannels() {
+    return channels;
+  }
+
+  @Override
+  public int getM() {
+    return channels[0].getM();
+  }
+
+  @Override
+  public int getN() {
+    return channels[0].getN();
+  }
+
+  void set(ImageHolder imageHolder) {
+    if (imageHolder.getChannels().length != channels.length) {
+      throw new IllegalArgumentException("Cannot set imageholder with different channels");
+    }
+    for (int i = 0; i < channels.length; i++) {
+      channels[i] = imageHolder.getChannels()[i];
+    }
+    image = imageHolder.getImage();
+
   }
 
   abstract void computeUnpaddedImage(Padding padding, int imageType);

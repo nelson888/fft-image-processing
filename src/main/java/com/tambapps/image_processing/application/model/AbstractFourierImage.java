@@ -53,12 +53,13 @@ public abstract class AbstractFourierImage<T extends AbstractImageHolder> implem
   }
 
   @Override
-  public void applyFilter(Filter filter) {
-    applyFilter(transform, filter);
-    transform.computeImage();
-    if (changeListener != null) {
-      changeListener.onTransformChanged(transform.getImage());
-    }
+  public ImageHolder getTransformHolder() {
+    return transform;
+  }
+
+  @Override
+  public void setTransformHolder(ImageHolder holder) {
+    transform.set(holder);
   }
 
   @Override
@@ -72,8 +73,6 @@ public abstract class AbstractFourierImage<T extends AbstractImageHolder> implem
 
   abstract void changeCenter(T transform);
 
-  abstract void applyFilter(T transform, Filter filter);
-
 
   @Override
   public void setPadding(int left, int right, int top, int end) {
@@ -82,12 +81,12 @@ public abstract class AbstractFourierImage<T extends AbstractImageHolder> implem
 
   @Override
   public int getM() {
-    return original.getArray().getM();
+    return original.getM();
   }
 
   @Override
   public int getN() {
-    return original.getArray().getN();
+    return original.getN();
   }
 
   @Override

@@ -2,13 +2,12 @@ package com.tambapps.image_processing.application.effect;
 
 import com.tambapps.math.fourier.filtering.Filter;
 
-public class CircEffect extends AbstractEffect {
+public class CircEffect extends ReversableEffect {
     private final String name;
-    private final boolean inverted;
 
-    public CircEffect(boolean inverted, String name) {
+    public CircEffect(boolean reversed, String name) {
+        super(reversed);
         this.name = name;
-        this.inverted = inverted;
     }
 
     @Override
