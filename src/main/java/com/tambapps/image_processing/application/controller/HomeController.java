@@ -20,9 +20,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.SplitPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -155,23 +155,15 @@ public class HomeController {
 
   private void showImageTaskView(FourierImage fourierImage, File imageFile, BufferedImage image, String title) {
     FXMLLoader loader = new FXMLLoader();
-    String path;
 
-    double width = image.getWidth();
-    double height = image.getHeight();
-    if (width / height > 0.85) {
-      path = "/view/image_task_view_vertical.fxml";
-    } else {
-      path = "/view/image_task_view_horizontal.fxml";
-    }
-    loader.setLocation(FFTApplication.class.getResource(path));
+    loader.setLocation(FFTApplication.class.getResource("/view/image_task_view.fxml"));
     if (imageTaskStage == null) {
       imageTaskStage = new Stage();
     } else {
       imageTaskStage.close();
     }
     imageTaskStage.setTitle(title);
-    SplitPane root;
+    Pane root;
     try {
       root = loader.load();
     } catch (IOException e) {

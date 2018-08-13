@@ -3,6 +3,10 @@ package com.tambapps.image_processing.application.controller;
 import static com.tambapps.image_processing.application.FFTApplication.FFT_EXECUTOR_SERVICE;
 import static com.tambapps.image_processing.application.FFTApplication.TASK_EXECUTOR_SERVICE;
 
+import com.tambapps.image_processing.application.effect.CircEffect;
+import com.tambapps.image_processing.application.effect.Effect;
+import com.tambapps.image_processing.application.effect.RecEffect;
+import com.tambapps.image_processing.application.effect.ThresholdEffect;
 import com.tambapps.image_processing.application.model.FourierImage;
 import com.tambapps.image_processing.application.FFTApplication;
 import com.tambapps.image_processing.application.ui.view.NumberField;
@@ -12,20 +16,23 @@ import com.tambapps.math.fourier.filtering.Filters;
 import com.tambapps.math.fourier.util.Padding;
 import com.tambapps.math.util.PowerOfTwo;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -41,20 +48,32 @@ import java.util.stream.Stream;
 
 public class FourierImageController implements FourierImage.ImageChangeListener {
 
+  private static final int ORIGINAL = 0;
+  private static final int FOURIER_TRANSFORM = 1;
+  private static final int PROCESSED_IMAGE = 2;
+
+  private static final String NO_EFFECT = "none";
+  private static final String THRESHOLD = "threshold";
+  private static final String REC_LOW = "rec\nlow pass";
+  private static final String REC_HIGH = "rec\nhigh pass";
+  private static final String CIRC_LOW = "circ\nlow pass";
+  private static final String CIRC_HIGH = "circ\nhigh pass";
+
+
   @FXML
-  private ImageView original;
-  @FXML
-  private ImageView fourierTransform;
-  @FXML
-  private ImageView processedImage;
+  private ImageView imageView;
   @FXML
   private Button computeButton;
   @FXML
-  private Button centerButton;
-  @FXML
-  private Button filterButton;
+  private Button effectButton;
   @FXML
   private Button inverseButton;
+  @FXML
+  private Button original;
+  @FXML
+  private Button transform;
+  @FXML
+  private Button processed;
   @FXML
   private TextField paddingMInput;
   @FXML
@@ -67,6 +86,12 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   private CheckBox saveFT;
   @FXML
   private CheckBox saveProcessed;
+  @FXML
+  private Pane filterControls;
+  @FXML
+  private Spinner<Effect> filterSpinner;
+  @FXML
+  private Slider filterSlider;
 
   private FourierImage fourierImage;
   private Stage stage;
@@ -79,19 +104,23 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   void setFourierImage(FourierImage fourierImage) {
     this.fourierImage = fourierImage;
     fourierImage.setChangeListener(this);
-    original.setImage(toImage(fourierImage.getOriginal()));
 
     BufferedImage transform = fourierImage.getTransform();
     saveFT.setVisible(transform != null);
-    if (transform != null) {
-      fourierTransform.setImage(toImage(transform));
-    }
 
     BufferedImage inverse = fourierImage.getInverse();
     saveProcessed.setVisible(inverse != null);
+
     if (inverse != null) {
-      processedImage.setImage(toImage(inverse));
+      setImage(PROCESSED_IMAGE);
+    } else if (transform != null) {
+      setImage(FOURIER_TRANSFORM);
+    } else {
+      setImage(ORIGINAL);
     }
+
+    this.transform.setDisable(transform == null);
+    this.processed.setDisable(inverse == null);
 
     if (saveFT.isVisible() || saveProcessed.isVisible()) {
       saveButton.setVisible(true);
@@ -129,6 +158,28 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
         FFTApplication.MAX_FFT_THREADS - 1);
     setFTButtonsVisibility(false);
 
+    filterSlider.setMin(0);
+    filterSlider.setMax(100);
+    ObservableList<Effect> effects = FXCollections.observableArrayList(new CircEffect(false, REC_HIGH), new CircEffect(true, REC_LOW), new RecEffect(false, REC_HIGH), new RecEffect(true, REC_LOW), new ThresholdEffect(), Effect.NONE);
+    SpinnerValueFactory<Effect> valueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(effects);
+    filterSpinner.setValueFactory(valueFactory);
+    valueFactory.setValue(effects.get(effects.size() - 1));
+    valueFactory.valueProperty().addListener((observable, oldValue, newValue) -> {
+      filterControls.setDisable(newValue == Effect.NONE);
+
+    });
+    filterControls.setDisable(true);
+
+    filterSlider.setOnMouseReleased(event -> {
+      if (event.getButton() == MouseButton.PRIMARY) {
+        Effect effect = filterSpinner.getValue();
+        if (effect == Effect.NONE) {
+          return;
+        }
+        effect.apply(filterSlider.getValue());
+      }
+    });
+
     /*
     imagesContainer.widthProperty().addListener((obs, oldVal, newVal) -> {
       original.setFitWidth(newVal.doubleValue());
@@ -144,8 +195,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   }
 
   private void setFTButtonsVisibility(boolean visible) {
-    centerButton.setVisible(visible);
-    filterButton.setVisible(visible);
+    effectButton.setVisible(visible);
     inverseButton.setVisible(visible);
     saveButton.setVisible(visible);
   }
@@ -181,12 +231,8 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
       saveFT.setVisible(true);
       Platform.runLater(() -> stage.setTitle(title));
       transforming = false;
+      this.transform.setDisable(false);
     });
-  }
-
-  @FXML
-  private void changeCenter(ActionEvent event) {
-    fourierImage.changeCenter();
   }
 
   private Image toImage(BufferedImage image) {
@@ -195,18 +241,18 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
   @Override
   public void onInverseChanged(BufferedImage image) {
-    Platform.runLater(() -> processedImage.setImage(toImage(image)));
+    Platform.runLater(() -> imageView.setImage(toImage(image)));
   }
 
   @Override
   public void onTransformChanged(BufferedImage image) {
-    Platform.runLater(() -> fourierTransform.setImage(toImage(image)));
+    Platform.runLater(() -> imageView.setImage(toImage(image)));
   }
 
-  @FXML //TODO MAKE BUILT IN FILTERS LIKE EXTRACT CONTOURS, ...
-  private void applyFilter(ActionEvent event) {
+  @FXML
+  private void applyEffect(ActionEvent event) {
     if (filtering) {
-      showTaskAlreadyRunningDialog("Filter");
+      showTaskAlreadyRunningDialog("Effect");
       return;
     }
     Alert alert = new Alert(Alert.AlertType.NONE);
@@ -259,6 +305,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
       saveProcessed.setVisible(true);
       Platform.runLater(() -> stage.setTitle(title)); //UI changes have to happen on JavaFX thread
       inversing = false;
+      this.processed.setDisable(false);
     });
   }
 
@@ -340,11 +387,42 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   }
 
   @FXML
-  public void autoPadding(ActionEvent event) {
+  private void autoPadding(ActionEvent event) {
     int closestM = PowerOfTwo.getClosestSuperior(fourierImage.getM());
     int closestN = PowerOfTwo.getClosestSuperior(fourierImage.getN());
     paddingMInput.setText(String.valueOf(closestM - fourierImage.getM()));
     paddingNInput.setText(String.valueOf(closestN - fourierImage.getN()));
 
+  }
+
+
+  @FXML
+  private void transformImage(ActionEvent event) {
+    setImage(FOURIER_TRANSFORM);
+  }
+
+  @FXML
+  private void originalImage(ActionEvent event) {
+    setImage(ORIGINAL);
+  }
+
+  @FXML
+  private void processedImage(ActionEvent event) {
+    setImage(PROCESSED_IMAGE);
+  }
+
+  private void setImage(int imageType) {
+    BufferedImage image = null;
+    switch (imageType) {
+      case ORIGINAL:
+        image = fourierImage.getOriginal();
+        break;
+      case FOURIER_TRANSFORM:
+        image = fourierImage.getTransform();
+        break;
+      case PROCESSED_IMAGE:
+        image = fourierImage.getInverse();
+    }
+    imageView.setImage(toImage(image));
   }
 }

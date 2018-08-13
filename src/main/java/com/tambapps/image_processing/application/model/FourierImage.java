@@ -18,8 +18,6 @@ public interface FourierImage {
 
   BufferedImage getInverse();
 
-  void changeCenter();
-
   void setPadding(int left, int right, int top, int end);
 
   Padding getPadding();

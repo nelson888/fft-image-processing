@@ -21,9 +21,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
     GrayImageHolder transform =
         new GrayImageHolder(FFTUtils.paddedCopy(original.getArray(), padding));
     transformer.transform(transform.getArray());
-    transform.setImage(
-        ImageConverter.fromArrayGrayScale(transform.getArray(),
-            original.getImage().getType()));
+    transform.computeImage(original.getImage().getType());
     return transform;
   }
 
@@ -41,20 +39,14 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
   @Override
   void changeCenter(GrayImageHolder transform) {
     FFTUtils.changeCenter(transform.getArray());
-    transform.setImage(
-            ImageConverter.fromArrayGrayScale(transform.getArray(),
-                    transform.getImage().getType()));
   }
 
   @Override
   void applyFilter(GrayImageHolder transform, Filter filter) {
     filter.apply(transform.getArray());
-    transform.setImage(
-            ImageConverter.fromArrayGrayScale(transform.getArray(),
-                    transform.getImage().getType()));
   }
 
-  static class GrayImageHolder extends ImageHolder {
+  static class GrayImageHolder extends AbstractImageHolder {
 
     GrayImageHolder(BufferedImage image) {
       super(image);
@@ -65,5 +57,28 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
       super(array);
     }
 
+    @Override
+    public void computeImage(int imageType) {
+      setImage(ImageConverter.fromArrayGrayScale(getArray(), imageType));
+    }
+
+    @Override
+    void computeUnpaddedImage(Padding padding, int imageType) {
+      setImage(ImageConverter
+              .fromArrayGrayScale(FFTUtils.unpaddedCopy(getArray(), padding),
+                      imageType));
+    }
+
+    @Override
+    public ImageHolder copy() {
+      GrayImageHolder holder = new GrayImageHolder(Complex2DArray.copy(getArray()));
+      holder.setImage(getImage());
+      return holder;
+    }
+
+    @Override
+    public Complex2DArray[] getChannels() {
+      return new Complex2DArray[] {getArray()};
+    }
   }
 }

@@ -26,7 +26,7 @@ public class FFTApplication extends Application {
   @Override
   public void start(final Stage stage) throws Exception {
     setUserAgentStylesheet(STYLESHEET_MODENA);
-    stage.setTitle("Fourier ImageHolder Processing");
+    stage.setTitle("Fourier AbstractImageHolder Processing");
 
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(FFTApplication.class.getResource("/view/home.fxml"));

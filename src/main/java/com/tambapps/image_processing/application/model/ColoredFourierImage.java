@@ -42,8 +42,6 @@ public class ColoredFourierImage
       transformer.inverse(channel);
       inverse.channels[i] = channel;
     }
-    inverse.setImage(ImageConverter
-        .fromColoredChannels(inverse.channels, transparencyEnabled, padding));
     return inverse;
   }
 
@@ -52,8 +50,6 @@ public class ColoredFourierImage
     for (Complex2DArray channel : transform.channels) {
       FFTUtils.changeCenter(channel);
     }
-    transform.setImage(ImageConverter
-            .fromColoredChannels(transform.channels, transparencyEnabled));
   }
 
   @Override
@@ -61,11 +57,9 @@ public class ColoredFourierImage
     for (Complex2DArray channel : transform.channels) {
       filter.apply(channel);
     }
-    transform.setImage(ImageConverter
-            .fromColoredChannels(transform.channels, transparencyEnabled));
   }
 
-  static class ColoredImageHolder extends ImageHolder {
+  static class ColoredImageHolder extends AbstractImageHolder {
 
     private final Complex2DArray[] channels;
 
@@ -80,5 +74,32 @@ public class ColoredFourierImage
       channels = new Complex2DArray[transparencyEnabled ? 4 : 3];
     }
 
+    @Override
+    public void computeImage(int imageType) {
+      ImageConverter
+              .fromColoredChannels(channels, channels.length == 4);
+    }
+
+    @Override
+    void computeUnpaddedImage(Padding padding,int imageType) {
+      setImage(ImageConverter
+              .fromColoredChannels(channels, transparancyEnabled(), padding));
+    }
+    @Override
+    public ImageHolder copy() {
+      ColoredImageHolder holder = new ColoredImageHolder(getImage(), transparancyEnabled());
+      for (int i = 0; i < channels.length; i++) {
+        holder.channels[i] = Complex2DArray.copy(channels[i]);
+      }
+      return holder;
+    }
+
+    private boolean transparancyEnabled() {
+      return  channels.length == 4;
+    }
+    @Override
+    public Complex2DArray[] getChannels() {
+      return channels;
+    }
   }
 }

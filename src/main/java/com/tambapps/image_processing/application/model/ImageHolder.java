@@ -4,33 +4,13 @@ import com.tambapps.math.array_2d.Complex2DArray;
 
 import java.awt.image.BufferedImage;
 
-public class ImageHolder {
+public interface ImageHolder {
 
-  private BufferedImage image;
-  private Complex2DArray array;
-
-  ImageHolder(Complex2DArray array) {
-    this.array = array;
-  }
-
-  ImageHolder(BufferedImage image) {
-    this.image = image;
-  }
-
-  public void setImage(BufferedImage image) {
-    this.image = image;
-  }
-
-  public BufferedImage getImage() {
-    return image;
-  }
-
-  public void setArray(Complex2DArray array) {
-    this.array = array;
-  }
-
-  public Complex2DArray getArray() {
-    return array;
-  }
-
+    BufferedImage getImage();
+    Complex2DArray getArray();
+    void computeImage(int imageType);
+    ImageHolder copy();
+    Complex2DArray[] getChannels();
+    int getM();
+    int getN();
 }

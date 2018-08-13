@@ -2,7 +2,7 @@ package com.tambapps.math.fourier.filtering;
 
 import com.tambapps.math.array_2d.Double2DArray;
 
-public class Filters {
+public final class Filters {
 
   private Filters() {}
 
@@ -14,4 +14,7 @@ public class Filters {
     return new RectangleFilter(width, height, inverted);
   }
 
+  public static Filter threshold(double max) {
+    return new ThresholdFilter(max);
+  }
 }

@@ -6,7 +6,7 @@ import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;
 
-public abstract class AbstractFourierImage<T extends ImageHolder> implements FourierImage {
+public abstract class AbstractFourierImage<T extends AbstractImageHolder> implements FourierImage {
 
   private final T original;
   private T transform;
@@ -21,6 +21,8 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   @Override
   public void computeTransform(FastFourierTransformer2D transformer) {
     transform = computeTransform(original, transformer, padding);
+    changeCenter(transform);
+    transform.computeImage(original.getImage().getType());
     if (changeListener != null) {
       changeListener.onTransformChanged(transform.getImage());
     }
@@ -29,6 +31,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   @Override
   public void computeInverse(FastFourierTransformer2D transformer) {
     inverse = computeInverse(transform, transformer, padding);
+    inverse.computeUnpaddedImage(padding, transform.getImage().getType());
     if (changeListener != null) {
       changeListener.onInverseChanged(inverse.getImage());
     }
@@ -52,14 +55,7 @@ public abstract class AbstractFourierImage<T extends ImageHolder> implements Fou
   @Override
   public void applyFilter(Filter filter) {
     applyFilter(transform, filter);
-    if (changeListener != null) {
-      changeListener.onTransformChanged(transform.getImage());
-    }
-  }
-
-  @Override
-  public void changeCenter() {
-    changeCenter(transform);
+    transform.computeImage();
     if (changeListener != null) {
       changeListener.onTransformChanged(transform.getImage());
     }
