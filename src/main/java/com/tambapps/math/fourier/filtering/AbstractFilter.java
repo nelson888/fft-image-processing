@@ -9,12 +9,15 @@ abstract class AbstractFilter implements Filter {
   public final void apply(Complex2DArray array) {
     final int M = array.getM();
     final int N = array.getN();
+    before(M, N);
     for (int i = 0; i < M; i++) {
       for (int j = 0; j < N; j++) {
         array.set(i, j, apply(array.get(i, j), i, j, M, N));
       }
     }
   }
+
+  void before(int M, int N) {}
 
   @Override
   public final Complex2DArray applied(Complex2DArray array) {
