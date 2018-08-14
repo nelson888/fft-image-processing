@@ -4,9 +4,9 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.util.Padding;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.WritableRaster;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
 
 public class ImageConverter {
 
@@ -50,6 +50,20 @@ public class ImageConverter {
     return array;
   }
 
+  public static void toGrayScale(BufferedImage image) {
+    for (int i = 0; i < image.getWidth(); i++) {
+      for (int j = 0; j < image.getHeight(); j++) {
+        int rgb = image.getRGB(i, j);
+        int r = (rgb >> 16) & 0xFF;
+        int g = (rgb >> 8) & 0xFF;
+        int b = (rgb & 0xFF);
+        int grayLevel = (r + g + b) / 3;
+        int gray = (grayLevel << 16) + (grayLevel << 8) + grayLevel;
+        image.setRGB(i, j, gray);
+
+      }
+    }
+  }
   public static BufferedImage fromArray(Complex2DArray f) {
     return fromArray(f, BufferedImage.TYPE_3BYTE_BGR);
   }
@@ -109,5 +123,13 @@ public class ImageConverter {
     boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
     WritableRaster raster = bi.copyData(null);
     return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+  }
+
+  public static BufferedImage grayScaleCopy(BufferedImage image) {
+    BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+    Graphics g = result.createGraphics();
+    g.drawImage(image, 0, 0, null);
+    g.dispose();
+    return result;
   }
 }

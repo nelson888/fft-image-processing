@@ -24,9 +24,9 @@ class CircleFilter extends AbstractFilter {
     Complex apply(Complex c, int i, int j, int M, int N) {
         int distance2 =  pow2(i - cM) + pow2(j - cN);
         if (distance2 < radius2) {
-            return reverted ? Complex.ZERO : c;
+            return reverted ? c : Complex.ZERO;
         }
-        return reverted ? c : Complex.ZERO;
+        return reverted ? Complex.ZERO : c;
     }
 
     private int pow2(int i) {

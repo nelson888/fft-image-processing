@@ -17,4 +17,8 @@ public final class Filters {
   public static Filter threshold(double max) {
     return new ThresholdFilter(max);
   }
+
+  public static Filter circle(int radius, boolean reverted) {
+    return new CircleFilter(radius, reverted);
+  }
 }

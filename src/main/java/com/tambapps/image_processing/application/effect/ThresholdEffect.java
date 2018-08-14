@@ -6,6 +6,8 @@ import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.filtering.Filters;
 
+//TODO STILL DOESN'T WORK AND LOG EXCEPTIONS ON FFT2D
+//todo change version of javaFX
 public class ThresholdEffect extends AbstractEffect {
 
     private double max;
@@ -14,7 +16,7 @@ public class ThresholdEffect extends AbstractEffect {
     @Override
     public void setTransform(ImageHolder transform) {
         super.setTransform(transform);
-        max = Double.MAX_VALUE;
+        max = Double.MIN_VALUE;
         min = Double.MAX_VALUE;
 
         Complex2DArray[] channels = transform.getChannels();
@@ -30,25 +32,16 @@ public class ThresholdEffect extends AbstractEffect {
                 }
             }
         }
+        min -= 1;
     }
 
     @Override
     Filter getFilter(int M, int N, double value) {
-        return Filters.threshold(min + (max - min) * percentageValue(value, max));
+        return Filters.threshold(min + (max - min) * value);
     }
 
     @Override
     String name() {
         return "threshold";
-    }
-
-    @Override
-    public double getMinValue() {
-        return min;
-    }
-
-    @Override
-    public double getMaxValue() {
-        return max;
     }
 }

@@ -1,23 +1,16 @@
 package com.tambapps.image_processing.application.effect;
 
 import com.tambapps.math.fourier.filtering.Filter;
+import com.tambapps.math.fourier.filtering.Filters;
 
 public class CircEffect extends ReversableEffect {
-    private final String name;
 
     public CircEffect(boolean reversed, String name) {
-        super(reversed);
-        this.name = name;
+        super(reversed, name);
     }
 
     @Override
     Filter getFilter(int M, int N, double value) {
-        //TODO
-        throw new RuntimeException("not implemented yet");
-    }
-
-    @Override
-    String name() {
-        return name;
+        return Filters.circle(percentageValue(value, Math.max(M, N)), reversed);
     }
 }

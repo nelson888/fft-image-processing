@@ -7,6 +7,7 @@ import com.tambapps.image_processing.application.FFTApplication;
 import com.tambapps.image_processing.application.ui.view.MyImageView;
 import com.tambapps.math.util.ImageConverter;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -30,13 +31,13 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.*;
 
-//TODO CHECK SI IL RESTE DES FENETRE OUVERTES AVANT DE CLOSE L'APPLICATION
 public class HomeController {
 
   private final ObservableList<FourierImage> fourierImages = FXCollections.observableArrayList();
   private Stage imageTaskStage = new Stage();
+  private final Map<FourierImage, MyImageView> imageViewMap = new HashMap<>();
 
   @FXML
   private GridPane gridPane;
@@ -44,12 +45,10 @@ public class HomeController {
   private Button addButton;
   private Stage stage;
   private FileChooser fileChooser;
-  private int nbImages;
 
   @FXML
   private void initialize() {
     fileChooser = new FileChooser();
-    nbImages = 0;
     fileChooser.setTitle("Pick an image");
     fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("images files",
         "*.png", "*.jpg", "*.gif", "*.jpeg", "*.bmp"));
@@ -72,11 +71,16 @@ public class HomeController {
 
   public void setStage(Stage stage) {
     this.stage = stage;
+    stage.setOnHiding(event -> {
+      if (imageTaskStage != null) {
+        imageTaskStage.close();
+      }
+    });
   }
 
   @FXML
   private void pickImages(ActionEvent event) {
-    if (nbImages == 8) {
+    if (fourierImages.size() == 8) {
       maxImagesDialog();
       return;
     }
@@ -111,6 +115,9 @@ public class HomeController {
 
     gridPane.getChildren().remove(addButton);
 
+    if (result.get() == gray) {
+      ImageConverter.toGrayScale(image);
+    }
     BufferedImage originalImage = ImageConverter.copy(image);
     FourierImage fourierImage;
 
@@ -122,22 +129,24 @@ public class HomeController {
       fourierImage = new ColoredFourierImage(originalImage, true);
     }
 
-    fourierImages.add(fourierImage);
-
     MyImageView imageView = createImageView(image);
     imageView.addEventHandler(MouseEvent.MOUSE_CLICKED,
-        e -> showImageTaskView(fourierImage, file, image, file.getName() + String
+        e -> showImageTaskView(fourierImage, file, file.getName() + String
             .format(" (%d x %d)", originalImage.getWidth(), originalImage.getHeight())));
-    gridPane.add(imageView, nbImages % 4, nbImages / 4);
+    addToGrid(imageView, fourierImages.size());
     GridPane.setHalignment(imageView, HPos.CENTER);
     GridPane.setValignment(imageView, VPos.CENTER);
 
-    nbImages++;
-    if (nbImages < 8) {
-      gridPane.add(addButton, nbImages % 4, nbImages / 4);
+    imageViewMap.put(fourierImage, imageView);
+    fourierImages.add(fourierImage);
+    if (fourierImages.size() < 8) {
+      addToGrid(addButton, fourierImages.size());
     }
   }
 
+  private void addToGrid(Node node, int i) {
+    gridPane.add(node, i % 4, i / 4);
+  }
   private void maxImagesDialog() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Max number of images reached");
@@ -154,7 +163,7 @@ public class HomeController {
     return imageView;
   }
 
-  private void showImageTaskView(FourierImage fourierImage, File imageFile, BufferedImage image, String title) {
+  private void showImageTaskView(FourierImage fourierImage, File imageFile, String title) {
     FXMLLoader loader = new FXMLLoader();
 
     loader.setLocation(FFTApplication.class.getResource("/view/image_task_view.fxml"));
@@ -177,7 +186,21 @@ public class HomeController {
     controller.setFourierImage(fourierImage);
     controller.setStage(imageTaskStage);
     controller.setImageFile(imageFile);
-
+    controller.setHomeController(this);
     imageTaskStage.show();
+  }
+
+  void removeFourierImage(FourierImage fourierImage) {
+    fourierImages.remove(fourierImage);
+    ObservableList<Node> children = gridPane.getChildren();
+    children.remove(imageViewMap.get(fourierImage));
+    List<Node> nodes = new ArrayList<>(children.size());
+
+    while (!children.isEmpty()) {
+      nodes.add(children.remove(0));
+    }
+    for (int i = 0; i < nodes.size(); i++) {
+      addToGrid(nodes.get(i), i);
+    }
   }
 }

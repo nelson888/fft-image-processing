@@ -5,11 +5,8 @@ import com.tambapps.math.fourier.filtering.Filters;
 
 public class RecEffect extends ReversableEffect {
 
-    private final String name;
-
     public RecEffect(boolean reversed, String name) {
-        super(reversed);
-        this.name = name;
+        super(reversed, name);
     }
 
     @Override
@@ -17,8 +14,4 @@ public class RecEffect extends ReversableEffect {
         return Filters.rectangle(percentageValue(value, M), percentageValue(value, N), reversed);
     }
 
-    @Override
-    String name() {
-        return name;
-    }
 }
