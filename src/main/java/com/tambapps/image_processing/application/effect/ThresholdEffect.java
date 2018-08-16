@@ -42,7 +42,9 @@ public class ThresholdEffect extends AbstractEffect {
         throw new RuntimeException(e);
       }
     }
-    double threshold = value == 0d ? Double.MAX_VALUE : percentageValue(100d - value, max);
+    double percentage = (100d - value) / 100d;
+    percentage = percentage * percentage;
+    double threshold = percentage * max;
 
     LOGGER.info("Applying {} with max value of {}", this, threshold);
     return Filters.threshold(threshold);
@@ -65,12 +67,14 @@ public class ThresholdEffect extends AbstractEffect {
     final double nbElements = channels.length * getTransform().getM() * getTransform().getN();
     ArrayList<Double> absValues = new ArrayList<>((int) nbElements);
 
+    double max = -1;
     for (Complex2DArray array : channels) {
       for (int i = 0; i < array.getM() * array.getN(); i++) {
         Complex c = array.get(i);
         double abs = c.abs();
         absValues.add(abs);
         average += abs;
+        if (max < abs) max = abs;
       }
     }
 
@@ -83,7 +87,7 @@ public class ThresholdEffect extends AbstractEffect {
     ecartType /= nbElements;
     ecartType = Math.sqrt(ecartType);
 
-    return ecartType;
+    return max + 1;
   }
 
   private double pow2(double d) {
