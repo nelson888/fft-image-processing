@@ -30,7 +30,7 @@ public abstract class AbstractFourierImage<T extends AbstractImageHolder> implem
 
   @Override
   public void computeInverse(FastFourierTransformer2D transformer) {
-    inverse = computeInverse(transform, transformer, padding);
+    inverse = computeInverse(transform, transformer);
     inverse.computeUnpaddedImage(padding, transform.getImage().getType());
     if (changeListener != null) {
       changeListener.onInverseChanged(inverse.getImage());
@@ -69,7 +69,7 @@ public abstract class AbstractFourierImage<T extends AbstractImageHolder> implem
 
   abstract T computeTransform(T original, FastFourierTransformer2D transformer, Padding padding);
 
-  abstract T computeInverse(T transform, FastFourierTransformer2D transformer, Padding padding);
+  abstract T computeInverse(T transform, FastFourierTransformer2D transformer);
 
   abstract void changeCenter(T transform);
 

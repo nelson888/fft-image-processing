@@ -33,7 +33,7 @@ public class ColoredFourierImage
 
   @Override
   ColoredImageHolder computeInverse(ColoredImageHolder transform,
-      FastFourierTransformer2D transformer, Padding padding) {
+      FastFourierTransformer2D transformer) {
     ColoredImageHolder inverse =
         new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < transform.channels.length; i++) {

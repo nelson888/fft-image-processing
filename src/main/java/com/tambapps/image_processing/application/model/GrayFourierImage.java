@@ -27,12 +27,9 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
 
   @Override
   GrayImageHolder computeInverse(GrayImageHolder transform,
-      FastFourierTransformer2D transformer, Padding padding) {
+      FastFourierTransformer2D transformer) {
     GrayImageHolder inverse = new GrayImageHolder(Complex2DArray.copy(transform.getArray()));
     transformer.inverse(inverse.getArray());
-    inverse.setImage(ImageConverter
-        .fromArrayGrayScale(FFTUtils.unpaddedCopy(inverse.getArray(), padding),
-            transform.getImage().getType()));
     return inverse;
   }
 

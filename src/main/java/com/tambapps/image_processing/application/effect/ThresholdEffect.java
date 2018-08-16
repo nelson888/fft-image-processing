@@ -5,11 +5,12 @@ import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.filtering.Filters;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-//TODO STILL DOESN'T WORK AND LOG EXCEPTIONS ON FFT2D
-//todo change version of javaFX
-//TODO LOG EXCEPITIONS ON FFT2D
 public class ThresholdEffect extends AbstractEffect {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ThresholdEffect.class);
 
     private double max;
 
@@ -36,11 +37,18 @@ public class ThresholdEffect extends AbstractEffect {
 
     @Override
     Filter getFilter(int M, int N, double value) {
-        return Filters.threshold(max  * (100d - value));
+        double threshold = max  * (100d - value);
+        LOGGER.info("Applying {} with max value of {}", this, threshold);
+        return Filters.threshold(threshold);
     }
 
     @Override
     String name() {
         return "threshold";
+    }
+
+    @Override
+    public String toString() {
+        return name() + " effect";
     }
 }
