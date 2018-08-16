@@ -4,44 +4,45 @@ import com.tambapps.image_processing.application.model.ImageHolder;
 
 public interface Effect {
 
-    Effect NONE = new Effect() {
-        @Override
-        public void apply(double value) {
+  Effect NONE = new Effect() {
+    @Override
+    public void apply(double value) {
 
-        }
+    }
 
-        @Override
-        public ImageHolder getResult() {
-            return null;
-        }
+    @Override
+    public ImageHolder getResult() {
+      return null;
+    }
 
-        @Override
-        public void setTransform(ImageHolder transform) {
+    @Override
+    public void setTransform(ImageHolder transform) {
 
-        }
+    }
 
-        @Override
-        public double getMaxValue() {
-            return 0;
-        }
+    @Override
+    public double getMaxValue() {
+      return 0;
+    }
 
-        @Override
-        public double getMinValue() {
-            return 0;
-        }
+    @Override
+    public double getMinValue() {
+      return 0;
+    }
 
-        @Override
-        public String toString() {
-            return "no effect";
-        }
-    };
+    @Override
+    public String toString() {
+      return "no effect";
+    }
+  };
 
-    void apply(double value);
+  void apply(double value);
 
-    ImageHolder getResult();
+  ImageHolder getResult();
 
-    void setTransform(ImageHolder transform);
+  void setTransform(ImageHolder transform);
 
-    double getMaxValue();
-    double getMinValue();
+  double getMaxValue();
+
+  double getMinValue();
 }

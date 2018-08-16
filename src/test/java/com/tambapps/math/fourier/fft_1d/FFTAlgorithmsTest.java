@@ -54,7 +54,7 @@ public class FFTAlgorithmsTest {
 
   @Test
   public void inverseTest() {
-    for (FFTAlgorithm algorithm : new FFTAlgorithm[] {FFTAlgorithms.CT_ITERATIVE,
+    for (FFTAlgorithm algorithm : new FFTAlgorithm[]{FFTAlgorithms.CT_ITERATIVE,
         FFTAlgorithms.BASIC, FFTAlgorithms.CT_RECURSIVE}) {
       Vector<Complex> result = new ArrayVector<>(expected.getSize());
       Vector.copy(expected, result);

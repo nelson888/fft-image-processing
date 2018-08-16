@@ -8,7 +8,6 @@ import com.tambapps.math.fourier.filtering.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//TODO choose wise max
 public class ThresholdEffect extends AbstractEffect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ThresholdEffect.class);

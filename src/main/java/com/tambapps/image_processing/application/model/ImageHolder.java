@@ -6,10 +6,15 @@ import java.awt.image.BufferedImage;
 
 public interface ImageHolder {
 
-    BufferedImage getImage();
-    void computeImage(int imageType);
-    ImageHolder copy();
-    Complex2DArray[] getChannels();
-    int getM();
-    int getN();
+  BufferedImage getImage();
+
+  void computeImage(int imageType);
+
+  ImageHolder copy();
+
+  Complex2DArray[] getChannels();
+
+  int getM();
+
+  int getN();
 }

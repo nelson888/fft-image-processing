@@ -1,4 +1,4 @@
-package com.tambapps.image_processing.application.ui.view;
+package com.tambapps.image_processing.application.view;
 
 import javafx.scene.control.TextField;
 
@@ -8,8 +8,7 @@ public class NumberField extends TextField {
     textField.textProperty().addListener((observable, oldValue, newValue) -> {
       if (newValue.isEmpty()) {
         textField.setText("0");
-      }
-      else if (!newValue.matches("\\d*")) {
+      } else if (!newValue.matches("\\d*")) {
         textField.setText(newValue.replaceAll("[^\\d]", ""));
       }
     });

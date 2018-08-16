@@ -9,7 +9,7 @@ import com.tambapps.image_processing.application.effect.RecEffect;
 import com.tambapps.image_processing.application.effect.ThresholdEffect;
 import com.tambapps.image_processing.application.model.FourierImage;
 import com.tambapps.image_processing.application.FFTApplication;
-import com.tambapps.image_processing.application.ui.view.NumberField;
+import com.tambapps.image_processing.application.view.NumberField;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
 import com.tambapps.math.fourier.util.Padding;
@@ -21,7 +21,16 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-import javafx.scene.control.*;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -153,7 +162,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   private void initialize() {
     NumberField.addNumberListener(paddingMInput);
     NumberField.addNumberListener(paddingNInput);
-    imageButtons = new Button[] {original, transform, processed};
+    imageButtons = new Button[]{original, transform, processed};
 
     fastFourierTransformer = new FastFourierTransformer2D(FFT_EXECUTOR_SERVICE,
         FFTApplication.MAX_FFT_THREADS - 1);
@@ -212,6 +221,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
     alert.setContentText("Please wait the end of the computation");
     alert.show();
   }
+
   @FXML
   private void computeFFT(ActionEvent event) {
     if (transforming) {
@@ -222,7 +232,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
     int paddingM = parsePadding(paddingMInput);
     int paddingN = parsePadding(paddingNInput);
     fourierImage.setPadding(paddingN / 2, paddingN / 2 + paddingN % 2,
-            paddingM / 2, paddingM / 2 + paddingM % 2);
+        paddingM / 2, paddingM / 2 + paddingM % 2);
 
     String title = stage.getTitle();
     stage.setTitle("Computing Fourier Transform...");
@@ -360,6 +370,7 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
         .append(".")
         .toString();
   }
+
   @FXML
   private void remove(ActionEvent event) {
     homeController.removeFourierImage(fourierImage);

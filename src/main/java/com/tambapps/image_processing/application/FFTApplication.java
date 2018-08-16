@@ -10,7 +10,9 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+//TODO IMPLEMENT HELP SCREEN THAT DESCRIBE THIS APPLICATION (INA LISTVIEW?)
+//TODO REVIEW THRESHOLD EFFECT
+//TODO TEST ON ALPHA IMAGES
 public class FFTApplication extends Application {
 
   public static final  int MAX_FFT_THREADS = Runtime.getRuntime().availableProcessors() + 1;

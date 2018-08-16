@@ -1,4 +1,4 @@
-package com.tambapps.image_processing.application.ui.view;
+package com.tambapps.image_processing.application.view;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.effect.DropShadow;
@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import java.awt.image.BufferedImage;
 
 public class MyImageView extends ImageView {
-  private static final Color SHADOW_COLOR = Color.color(0d, 12d / 255d, 155d / 255d);
+
   private BufferedImage originImage;
 
   public MyImageView() {

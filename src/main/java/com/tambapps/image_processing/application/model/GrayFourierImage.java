@@ -16,7 +16,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
 
   @Override
   GrayImageHolder computeTransform(GrayImageHolder original,
-      FastFourierTransformer2D transformer, Padding padding) {
+                                   FastFourierTransformer2D transformer, Padding padding) {
     Complex2DArray transformArray = FFTUtils.paddedCopy(original.getArray(), padding);
     GrayImageHolder transform =
         new GrayImageHolder(transformArray);
@@ -27,7 +27,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
 
   @Override
   GrayImageHolder computeInverse(GrayImageHolder transform,
-      FastFourierTransformer2D transformer) {
+                                 FastFourierTransformer2D transformer) {
     GrayImageHolder inverse = new GrayImageHolder(Complex2DArray.copy(transform.getArray()));
     transformer.inverse(inverse.getArray());
     return inverse;
@@ -57,8 +57,8 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
     @Override
     void computeUnpaddedImage(Padding padding, int imageType) {
       setImage(ImageConverter
-              .fromArrayGrayScale(FFTUtils.unpaddedCopy(getArray(), padding),
-                      imageType));
+          .fromArrayGrayScale(FFTUtils.unpaddedCopy(getArray(), padding),
+              imageType));
     }
 
     @Override

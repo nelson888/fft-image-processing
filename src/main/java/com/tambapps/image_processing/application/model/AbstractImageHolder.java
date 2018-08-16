@@ -11,7 +11,7 @@ public abstract class AbstractImageHolder implements ImageHolder {
   final Complex2DArray[] channels;
 
   AbstractImageHolder(Complex2DArray array) {
-    this.channels = new Complex2DArray[] {array};
+    this.channels = new Complex2DArray[]{array};
   }
 
   AbstractImageHolder(BufferedImage image, int nbChannels) {
@@ -29,10 +29,6 @@ public abstract class AbstractImageHolder implements ImageHolder {
 
   public BufferedImage getImage() {
     return image;
-  }
-
-  void computeImage() {
-    computeImage(getImage().getType());
   }
 
   @Override

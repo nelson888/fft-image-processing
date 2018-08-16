@@ -4,10 +4,10 @@ import com.tambapps.image_processing.application.model.ColoredFourierImage;
 import com.tambapps.image_processing.application.model.FourierImage;
 import com.tambapps.image_processing.application.model.GrayFourierImage;
 import com.tambapps.image_processing.application.FFTApplication;
-import com.tambapps.image_processing.application.ui.view.MyImageView;
+import com.tambapps.image_processing.application.view.MyImageView;
 import com.tambapps.math.util.ImageConverter;
+
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -31,7 +31,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class HomeController {
 
@@ -147,6 +151,7 @@ public class HomeController {
   private void addToGrid(Node node, int i) {
     gridPane.add(node, i % 4, i / 4);
   }
+
   private void maxImagesDialog() {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     alert.setTitle("Max number of images reached");

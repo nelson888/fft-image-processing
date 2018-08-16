@@ -1,7 +1,6 @@
 package com.tambapps.image_processing.application.model;
 
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
-import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;

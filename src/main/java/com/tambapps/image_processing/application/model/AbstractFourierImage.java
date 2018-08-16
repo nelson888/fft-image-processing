@@ -4,6 +4,7 @@ import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;
+
 public abstract class AbstractFourierImage<T extends AbstractImageHolder> implements FourierImage {
 
   private final T original;
