@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -193,6 +194,23 @@ public class HomeController {
     controller.setImageFile(imageFile);
     controller.setHomeController(this);
     imageTaskStage.show();
+  }
+
+  @FXML
+  private void about(ActionEvent event) {
+    Parent root;
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(FFTApplication.class.getResource("/view/about_view.fxml"));
+    try {
+      root = loader.load();
+    } catch (IOException e) {
+      throw new RuntimeException("Couldn't load root", e);
+    }
+    Scene scene = new Scene(root);
+
+    Stage stage = new Stage();
+    stage.setScene(scene);
+    stage.showAndWait();
   }
 
   void removeFourierImage(FourierImage fourierImage) {

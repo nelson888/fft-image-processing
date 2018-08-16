@@ -62,4 +62,9 @@ public abstract class AbstractEffect implements Effect {
   public double getMinValue() {
     return 0;
   }
+
+  @Override
+  public void onDismiss() {
+
+  }
 }

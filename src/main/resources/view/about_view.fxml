@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<ScrollPane prefHeight="409.0" prefWidth="622.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <VBox prefHeight="406.0" prefWidth="598.0">
+         <children>
+            <Label styleClass="big-title" text="Fourier Image Processing">
+               <VBox.margin>
+                  <Insets left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="This app shows how Fourier Transform can be applied for Image Processing">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </Text>
+            <Label styleClass="title" text="How to use">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="This app handle .png and .jpg images." textAlignment="JUSTIFY">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="First, you need pick an image by clicking on the 'add image' button and select what type of image it is (gray scale, colored, ...)." textAlignment="JUSTIFY" wrappingWidth="555.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="Then click the image will appear on the window, click on it to open the Fourier Transform screen." textAlignment="JUSTIFY" wrappingWidth="555.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="In this screen, you can start by computing the fourier transform of the image. Before computing it, you can assign some padding to the image. The padding is useful to make the image size a power of 2 because there is a faster algorithm to compute FFT on this type of images" textAlignment="JUSTIFY" wrappingWidth="556.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="Once the FT is computed, you can apply some effects on it (low pass filter, threshold filter...). Select the effect on the left part on the screen and choose its intensity with the slider. Once you chose the right intensity, hit the 'apply effect' button below" textAlignment="JUSTIFY" wrappingWidth="584.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="Compute the Fourier inverse at the end to see the result of the effect(s) applied and eventually save the Fourier Transform and/or the result" textAlignment="JUSTIFY" wrappingWidth="582.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Label styleClass="title" text="Effects">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="- Threshold effect: that filter fourier transform points with an absolute value equal or superior to a threshold" textAlignment="JUSTIFY" wrappingWidth="584.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="- Rec effects: filter value in or out of a rectangle centered in the center of the image" textAlignment="JUSTIFY" wrappingWidth="582.0">
+               <VBox.margin>
+                  <Insets left="15.0" />
+               </VBox.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="content" text="- Circ effects: filter value in or out of a circle centered in the center of the image" textAlignment="JUSTIFY" wrappingWidth="581.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" left="15.0" />
+               </VBox.margin>
+            </Text>
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

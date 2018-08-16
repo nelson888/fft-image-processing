@@ -21,7 +21,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -167,15 +166,16 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
     fastFourierTransformer = new FastFourierTransformer2D(FFT_EXECUTOR_SERVICE,
         FFTApplication.MAX_FFT_THREADS - 1);
 
-    ObservableList<Effect> effects = FXCollections.observableArrayList(new CircEffect(true, CIRC_HIGH), new CircEffect(false, CIRC_LOW), new RecEffect(false, REC_HIGH), new RecEffect(true, REC_LOW), new ThresholdEffect(), Effect.NONE);
+    ObservableList<Effect> effects = FXCollections.observableArrayList(new CircEffect(true, CIRC_HIGH), new CircEffect(false, CIRC_LOW), new RecEffect(false, REC_HIGH), new RecEffect(true, REC_LOW), new ThresholdEffect(TASK_EXECUTOR_SERVICE), Effect.NONE);
     SpinnerValueFactory<Effect> valueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(effects);
     effectSpinner.setValueFactory(valueFactory);
     valueFactory.setValue(effects.get(effects.size() - 1));
     currentEffect = valueFactory.getValue();
     valueFactory.valueProperty().addListener((observable, oldValue, newValue) -> {
       effectControls.setDisable(newValue == Effect.NONE || fourierImage.getTransformHolder() == null);
+      oldValue.onDismiss();
       if (fourierImage.getTransform() != null) {
-        imageView.setImage(toImage(fourierImage.getTransform()));
+        setImage(FOURIER_TRANSFORM);
       }
       currentEffect = newValue;
       checkEffectUpdate();

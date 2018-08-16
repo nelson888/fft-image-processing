@@ -34,6 +34,11 @@ public interface Effect {
     public String toString() {
       return "no effect";
     }
+
+    @Override
+    public void onDismiss() {
+
+    }
   };
 
   void apply(double value);
@@ -45,4 +50,6 @@ public interface Effect {
   double getMaxValue();
 
   double getMinValue();
+
+  void onDismiss();
 }

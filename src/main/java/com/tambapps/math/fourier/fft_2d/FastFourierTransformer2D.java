@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * This is the class that applies 2D Fast Fourier Transform
- * by applying the 1D FFT on each row (concurrently) and then on each column
+ * by applying the 1D FFT independently on each row and then on each column (concurrently)
  */
 public class FastFourierTransformer2D {
 

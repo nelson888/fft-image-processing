@@ -10,9 +10,7 @@ import javafx.stage.Stage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-//TODO IMPLEMENT HELP SCREEN THAT DESCRIBE THIS APPLICATION (INA LISTVIEW?)
-//TODO REVIEW THRESHOLD EFFECT
-//TODO TEST ON ALPHA IMAGES
+
 public class FFTApplication extends Application {
 
   public static final  int MAX_FFT_THREADS = Runtime.getRuntime().availableProcessors() + 1;
@@ -28,7 +26,7 @@ public class FFTApplication extends Application {
   @Override
   public void start(final Stage stage) throws Exception {
     setUserAgentStylesheet(STYLESHEET_MODENA);
-    stage.setTitle("Fourier AbstractImageHolder Processing");
+    stage.setTitle("Fourier Image Processing");
 
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(FFTApplication.class.getResource("/view/home.fxml"));

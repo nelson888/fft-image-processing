@@ -14,3 +14,20 @@
 .button-highlighted:hover {
     -fx-background-color: #0053d7;
 }
+
+.big-title {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 22pt;
+    -fx-text-fill: black;
+}
+
+.title {
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 16pt;
+    -fx-text-fill: black;
+}
+
+.content {
+    -fx-font-size: 11pt;
+    -fx-text-fill: black;
+}
