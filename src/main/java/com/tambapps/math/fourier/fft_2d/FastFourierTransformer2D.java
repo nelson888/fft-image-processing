@@ -6,13 +6,13 @@ import com.tambapps.math.fourier.fft_1d.FFTAlgorithm;
 import com.tambapps.math.fourier.fft_1d.FFTAlgorithms;
 import com.tambapps.math.util.PowerOfTwo;
 import com.tambapps.math.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * This is the class that applies 2D Fast Fourier Transform
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class FastFourierTransformer2D {
 
   private static final Logger LOGGER =
-      Logger.getLogger(FastFourierTransformer2D.class.getSimpleName());
+      LoggerFactory.getLogger(FastFourierTransformer2D.class.getSimpleName());
 
   private final double maxThreads;
   private final ExecutorCompletionService<Boolean> executorService;
@@ -32,7 +32,14 @@ public class FastFourierTransformer2D {
   }
 
   public boolean transform(Complex2DArray f, FFTAlgorithm algorithm) {
-    return compute(f, false, true, algorithm) && compute(f, false, false, algorithm);
+    LOGGER.info("Computing FT of array of size ({}, {}) with algorithm {}", f.getM(), f.getN(), algorithm.getName());
+    try {
+      return compute(f, false, true, algorithm) && compute(f, false, false, algorithm);
+    } finally {
+      LOGGER.info("Successfully computed FT of array of size ({}, {})", f.getM(), f.getN());
+
+    }
+
   }
 
   private boolean isSizePowerOfTwo(Complex2DArray f) {
@@ -48,7 +55,12 @@ public class FastFourierTransformer2D {
   }
 
   public boolean inverse(Complex2DArray f, FFTAlgorithm algorithm) {
-    return compute(f, true, true, algorithm) && compute(f, true, false, algorithm);
+    LOGGER.info("Computing inverse FT of array of size ({}, {}) with algorithm {}", f.getM(), f.getN(), algorithm.getName());
+    try {
+      return compute(f, true, true, algorithm) && compute(f, true, false, algorithm);
+    } finally {
+      LOGGER.info("Successfully computed FT of array of size ({}, {})", f.getM(), f.getN());
+    }
   }
 
   public boolean inverse(Complex2DArray f) {
@@ -80,10 +92,10 @@ public class FastFourierTransformer2D {
       try {
         executorService.take().get();
       } catch (InterruptedException e) {
-        LOGGER.log(Level.SEVERE, String.format("Couldn't wait longer for thread %d", i), e);
+        LOGGER.error("Couldn't wait longer for thread " + i, e);
         success = false;
       } catch (ExecutionException e) {
-        LOGGER.log(Level.SEVERE, String.format("Thread %d couldn't retrieve success value", i), e);
+        LOGGER.error(String.format("Thread %d couldn't retrieve success value", i), e);
         success = false;
       }
     }

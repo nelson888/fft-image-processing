@@ -17,9 +17,10 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
   @Override
   GrayImageHolder computeTransform(GrayImageHolder original,
       FastFourierTransformer2D transformer, Padding padding) {
+    Complex2DArray transformArray = FFTUtils.paddedCopy(original.getArray(), padding);
     GrayImageHolder transform =
-        new GrayImageHolder(FFTUtils.paddedCopy(original.getArray(), padding));
-    transformer.transform(transform.getArray());
+        new GrayImageHolder(transformArray);
+    transformer.transform(transformArray);
     transform.computeImage(original.getImage().getType());
     return transform;
   }

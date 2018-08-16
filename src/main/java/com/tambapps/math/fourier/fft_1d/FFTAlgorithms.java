@@ -8,13 +8,58 @@ import com.tambapps.math.util.Vector;
 /**
  * Class that implements multiple 1D FFT algorithms
  */
-public class FFTAlgorithms {
+public final class FFTAlgorithms {
 
-  public static final FFTAlgorithm BASIC = FFTAlgorithms::basicFFT;
+  public static final FFTAlgorithm BASIC = new FFTAlgorithm() {
+    @Override
+    public void compute(Vector<Complex> vector) {
+      basicFFT(vector);
+    }
+
+    @Override
+    public String getName() {
+      return "Basic algorithm";
+    }
+
+    @Override
+    public String getDescription() {
+      return "Compute the sums like in the basic FFT formula";
+    }
+  };
 
   //Cooley-Tukey algorithms (image sizes must be a power of two)
-  public static final FFTAlgorithm CT_RECURSIVE = FFTAlgorithms::recursiveFFT;
-  public static final FFTAlgorithm CT_ITERATIVE = FFTAlgorithms::iterativeFFT;
+  public static final FFTAlgorithm CT_RECURSIVE = new FFTAlgorithm() {
+    @Override
+    public void compute(Vector<Complex> vector) {
+      recursiveFFT(vector);
+    }
+
+    @Override
+    public String getName() {
+      return "Cooley-Tukey recursive algorithm";
+    }
+
+    @Override
+    public String getDescription() {
+      return "Cooley-Tukey algorithm implemented recursively (input array must have power of 2 sizes)";
+    }
+  };
+  public static final FFTAlgorithm CT_ITERATIVE = new FFTAlgorithm() {
+    @Override
+    public void compute(Vector<Complex> vector) {
+      iterativeFFT(vector);
+    }
+
+    @Override
+    public String getName() {
+      return "Cooley-Tukey iterative algorithm";
+    }
+
+    @Override
+    public String getDescription() {
+      return "Cooley-Tukey algorithm implemented iteratively (input array must have power of 2 sizes)";
+    }
+  };
 
   public static final FFTInverseAlgorithm INVERSE = FFTAlgorithms::inverse;
 
@@ -37,7 +82,7 @@ public class FFTAlgorithms {
     }
   }
 
-  public static void basicFFT(Vector<Complex> vector) {
+  private static void basicFFT(Vector<Complex> vector) {
     Vector<Complex> result = new ArrayVector<>(vector.getSize());
     basicFFT(vector, result);
     Vector.copy(result, vector);
@@ -51,7 +96,7 @@ public class FFTAlgorithms {
      * @param vector the discrete function to compute the DFT
      * @link from https://rosettacode.org/wiki/Fast_Fourier_transform#Java
      */
-  public static void iterativeFFT(Vector<Complex> vector) {
+  private static void iterativeFFT(Vector<Complex> vector) {
     int n = vector.getSize();
 
     int bits = PowerOfTwo.getExponent(n);
@@ -97,7 +142,7 @@ public class FFTAlgorithms {
     }
   }
 
-  public static void recursiveFFT(Vector<Complex> vector) {
+  private static void recursiveFFT(Vector<Complex> vector) {
     Vector.copy(recursiveCopyFFT(vector), vector);
   }
 
@@ -109,7 +154,7 @@ public class FFTAlgorithms {
    * @return the result FFT of the given vector
    * @link from https://rosettacode.org/wiki/Fast_Fourier_transform
    */
-  public static Vector<Complex> recursiveCopyFFT(Vector<Complex> vector) {
+  private static Vector<Complex> recursiveCopyFFT(Vector<Complex> vector) {
     int N = vector.getSize();
     if (N <= 1) {
       return vector;

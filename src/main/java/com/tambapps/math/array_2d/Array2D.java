@@ -53,7 +53,7 @@ abstract class Array2D<T> {
   }
 
   private void checkIndex(int row, int col) {
-    if (row < 0 || row  >= N || col < 0 || col >= N) {
+    if (row < 0 || row  >= M || col < 0 || col >= N) {
       throw new IndexOutOfBoundsException(String.format("Tried to access index (%d, %d) of array of size (%d, %d)", row, col, M, N));
     }
   }

@@ -5,4 +5,8 @@ import com.tambapps.math.util.Vector;
 
 public interface FFTAlgorithm {
   void compute(Vector<Complex> vector);
+
+  String getName();
+
+  String getDescription();
 }

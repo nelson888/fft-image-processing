@@ -38,7 +38,9 @@ public class FFTAlgorithmsTest {
 
   @Test
   public void recursiveTest() {
-    Vector<Complex> result = FFTAlgorithms.recursiveCopyFFT(input);
+    Vector<Complex> result = new ArrayVector<>(input.getSize());
+    Vector.copy(input, result);
+    FFTAlgorithms.CT_RECURSIVE.compute(result);
     assertEquals("Should be equal", expected, result);
   }
 
@@ -46,7 +48,7 @@ public class FFTAlgorithmsTest {
   public void iterativeTest() {
     Vector<Complex> result = new ArrayVector<>(input.getSize());
     Vector.copy(input, result);
-    FFTAlgorithms.iterativeFFT(result);
+    FFTAlgorithms.CT_ITERATIVE.compute(result);
     assertEquals("Should be equal", expected, result);
   }
 
