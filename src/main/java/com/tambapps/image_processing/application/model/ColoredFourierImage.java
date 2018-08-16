@@ -64,8 +64,8 @@ public class ColoredFourierImage
 
     @Override
     public void computeImage(int imageType) {
-      ImageConverter
-              .fromColoredChannels(channels, channels.length == 4);
+      setImage(ImageConverter
+              .fromColoredChannels(channels, transparancyEnabled()));
     }
 
     @Override

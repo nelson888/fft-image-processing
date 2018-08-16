@@ -51,8 +51,8 @@ public class FFTUtils {
         array.getN() + paddingLeft + paddingRight);
     for (int i = 0; i < copy.getM(); i++) {
       for (int j = 0; j < copy.getN(); j++) {
-        if (i < paddingEnd || i >= array.getM() - paddingTop ||
-            j < paddingLeft || j >= array.getN() - paddingRight) {
+        if (i < paddingEnd || i - paddingEnd >= array.getM() ||
+            j < paddingLeft || j - paddingLeft >= array.getN()) {
           copy.set(i, j, Complex.ZERO);
         } else {
           copy.set(i, j, array.get(i - paddingEnd, j - paddingLeft));

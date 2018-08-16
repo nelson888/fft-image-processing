@@ -21,8 +21,4 @@ public class RecEffect extends ReversableEffect {
         return Filters.rectangle(m, n, reversed);
     }
 
-    @Override
-    public String toString() {
-        return reversed ? "Reversed Rectangle effect" : "Rectangle effect";
-    }
 }

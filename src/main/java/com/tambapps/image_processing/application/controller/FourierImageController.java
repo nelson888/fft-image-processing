@@ -44,10 +44,10 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   private static final int FOURIER_TRANSFORM = 1;
   private static final int PROCESSED_IMAGE = 2;
 
-  private static final String REC_LOW = "rec\nlow pass";
-  private static final String REC_HIGH = "rec\nhigh pass";
-  private static final String CIRC_LOW = "circ\nlow pass";
-  private static final String CIRC_HIGH = "circ\nhigh pass";
+  private static final String REC_LOW = "rec low pass";
+  private static final String REC_HIGH = "rec high pass";
+  private static final String CIRC_LOW = "circ low pass";
+  private static final String CIRC_HIGH = "circ high pass";
 
   private static final String BUTTON_HIGHLIGHTED = "button-highlighted";
 
@@ -88,11 +88,11 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
   private Stage stage;
   private FastFourierTransformer2D fastFourierTransformer;
   private File imageFile;
-  private boolean transforming = false;
-  private boolean inversing = false;
+  private volatile boolean transforming = false;
+  private volatile boolean inversing = false;
   private HomeController homeController;
 
-  public void setHomeController(HomeController homeController) {
+  void setHomeController(HomeController homeController) {
     this.homeController = homeController;
   }
 
@@ -157,7 +157,6 @@ public class FourierImageController implements FourierImage.ImageChangeListener 
 
     fastFourierTransformer = new FastFourierTransformer2D(FFT_EXECUTOR_SERVICE,
         FFTApplication.MAX_FFT_THREADS - 1);
-
 
     ObservableList<Effect> effects = FXCollections.observableArrayList(new CircEffect(true, CIRC_HIGH), new CircEffect(false, CIRC_LOW), new RecEffect(false, REC_HIGH), new RecEffect(true, REC_LOW), new ThresholdEffect(), Effect.NONE);
     SpinnerValueFactory<Effect> valueFactory = new SpinnerValueFactory.ListSpinnerValueFactory<>(effects);

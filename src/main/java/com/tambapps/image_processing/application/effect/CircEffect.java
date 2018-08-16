@@ -20,8 +20,4 @@ public class CircEffect extends ReversableEffect {
         return Filters.circle(radius, reversed);
     }
 
-    @Override
-    public String toString() {
-        return reversed ? "Reversed Circle effect" : "Circle effect";
-    }
 }
