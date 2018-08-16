@@ -32,7 +32,7 @@ public class FastFourierTransformer2D {
   }
 
   public boolean transform(Complex2DArray f, FFTAlgorithm algorithm) {
-    LOGGER.info("Computing FT of array of size ({}, {}) with algorithm {}", f.getM(), f.getN(), algorithm.getName());
+    LOGGER.info("Computing FT of array of size ({}, {}) with the {} algorithm", f.getM(), f.getN(), algorithm.getName());
     try {
       return compute(f, false, true, algorithm) && compute(f, false, false, algorithm);
     } finally {
@@ -55,11 +55,11 @@ public class FastFourierTransformer2D {
   }
 
   public boolean inverse(Complex2DArray f, FFTAlgorithm algorithm) {
-    LOGGER.info("Computing inverse FT of array of size ({}, {}) with algorithm {}", f.getM(), f.getN(), algorithm.getName());
+    LOGGER.info("Computing inverse FT of array of size ({}, {}) with the {} algorithm", f.getM(), f.getN(), algorithm.getName());
     try {
       return compute(f, true, true, algorithm) && compute(f, true, false, algorithm);
     } finally {
-      LOGGER.info("Successfully computed FT of array of size ({}, {})", f.getM(), f.getN());
+      LOGGER.info("Successfully inverse computed FT of array of size ({}, {})", f.getM(), f.getN());
     }
   }
 

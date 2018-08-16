@@ -18,7 +18,7 @@ public final class FFTAlgorithms {
 
     @Override
     public String getName() {
-      return "Basic algorithm";
+      return "Basic";
     }
 
     @Override
@@ -36,7 +36,7 @@ public final class FFTAlgorithms {
 
     @Override
     public String getName() {
-      return "Cooley-Tukey recursive algorithm";
+      return "Cooley-Tukey recursive";
     }
 
     @Override
@@ -52,7 +52,7 @@ public final class FFTAlgorithms {
 
     @Override
     public String getName() {
-      return "Cooley-Tukey iterative algorithm";
+      return "Cooley-Tukey iterative";
     }
 
     @Override
