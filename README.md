@@ -1,4 +1,4 @@
-# Desktop File Sharing Tool
+# Fourier image Processing
 
 This is an app that show an use case of Fourier series: image processing
 
