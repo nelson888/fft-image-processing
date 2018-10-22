@@ -19,7 +19,7 @@ public abstract class AbstractEffect implements Effect {
   public final void apply(double value) {
     Filter filter = getFilter(transform.getM(), transform.getN(), value);
     for (int i = 0; i < result.getChannels().length; i++) {
-      result.getChannels()[i] = Complex2DArray.copy(transform.getChannels()[i]);
+      result.getChannels()[i] = transform.getChannels()[i].copy();
       filter.apply(result.getChannels()[i]);
     }
 

@@ -12,7 +12,7 @@ public class ComplexTest {
     Complex complex1 = Complex.of(8);
     Complex complex2 = Complex.of(4, 1);
 
-    assertEquals("Should be equal", Complex.of(12, 1), complex1.add(complex2));
+    assertEquals("Should be equal", Complex.of(12, 1), complex1.plus(complex2));
   }
 
   @Test
@@ -29,11 +29,11 @@ public class ComplexTest {
     Complex c1 = Complex.ONE;
     Complex c2 = Complex.of(0, 2);
 
-    assertEquals("Should be equal", Complex.ZERO, c1.mul(Complex.ZERO));
-    assertEquals("Should be equal", Complex.ZERO, Complex.ZERO.mul(c1));
+    assertEquals("Should be equal", Complex.ZERO, c1.multiply(Complex.ZERO));
+    assertEquals("Should be equal", Complex.ZERO, Complex.ZERO.multiply(c1));
 
-    assertEquals("Should be equal", Complex.I.scl(2), c1.mul(c2));
-    assertEquals("Should be equal", Complex.I.scl(2), c2.mul(c1));
+    assertEquals("Should be equal", Complex.I.multiply(2), c1.multiply(c2));
+    assertEquals("Should be equal", Complex.I.multiply(2), c2.multiply(c1));
   }
 
 }

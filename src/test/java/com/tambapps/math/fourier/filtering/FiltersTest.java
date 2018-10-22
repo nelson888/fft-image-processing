@@ -18,7 +18,7 @@ public class FiltersTest {
 
     Filters.rectangle(1, 1, false).apply(array);
 
-    Complex2DArray expected = Complex2DArray.copy(array);
+    Complex2DArray expected = array.copy();
     for (int i = 0; i < N; i++) {
       expected.set(i, 0, Complex.ZERO);
       expected.set(0, i, Complex.ZERO);

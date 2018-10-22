@@ -76,9 +76,9 @@ public final class FFTAlgorithms {
     for (int k = 0; k < vector.getSize(); k++) {
       Complex sum = Complex.ZERO;
       for (int n = 0; n < vector.getSize(); n++) {
-        sum = sum.add(vector.getElement(n).mul(Complex.expI(-2d * Math.PI * ((double) k) * ((double) n) / N)));
+        sum = sum.plus(vector.getAt(n).multiply(Complex.expI(-2d * Math.PI * ((double) k) * ((double) n) / N)));
       }
-      result.setElement(k, sum);
+      result.setAt(k, sum);
     }
   }
 
@@ -108,12 +108,12 @@ public final class FFTAlgorithms {
         for (int k = 0; k < m / 2; k++) {
           int evenIndex = i + k;
           int oddIndex = i + k + (m / 2);
-          Complex even = vector.getElement(evenIndex);
-          Complex odd = vector.getElement(oddIndex);
+          Complex even = vector.getAt(evenIndex);
+          Complex odd = vector.getAt(oddIndex);
 
-          Complex wm = Complex.expI(-2d * Math.PI * k / dM).mul(odd);
-          vector.setElement(evenIndex, even.add(wm));
-          vector.setElement(oddIndex, even.sub(wm));
+          Complex wm = Complex.expI(-2d * Math.PI * k / dM).multiply(odd);
+          vector.setAt(evenIndex, even.plus(wm));
+          vector.setAt(oddIndex, even.minus(wm));
         }
       }
     }
@@ -136,9 +136,9 @@ public final class FFTAlgorithms {
   private static void bitReverseVector(Vector<Complex> buffer, int bits) {
     for (int j = 1; j < buffer.getSize() / 2; j++) {
       int swapPos = bitReversedIndex(j, bits);
-      Complex temp = buffer.getElement(j);
-      buffer.setElement(j, buffer.getElement(swapPos));
-      buffer.setElement(swapPos, temp);
+      Complex temp = buffer.getAt(j);
+      buffer.setAt(j, buffer.getAt(swapPos));
+      buffer.setAt(swapPos, temp);
     }
   }
 
@@ -164,13 +164,13 @@ public final class FFTAlgorithms {
 
     Complex[] T = new Complex[N / 2];
     for (int i = 0; i < N / 2; i++) {
-      T[i] = odds.getElement(i).mul(Complex.expI(-2d * Math.PI * ((double) i) / ((double) N)));
+      T[i] = odds.getAt(i).multiply(Complex.expI(-2d * Math.PI * ((double) i) / ((double) N)));
     }
 
     Vector<Complex> result = new ArrayVector<>(N);
     for (int i = 0; i < N / 2; i++) {
-      result.setElement(i, evens.getElement(i).add(T[i]));
-      result.setElement(i + N / 2, evens.getElement(i).sub(T[i]));
+      result.setAt(i, evens.getAt(i).plus(T[i]));
+      result.setAt(i + N / 2, evens.getAt(i).minus(T[i]));
     }
     return result;
   }
@@ -181,7 +181,7 @@ public final class FFTAlgorithms {
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
     for (int i = 0; i < vector.getSize(); i += 2) {
-      copy.setElement(count, vector.getElement(i));
+      copy.setAt(count, vector.getAt(i));
       count++;
     }
     return copy;
@@ -193,7 +193,7 @@ public final class FFTAlgorithms {
     Vector<Complex> copy = new ArrayVector<>(size);
     int count = 0;
     for (int i = 1; i < vector.getSize(); i += 2) {
-      copy.setElement(count, vector.getElement(i));
+      copy.setAt(count, vector.getAt(i));
       count++;
     }
     return copy;
@@ -206,14 +206,14 @@ public final class FFTAlgorithms {
    */
   private static void inverse(Vector<Complex> vector, FFTAlgorithm algorithm) {
     for (int i = 0; i < vector.getSize(); i++) {
-      vector.setElement(i, vector.getElement(i).conj());
+      vector.setAt(i, vector.getAt(i).conj());
     }
 
     algorithm.compute(vector);
 
     double iN = 1d / ((double) vector.getSize());
     for (int i = 0; i < vector.getSize(); i++) {
-      vector.setElement(i, vector.getElement(i).conj().scl(iN));
+      vector.setAt(i, vector.getAt(i).conj().multiply(iN));
     }
   }
 }

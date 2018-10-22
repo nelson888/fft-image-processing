@@ -7,13 +7,13 @@ public class ImmutableVector<T> extends AbstractVector<T> {
   }
 
   @Override
-  public T getElement(int i) {
+  public T getAt(int i) {
     checkIndex(i);
     return values[i];
   }
 
   @Override
-  public void setElement(int i, T value) {
+  public void setAt(int i, T value) {
     throw new UnsupportedOperationException("Cannot modify immutable vector");
   }
 

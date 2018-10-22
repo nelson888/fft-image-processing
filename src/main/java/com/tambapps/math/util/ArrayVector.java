@@ -14,13 +14,13 @@ public class ArrayVector<T> extends AbstractVector<T> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public T getElement(int i) {
+  public T getAt(int i) {
     checkIndex(i);
     return (T) objects[i];
   }
 
   @Override
-  public void setElement(int i, T value) {
+  public void setAt(int i, T value) {
     checkIndex(i);
     objects[i] = value;
   }

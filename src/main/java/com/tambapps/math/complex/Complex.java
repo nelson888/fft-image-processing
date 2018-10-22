@@ -26,7 +26,7 @@ public class Complex {
     return equal(0d, imaginary);
   }
 
-  public Complex scl(double scl) {
+  public Complex multiply(double scl) {
     return new Complex(scl * real, scl * imaginary);
   }
 
@@ -34,23 +34,34 @@ public class Complex {
     return Math.hypot(real, imaginary);
   }
 
-  public Complex add(Complex complex) {
+  public Complex plus(Complex complex) {
     return new Complex(real + complex.real, imaginary + complex.imaginary);
   }
 
-  public Complex add(Double d) {
+  public Complex plus(Double d) {
     return new Complex(real + d, imaginary);
   }
 
-  public Complex sub(Complex complex) {
+  public Complex minus(Complex complex) {
     return new Complex(real - complex.real, imaginary - complex.imaginary);
+  }
+
+  Complex div(Complex complex) {
+    throw new UnsupportedOperationException("not implemented yet");
+  }
+
+  Complex div(double number) {
+    if (equal(number, 0d)) {
+      throw new IllegalArgumentException("Cannot divide by 0");
+    }
+    return new Complex(real / number, imaginary / number);
   }
 
   public Complex conj() {
     return new Complex(real, -imaginary);
   }
 
-  public Complex mul(Complex complex) {
+  public Complex multiply(Complex complex) {
     double real = this.real * complex.real - this.imaginary * complex.imaginary;
     double imaginary = this.real * complex.imaginary + this.imaginary * complex.real;
     return new Complex(real, imaginary);

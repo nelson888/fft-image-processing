@@ -37,7 +37,7 @@ public class ColoredFourierImage
     ColoredImageHolder inverse =
         new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < transform.channels.length; i++) {
-      Complex2DArray channel = Complex2DArray.copy(transform.channels[i]);
+      Complex2DArray channel = transform.channels[i].copy();
       transformer.inverse(channel);
       inverse.channels[i] = channel;
     }
@@ -78,7 +78,7 @@ public class ColoredFourierImage
     public ImageHolder copy() {
       ColoredImageHolder holder = new ColoredImageHolder(getImage(), transparancyEnabled());
       for (int i = 0; i < channels.length; i++) {
-        holder.channels[i] = Complex2DArray.copy(channels[i]);
+        holder.channels[i] = channels[i].copy();
       }
       return holder;
     }

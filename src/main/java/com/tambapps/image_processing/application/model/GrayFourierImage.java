@@ -28,7 +28,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
   @Override
   GrayImageHolder computeInverse(GrayImageHolder transform,
                                  FastFourierTransformer2D transformer) {
-    GrayImageHolder inverse = new GrayImageHolder(Complex2DArray.copy(transform.getArray()));
+    GrayImageHolder inverse = new GrayImageHolder(transform.getArray().copy());
     transformer.inverse(inverse.getArray());
     return inverse;
   }
@@ -63,7 +63,7 @@ public class GrayFourierImage extends AbstractFourierImage<GrayFourierImage.Gray
 
     @Override
     public ImageHolder copy() {
-      GrayImageHolder holder = new GrayImageHolder(Complex2DArray.copy(getArray()));
+      GrayImageHolder holder = new GrayImageHolder(getArray().copy());
       holder.setImage(getImage());
       return holder;
     }

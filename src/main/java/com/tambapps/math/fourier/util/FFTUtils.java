@@ -28,7 +28,7 @@ public class FFTUtils {
 
   public static Complex2DArray paddedCopy(Complex2DArray array, Padding padding) {
     if (padding.equals(Padding.ZERO)) {
-      return Complex2DArray.copy(array);
+      return array.copy();
     }
     return paddedCopy(array, padding.getLeft(), padding.getRight(), padding.getTop(),
         padding.getEnd());
@@ -64,7 +64,7 @@ public class FFTUtils {
 
   public static Complex2DArray unpaddedCopy(Complex2DArray array, Padding padding) {
     if (padding.equals(Padding.ZERO)) {
-      return Complex2DArray.copy(array);
+      return array.copy();
     }
     return unpaddedCopy(array, padding.getLeft(), padding.getRight(), padding.getTop(),
         padding.getEnd());

@@ -2,7 +2,7 @@ package com.tambapps.math.array_2d;
 
 import com.tambapps.math.complex.Complex;
 
-public class ImmutableComplexArray2D extends Complex2DArray {
+public class ImmutableComplexArray2D extends Complex2DArray { //TODO rows and collumns not immutable
 
   public ImmutableComplexArray2D(int M, int N, Complex[] values) {
     super(M, N, values);

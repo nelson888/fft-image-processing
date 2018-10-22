@@ -15,7 +15,7 @@ public abstract class AbstractVector<T> implements Vector<T> {
     }
 
     for (int i = 0; i < getSize(); i++) {
-      if (!Objects.equals(getElement(i), v.getElement(i))) {
+      if (!Objects.equals(getAt(i), v.getAt(i))) {
         return false;
       }
     }
@@ -32,7 +32,7 @@ public abstract class AbstractVector<T> implements Vector<T> {
   public String toString() {
     StringBuilder stringBuilder = new StringBuilder().append("[ ");
     for (int i = 0; i < getSize(); i++) {
-      stringBuilder.append(getElement(i));
+      stringBuilder.append(getAt(i));
       if (i < getSize() - 1) {
         stringBuilder.append(", ");
       }

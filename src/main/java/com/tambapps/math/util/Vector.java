@@ -2,9 +2,9 @@ package com.tambapps.math.util;
 
 public interface Vector<T> {
 
-  T getElement(int i);
+  T getAt(int i);
 
-  void setElement(int i, T value);
+  void setAt(int i, T value);
 
   int getSize();
 
@@ -18,7 +18,7 @@ public interface Vector<T> {
       throw new IllegalArgumentException("Both vectors should have the same size");
     }
     for (int i = 0; i < src.getSize(); i++) {
-      dst.setElement(i, src.getElement(i));
+      dst.setAt(i, src.getAt(i));
     }
   }
 

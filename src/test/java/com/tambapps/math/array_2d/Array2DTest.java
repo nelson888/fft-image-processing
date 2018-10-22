@@ -20,14 +20,7 @@ public class Array2DTest {
     genericRowColumnTest(new Complex2DArray(10, 10), complexInitializer);
   }
 
-  @Test
-  public void realRowColumnTest() {
-    Initializer<Double> doubleInitializer = ((row, col) -> (double) (10 * row + col));
-    genericRowColumnTest(new Double2DArray(3, 2), doubleInitializer);
-    genericRowColumnTest(new Double2DArray(10, 10), doubleInitializer);
-  }
-
-  private <T> void genericRowColumnTest(Array2D<T> array, Initializer<T> initializer) {
+  private void genericRowColumnTest(Complex2DArray array, Initializer<Complex> initializer) {
     int M = array.getM(), N = array.getN();
 
     for (int j = 0; j < N; j++) {
@@ -37,23 +30,18 @@ public class Array2DTest {
     }
 
     for (int j = 0; j < N; j++) {
-      Vector<T> column = array.getColumn(j);
+      Vector<Complex> column = array.getColumn(j);
       for (int i = 0; i < M; i++) {
-        assertEquals("Should be equal", initializer.init(i, j), column.getElement(i));
+        assertEquals("Should be equal", initializer.init(i, j), column.getAt(i));
       }
     }
 
     for (int i = 0; i < M; i++) {
-      Vector<T> row = array.getRow(i);
+      Vector<Complex> row = array.getRow(i);
       for (int j = 0; j < N; j++) {
-        assertEquals("Should be equal", initializer.init(i, j), row.getElement(j));
+        assertEquals("Should be equal", initializer.init(i, j), row.getAt(j));
       }
     }
-  }
-
-  @Test
-  public void realRowColumnSetTest() {
-    genericRowColumnSetTest(new Double2DArray(4, 7), 2d, 3d);
   }
 
   @Test
@@ -61,19 +49,19 @@ public class Array2DTest {
     genericRowColumnSetTest(new Complex2DArray(4, 7), Complex.of(2, 4), Complex.of(34, 10));
   }
 
-  public <T> void genericRowColumnSetTest(Array2D<T> array, T valueCol, T valueRow) {
-    Vector<T> column = array.getColumn(array.getN() / 2);
+  public void genericRowColumnSetTest(Complex2DArray array, Complex valueCol, Complex valueRow) {
+    Vector<Complex> column = array.getColumn(array.getN() / 2);
     for (int i = 0; i < column.getSize(); i++) {
-      column.setElement(i, valueCol);
+      column.setAt(i, valueCol);
     }
 
     for (int j = 0; j < array.getM(); j++) {
       assertEquals("Should be equal", valueCol, array.get(j, array.getN() / 2));
     }
 
-    Vector<T> row = array.getRow(array.getM() / 2);
+    Vector<Complex> row = array.getRow(array.getM() / 2);
     for (int i = 0; i < row.getSize(); i++) {
-      row.setElement(i, valueRow);
+      row.setAt(i, valueRow);
     }
 
     for (int j = 0; j < array.getN(); j++) {
