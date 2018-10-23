@@ -30,9 +30,6 @@ To start the program, run the generated jar file
 ```
 java -jar target/fft-2d-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
-Or if you want to run it from your IDE, add "--download.path=path/to/download/files/" in program arguments. 
-
-Then go to your web browser at localhost:8080 and from there, you can setup the receive/send procedure
 
 ## Built With
 
