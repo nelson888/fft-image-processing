@@ -20,7 +20,8 @@ You must have JavaFX installed (version 8.0.171)
 
 ### Installing
 
-You can run this app from your IDE or generate the jar file by running
+You'll need to import the java-fft-library then,
+ you can run this app from your IDE or generate the jar file by running
 ```
 mvn install
 ```
