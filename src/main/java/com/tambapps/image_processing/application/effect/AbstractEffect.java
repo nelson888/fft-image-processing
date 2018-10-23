@@ -1,7 +1,6 @@
 package com.tambapps.image_processing.application.effect;
 
 import com.tambapps.image_processing.application.model.ImageHolder;
-import com.tambapps.math.array_2d.Complex2DArray;
 import com.tambapps.math.fourier.filtering.Filter;
 
 public abstract class AbstractEffect implements Effect {

@@ -1,4 +1,4 @@
-package com.tambapps.math.util;
+package com.tambapps.image_processing.application.util;
 
 import java.util.Arrays;
 

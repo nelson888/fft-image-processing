@@ -13,7 +13,7 @@ import com.tambapps.image_processing.application.view.NumberField;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 
 import com.tambapps.math.fourier.util.Padding;
-import com.tambapps.math.util.PowerOfTwo;
+import com.tambapps.image_processing.application.util.PowerOfTwo;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

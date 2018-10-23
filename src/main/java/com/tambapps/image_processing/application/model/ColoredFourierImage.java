@@ -1,10 +1,10 @@
 package com.tambapps.image_processing.application.model;
 
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.math.carray2d.CArray2D;
 import com.tambapps.math.fourier.fft_2d.FastFourierTransformer2D;
 import com.tambapps.math.fourier.util.FFTUtils;
 import com.tambapps.math.fourier.util.Padding;
-import com.tambapps.math.util.ImageConverter;
+import com.tambapps.image_processing.application.util.ImageConverter;
 
 import java.awt.image.BufferedImage;
 
@@ -23,7 +23,7 @@ public class ColoredFourierImage
                                       FastFourierTransformer2D transformer, Padding padding) {
     ColoredImageHolder transform = new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < original.channels.length; i++) {
-      Complex2DArray channel = FFTUtils.paddedCopy(original.channels[i], padding);
+      CArray2D channel = FFTUtils.paddedCopy(original.channels[i], padding);
       transformer.transform(channel);
       transform.channels[i] = channel;
     }
@@ -37,7 +37,7 @@ public class ColoredFourierImage
     ColoredImageHolder inverse =
         new ColoredImageHolder(transparencyEnabled);
     for (int i = 0; i < transform.channels.length; i++) {
-      Complex2DArray channel = transform.channels[i].copy();
+      CArray2D channel = transform.channels[i].copy();
       transformer.inverse(channel);
       inverse.channels[i] = channel;
     }
@@ -46,7 +46,7 @@ public class ColoredFourierImage
 
   @Override
   void changeCenter(ColoredImageHolder transform) {
-    for (Complex2DArray channel : transform.channels) {
+    for (CArray2D channel : transform.channels) {
       FFTUtils.changeCenter(channel);
     }
   }

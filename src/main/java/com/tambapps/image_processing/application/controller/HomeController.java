@@ -5,7 +5,7 @@ import com.tambapps.image_processing.application.model.FourierImage;
 import com.tambapps.image_processing.application.model.GrayFourierImage;
 import com.tambapps.image_processing.application.FFTApplication;
 import com.tambapps.image_processing.application.view.MyImageView;
-import com.tambapps.math.util.ImageConverter;
+import com.tambapps.image_processing.application.util.ImageConverter;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

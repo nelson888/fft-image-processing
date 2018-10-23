@@ -1,20 +1,19 @@
-package com.tambapps.math.util;
+package com.tambapps.image_processing.application.util;
 
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.math.carray2d.CArray2D;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.util.Padding;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.*;
 
 public class ImageConverter {
 
-  public static Complex2DArray toArray(BufferedImage image, Complex2DArray[] channels, boolean transparencyEnabled) {
+  public static CArray2D toArray(BufferedImage image, CArray2D[] channels, boolean transparencyEnabled) {
     for (int i = 0; i < channels.length; i++) {
-      channels[i] = new Complex2DArray(image.getHeight(), image.getWidth());
+      channels[i] = new CArray2D(image.getHeight(), image.getWidth());
     }
-    Complex2DArray array = new Complex2DArray(image.getHeight(), image.getWidth());
+    CArray2D array = new CArray2D(image.getHeight(), image.getWidth());
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
         int rgb = image.getRGB(x, y);
@@ -36,8 +35,8 @@ public class ImageConverter {
     return array;
   }
 
-  public static Complex2DArray toArrayGrayScale(BufferedImage image) {
-    Complex2DArray array = new Complex2DArray(image.getHeight(), image.getWidth());
+  public static CArray2D toArrayGrayScale(BufferedImage image) {
+    CArray2D array = new CArray2D(image.getHeight(), image.getWidth());
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
         int rgb = image.getRGB(x, y);
@@ -64,11 +63,11 @@ public class ImageConverter {
       }
     }
   }
-  public static BufferedImage fromArray(Complex2DArray f) {
+  public static BufferedImage fromArray(CArray2D f) {
     return fromArray(f, BufferedImage.TYPE_3BYTE_BGR);
   }
 
-  public static BufferedImage fromArray(Complex2DArray f, int imageType) {
+  public static BufferedImage fromArray(CArray2D f, int imageType) {
     BufferedImage image = new BufferedImage(f.getN(), f.getM(), imageType);
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {
@@ -78,10 +77,10 @@ public class ImageConverter {
     return image;
   }
 
-  private static int getInt(Complex2DArray array, int i, int j) {
+  private static int getInt(CArray2D array, int i, int j) {
     return (int) array.get(i, j).abs();
   }
-  private static int getRgb(Complex2DArray[] channels, int i, int j, boolean alphaEnabled) {
+  private static int getRgb(CArray2D[] channels, int i, int j, boolean alphaEnabled) {
     int color =  (getInt(channels[0],i,j) & 255) << 16 | (getInt(channels[1],i,j) & 255) << 8 | (getInt(channels[2],i,j) & 255) << 0;
     if (alphaEnabled) {
       color = (getInt(channels[3],i,j) & 255) << 24 | color;
@@ -89,7 +88,7 @@ public class ImageConverter {
     return color;
   }
 
-  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled, Padding padding) {
+  public static BufferedImage fromColoredChannels(CArray2D[] channels, boolean alphaEnabled, Padding padding) {
     if ((!alphaEnabled && channels.length != 3) || (alphaEnabled && channels.length != 4)) {
       throw new IllegalArgumentException("There should be " + (alphaEnabled ? 4 : 3) + " channels");
     }
@@ -102,11 +101,11 @@ public class ImageConverter {
     return image;
   }
 
-  public static BufferedImage fromColoredChannels(Complex2DArray[] channels, boolean alphaEnabled) {
+  public static BufferedImage fromColoredChannels(CArray2D[] channels, boolean alphaEnabled) {
     return fromColoredChannels(channels, alphaEnabled, Padding.ZERO);
   }
 
-  public static BufferedImage fromArrayGrayScale(Complex2DArray f, int imageType) {
+  public static BufferedImage fromArrayGrayScale(CArray2D f, int imageType) {
     BufferedImage image = new BufferedImage(f.getN(), f.getM(), imageType);
     for (int x = 0; x < image.getWidth(); x++) {
       for (int y = 0; y < image.getHeight(); y++) {

@@ -1,7 +1,7 @@
 package com.tambapps.image_processing.application.effect;
 
 import com.tambapps.image_processing.application.model.ImageHolder;
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.math.carray2d.CArray2D;
 import com.tambapps.math.complex.Complex;
 import com.tambapps.math.fourier.filtering.Filter;
 import com.tambapps.math.fourier.filtering.Filters;
@@ -63,12 +63,12 @@ public class ThresholdEffect extends AbstractEffect {
   private double computeMax() {
     double average = 0;
     double ecartType = 0;
-    Complex2DArray[] channels = getTransform().getChannels();
+    CArray2D[] channels = getTransform().getChannels();
     final double nbElements = channels.length * getTransform().getM() * getTransform().getN();
     ArrayList<Double> absValues = new ArrayList<>((int) nbElements);
 
     double max = -1;
-    for (Complex2DArray array : channels) {
+    for (CArray2D array : channels) {
       for (int i = 0; i < array.getM() * array.getN(); i++) {
         Complex c = array.get(i);
         double abs = c.abs();

@@ -1,6 +1,6 @@
 package com.tambapps.image_processing.application.model;
 
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.math.carray2d.CArray2D;
 
 import java.awt.image.BufferedImage;
 
@@ -12,7 +12,7 @@ public interface ImageHolder {
 
   ImageHolder copy();
 
-  Complex2DArray[] getChannels();
+  CArray2D[] getChannels();
 
   int getM();
 

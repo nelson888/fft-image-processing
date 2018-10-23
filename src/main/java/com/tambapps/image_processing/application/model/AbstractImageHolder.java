@@ -1,6 +1,6 @@
 package com.tambapps.image_processing.application.model;
 
-import com.tambapps.math.array_2d.Complex2DArray;
+import com.tambapps.math.carray2d.CArray2D;
 import com.tambapps.math.fourier.util.Padding;
 
 import java.awt.image.BufferedImage;
@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractImageHolder implements ImageHolder {
 
   private BufferedImage image;
-  final Complex2DArray[] channels;
+  final CArray2D[] channels;
 
-  AbstractImageHolder(Complex2DArray array) {
-    this.channels = new Complex2DArray[]{array};
+  AbstractImageHolder(CArray2D array) {
+    this.channels = new CArray2D[]{array};
   }
 
   AbstractImageHolder(BufferedImage image, int nbChannels) {
@@ -20,7 +20,7 @@ public abstract class AbstractImageHolder implements ImageHolder {
   }
 
   AbstractImageHolder(int nbChannels) {
-    channels = new Complex2DArray[nbChannels];
+    channels = new CArray2D[nbChannels];
   }
 
   public void setImage(BufferedImage image) {
@@ -32,7 +32,7 @@ public abstract class AbstractImageHolder implements ImageHolder {
   }
 
   @Override
-  public Complex2DArray[] getChannels() {
+  public CArray2D[] getChannels() {
     return channels;
   }
 
