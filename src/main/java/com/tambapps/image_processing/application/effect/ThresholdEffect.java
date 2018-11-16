@@ -87,7 +87,7 @@ public class ThresholdEffect extends AbstractEffect {
     ecartType /= nbElements;
     ecartType = Math.sqrt(ecartType);
 
-    return max + 1;
+    return ecartType;
   }
 
   private double pow2(double d) {
