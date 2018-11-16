@@ -47,7 +47,7 @@ public class ThresholdEffect extends AbstractEffect {
     double threshold = percentage * max;
 
     LOGGER.info("Applying {} with max value of {}", this, threshold);
-    return Filters.threshold(threshold);
+    return Filters.threshold(threshold, true);
   }
 
   @Override
