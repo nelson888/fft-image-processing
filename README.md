@@ -36,3 +36,4 @@ java -jar target/fft-2d-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 * [Maven](https://maven.apache.org/)
 * [JavaFX](https://gluonhq.com/products/scene-builder/)
+* [fourier-transform-library](https://github.com/nelson888/fourier-transform-library)
